@@ -2,7 +2,7 @@
 namespace BHAA\utils;
 
 class Deactivator {
-    public static function activate() {
+    public static function deactivate() {
     }
 }
 ?>
