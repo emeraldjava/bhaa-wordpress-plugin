@@ -1,0 +1,10 @@
+{
+  "name" : "emeraldjava/bhaa_wordpress_plugin",
+  "description" : "bhaa_wordpress_plugin",
+  "type" : "wordpress-plugin",
+  "autoload" : {
+    "psr-4" : {
+      "PluginName\\" : "src"
+    }
+  }
+}
