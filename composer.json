@@ -2,6 +2,9 @@
   "name" : "emeraldjava/bhaa_wordpress_plugin",
   "description" : "bhaa_wordpress_plugin",
   "type" : "wordpress-plugin",
+  "require": {
+    "mustache/mustache": "2.11.1"
+  },
   "autoload" : {
     "psr-4" : {
       "BHAA\\" : "src"

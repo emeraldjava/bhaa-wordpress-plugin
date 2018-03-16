@@ -95,7 +95,7 @@ class LeagueCPT {
                 if($type=='T')
                     return BHAA_PLUGIN_DIR.'/includes/templates/single-league-team.php';
                 else
-                    return BHAA_PLUGIN_DIR.'/includes/templates/single-league-individual.php';
+                    return BHAA_PLUGIN_DIR.'/front/partials/league/single-league-individual.php';
             }
         }
         return $single;

@@ -13,19 +13,11 @@ class AdminController {
 
     /**
      * The ID of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $plugin_name    The ID of this plugin.
      */
     private $plugin_name;
 
     /**
      * The version of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
      */
     private $version;
 
@@ -39,8 +31,6 @@ class AdminController {
 
     /**
      * Register the stylesheets for the admin area.
-     *
-     * @since    1.0.0
      */
     public function enqueue_styles() {
         wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
@@ -48,8 +38,6 @@ class AdminController {
 
     /**
      * Register the JavaScript for the admin area.
-     *
-     * @since    1.0.0
      */
     public function enqueue_scripts() {
         wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
