@@ -9,5 +9,7 @@
  * @since      1.0.0
  */
 ?>
-
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<div class="wrap">
+    <h2>BHAA Admin Page</h2>
+</div>

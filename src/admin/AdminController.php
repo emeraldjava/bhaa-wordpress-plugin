@@ -41,8 +41,21 @@ class AdminController implements Actionable {
     public function get_actions() {
         return array(
             'admin_enqueue_scripts' => 'enqueue_styles',
-            'admin_enqueue_scripts' => 'enqueue_scripts'
+            'admin_enqueue_scripts' => 'enqueue_scripts',
+            'admin_menu' => 'bhaa_admin_menu'
         );
+    }
+
+    public function bhaa_admin_menu() {
+        add_menu_page('BHAA Admin Menu Title', 'BHAA',
+            'manage_options', 'bhaa', array(&$this, 'bhaa_admin_main'));
+    }
+
+    function bhaa_admin_main() {
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        include_once( 'partials/bhaa_admin_main.php' );
     }
 
     /**
