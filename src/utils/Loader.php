@@ -40,7 +40,7 @@ class Loader {
         if ($object instanceof Actionable) {
             array_push($this->actions, $object);
         }
-        if ($object instanceof Filerable) {
+        if ($object instanceof Filterable) {
             array_push($this->filters, $object);
         }
     }
@@ -92,7 +92,7 @@ class Loader {
      * @param string $name
      * @param mixed $parameters
      */
-    private function register_filter(Filerable $object, $name, $parameters) {
+    private function register_filter(Filterable $object, $name, $parameters) {
         if (is_string($parameters)) {
             add_filter($name, array($object, $parameters));
         } elseif (is_array($parameters) && isset($parameters[0])) {
@@ -105,7 +105,7 @@ class Loader {
      *
      * @param Filerable $object
      */
-    private function register_filters(Filerable $object) {
+    private function register_filters(Filterable $object) {
         foreach ($object->get_filters() as $name => $parameters) {
             $this->register_filter($object, $name, $parameters);
         }

@@ -40,6 +40,7 @@ class Main {
         $this->loader->register(new admin\AdminController( $this->get_plugin_name(), $this->get_version()));
         $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
         $this->loader->register(new front\cpt\LeagueCPT());
+        $this->loader->register(new admin\RunnerAdminController());
     }
     /**
      * Define the locale for this plugin for internationalization.
