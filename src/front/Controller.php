@@ -8,7 +8,9 @@
 
 namespace BHAA\front;
 
-class Controller {
+use BHAA\utils\Actionable;
+
+class Controller implements Actionable {
 
     private $plugin_name;
     private $version;
@@ -19,6 +21,13 @@ class Controller {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+    }
+
+    public function get_actions() {
+        return array(
+            'admin_enqueue_scripts' => 'enqueue_styles',
+            'admin_enqueue_scripts' => 'enqueue_scripts'
+        );
     }
 
     /**

@@ -15,7 +15,7 @@ namespace BHAA\utils;
 /**
  * Define the internationalization functionality.
  */
-class Internationalization {
+class Internationalization implements Actionable {
 
     /**
      * The domain specified for this plugin.
@@ -27,18 +27,26 @@ class Internationalization {
     private $domain;
 
     /**
+     * Define the wp actions in the class
+     * @return array
+     */
+    public function get_actions() {
+        return array(
+            'plugins_loaded' => 'load_plugin_textdomain'
+        );
+    }
+
+    /**
      * Load the plugin text domain for translation.
      *
      * @since    1.0.0
      */
     public function load_plugin_textdomain() {
-
         load_plugin_textdomain(
             $this->domain,
             false,
             dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
         );
-
     }
 
     /**

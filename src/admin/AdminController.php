@@ -8,8 +8,9 @@
 
 namespace BHAA\admin;
 
+use BHAA\utils\Actionable;
 
-class AdminController {
+class AdminController implements Actionable {
 
     /**
      * The ID of this plugin.
@@ -27,6 +28,21 @@ class AdminController {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+    }
+
+    /**
+     * Was
+     *     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+     *     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+     * in the Main class
+     * @return array
+     *
+     */
+    public function get_actions() {
+        return array(
+            'admin_enqueue_scripts' => 'enqueue_styles',
+            'admin_enqueue_scripts' => 'enqueue_scripts'
+        );
     }
 
     /**
