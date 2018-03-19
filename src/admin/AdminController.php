@@ -47,8 +47,8 @@ class AdminController implements Actionable {
     }
 
     public function bhaa_admin_menu() {
-        add_menu_page('BHAA Admin Menu Title', 'BHAA',
-            'manage_options', 'bhaa', array(&$this, 'bhaa_admin_main'));
+        add_menu_page('BHAA Admin Page', 'BHAA',
+            'manage_options', 'bhaa', array($this, 'bhaa_admin_main'));
     }
 
     function bhaa_admin_main() {

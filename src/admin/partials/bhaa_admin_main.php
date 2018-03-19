@@ -11,5 +11,15 @@
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
-    <h2>BHAA Admin Page</h2>
+    <h1>BHAA Admin Page</h1>
+
+    <h2>BHAA Membership Status</h2>
+    <table border="1">
+        <tbody>
+        <tr>
+            <th>Membership Status</th>
+            <th>Count</th>
+        </tr>
+        </tbody>
+    </table>
 </div>

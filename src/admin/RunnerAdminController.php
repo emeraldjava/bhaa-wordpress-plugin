@@ -8,12 +8,19 @@
 
 namespace BHAA\admin;
 
+use BHAA\admin\manager\RunnerManager;
 use BHAA\utils\Actionable;
 use BHAA\utils\Filterable;
 use BHAA\front\runner\Runner;
 use BHAA\front\connections\Connections;
 
 class RunnerAdminController implements Filterable, Actionable {
+
+    private $runnerManager;
+
+    public function __construct() {
+        $this->runnerAdminMessage = '';
+    }
 
     public function get_filters() {
         //error_log('RunnerAdminController.get_filters');
@@ -27,8 +34,30 @@ class RunnerAdminController implements Filterable, Actionable {
 
     public function get_actions() {
         return array(
-            //'pre_user_query' => 'bhaa_order_users_by_column'
+            'admin_menu' => 'bhaa_admin_sub_menu',
+            'admin_action_bhaa_runner_assign_to_role'=>'bhaa_runner_assign_to_role'
         );
+    }
+
+    public function bhaa_admin_sub_menu() {
+        add_submenu_page('bhaa', 'BHAA Runner Admin', 'Runner',
+            'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
+    }
+
+    public function bhaa_admin_runner() {
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        $runnerManager = new RunnerManager();
+        include_once( 'partials/bhaa_admin_runners.php' );
+    }
+
+    function bhaa_runner_assign_to_role() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_assign_to_role')) {
+            error_log("bhaa_runner_assign_to_role :: ".$_REQUEST['members']);
+        }
+        wp_redirect(wp_get_referer());
+        exit();
     }
 
     function bhaa_manage_users_sortable_column( $columns ) {
@@ -121,5 +150,9 @@ class RunnerAdminController implements Filterable, Actionable {
             $actions['bhaa_runner_view'] = '<a target="_new" href="/runner/?id='.$user->ID.'">Runner</a>';
         }
         return $actions;
+    }
+
+    function setRunnerManager(RunnerManager $runnerManager){
+        $this->runnerManager=$runnerManager;
     }
 }
