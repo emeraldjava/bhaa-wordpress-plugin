@@ -6,7 +6,7 @@
  * Time: 17:30
  */
 
-namespace BHAA\front\cpt;
+namespace BHAA\core\cpt;
 
 use BHAA\utils\Actionable;
 use BHAA\utils\Filterable;
@@ -16,27 +16,15 @@ class LeagueCPT implements Actionable, Filterable {
     const BHAA_LEAGUE_RACES_TO_SCORE = 'races_to_score';
     const BHAA_LEAGUE_TYPE = 'bhaa_league_type';
 
-    /**
-     * $this->loader->add_action('admin_menu', $this->leagueCpt,'bhaa_league_populate_metabox');
-    $this->loader->add_action('admin_action_bhaa_league_delete',$this->leagueCpt,'bhaa_league_delete');
-    $this->loader->add_action('admin_action_bhaa_league_populate',$this->leagueCpt,'bhaa_league_populate');
-    $this->loader->add_action('admin_action_bhaa_league_top_ten',$this->leagueCpt,'bhaa_league_top_ten');
-    $this->loader->add_action('init', $this->leagueCpt,'registerLeagueCPT');
-    $this->loader->add_action('add_meta_boxes', $this->leagueCpt, 'bhaa_league_meta_data');
-    $this->loader->add_action('save_post', $this->leagueCpt,'bhaa_league_save_meta_data');
-    $this->loader->add_filter('post_row_actions', $this->leagueCpt,'bhaa_league_post_row_actions',0,2);
-    $this->loader->add_filter('single_template', $this->leagueCpt,'bhaa_single_league_template');
-     * @return array
-     */
     public function get_actions() {
         return array(
+            'init' => 'bhaa_register_league_cpt',
+            'add_meta_boxes' => 'bhaa_league_meta_data',
+            'save_post' => 'bhaa_league_save_meta_data',
             'admin_menu' => 'bhaa_league_populate_metabox',
             'admin_action_bhaa_league_delete' => 'bhaa_league_delete',
             'admin_action_bhaa_league_populate' => 'bhaa_league_populate',
-            'admin_action_bhaa_league_top_ten' => 'bhaa_league_top_ten',
-            'init' => 'registerLeagueCPT',
-            'add_meta_boxes' => 'bhaa_league_meta_data',
-            'save_post' => 'bhaa_league_save_meta_data'
+            'admin_action_bhaa_league_top_ten' => 'bhaa_league_top_ten'
         );
     }
 
@@ -275,7 +263,7 @@ class LeagueCPT implements Actionable, Filterable {
         return '<a href='.$link.'>'.$name.'</a>';
     }
 
-    function registerLeagueCPT() {
+    function bhaa_register_league_cpt() {
         $leagueLabels = array(
             'name' => _x( 'Leagues', 'league' ),
             'singular_name' => _x( 'League', 'league' ),

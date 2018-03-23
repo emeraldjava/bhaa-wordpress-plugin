@@ -10,6 +10,22 @@ namespace BHAA\admin\manager;
 
 class RunnerManager {
 
+    /**
+     * https://tommcfarlin.com/wordpress-user-role/
+     * @param $user_id
+     */
+    public function set_user_role( $user_id ) {
+        // Define a user role based on its index in the array.
+        $roles = array(
+            'bhaamember',
+            'subscriber'
+        );
+        $role = $roles[1];
+        // Set the user's role (and implicitly remove the previous role).
+        $user = new WP_User( $user_id );
+        $user->set_role( $role );
+    }
+
     function getMembersNotInRole() {
         $args = array(
             'number' => 25,

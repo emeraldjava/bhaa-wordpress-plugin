@@ -6,7 +6,7 @@
  * Time: 21:04
  */
 
-namespace BHAA\front\connections;
+namespace BHAA\core;
 
 class Connections {
     const EVENT_TO_RACE = 'event_to_race';

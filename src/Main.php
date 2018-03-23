@@ -38,9 +38,14 @@ class Main {
 
         // register the BHAA objects with support actions and filters.
         $this->loader->register(new admin\AdminController( $this->get_plugin_name(), $this->get_version()));
-        $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
-        $this->loader->register(new front\cpt\LeagueCPT());
         $this->loader->register(new admin\RunnerAdminController());
+
+        // register the core objects
+        $this->loader->register(new core\cpt\LeagueCPT());
+        $this->loader->register(new core\cpt\RaceCPT());
+
+        // register the front
+        $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
     }
     /**
      * Define the locale for this plugin for internationalization.

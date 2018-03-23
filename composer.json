@@ -3,7 +3,7 @@
   "description" : "bhaa_wordpress_plugin",
   "type" : "wordpress-plugin",
   "require": {
-    "mustache/mustache": "2.11.1"
+    "mustache/mustache": "2.12.0"
   },
   "autoload" : {
     "psr-4" : {

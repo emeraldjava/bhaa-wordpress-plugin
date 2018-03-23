@@ -6,7 +6,7 @@
  * Time: 21:04
  */
 
-namespace BHAA\front\runner;
+namespace BHAA\core\runner;
 
 
 class Runner {

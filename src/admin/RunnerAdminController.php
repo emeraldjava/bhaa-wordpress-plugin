@@ -11,12 +11,12 @@ namespace BHAA\admin;
 use BHAA\admin\manager\RunnerManager;
 use BHAA\utils\Actionable;
 use BHAA\utils\Filterable;
-use BHAA\front\runner\Runner;
-use BHAA\front\connections\Connections;
+use BHAA\core\Runner;
+use BHAA\Connections;
 
 class RunnerAdminController implements Filterable, Actionable {
 
-    private $runnerManager;
+    //private $runnerManager;
 
     public function __construct() {
         $this->runnerAdminMessage = '';
@@ -48,13 +48,14 @@ class RunnerAdminController implements Filterable, Actionable {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
-        $runnerManager = new RunnerManager();
         include_once( 'partials/bhaa_admin_runners.php' );
     }
 
     function bhaa_runner_assign_to_role() {
         if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_assign_to_role')) {
             error_log("bhaa_runner_assign_to_role :: ".$_REQUEST['members']);
+            $runnerManager = new RunnerManager();
+            $runnerManager->set_user_role($_REQUEST['members']);
         }
         wp_redirect(wp_get_referer());
         exit();

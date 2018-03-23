@@ -68,8 +68,10 @@ class Loader {
      */
     private function register_action(Actionable $object, $name, $parameters) {
         if (is_string($parameters)) {
+            //error_log($name.' -> '.$parameters);
             add_action($name, array($object, $parameters));
         } elseif (is_array($parameters) && isset($parameters[0])) {
+            //error_log($name.' -> '.array($object, $parameters[0]));
             add_action($name, array($object, $parameters[0]), isset($parameters[1]) ? $parameters[1] : 10, isset($parameters[2]) ? $parameters[2] : 1);
         }
     }
@@ -94,8 +96,10 @@ class Loader {
      */
     private function register_filter(Filterable $object, $name, $parameters) {
         if (is_string($parameters)) {
-            add_filter($name, array($object, $parameters));
+            //error_log('filter1 '.$name.' -> '.get_class($object).'.'.$parameters);
+            add_filter($name, array($object, $parameters),10,1);
         } elseif (is_array($parameters) && isset($parameters[0])) {
+            //error_log('filter2 '.$name.' -> '.get_class($object).'.'.implode(",", $parameters));
             add_filter($name, array($object, $parameters[0]), isset($parameters[1]) ? $parameters[1] : 10, isset($parameters[2]) ? $parameters[2] : 1);
         }
     }
