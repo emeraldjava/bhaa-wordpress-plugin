@@ -41,8 +41,9 @@ class Main {
         $this->loader->register(new admin\RunnerAdminController());
 
         // register the core objects
-        $this->loader->register(new core\cpt\LeagueCPT());
+        $this->loader->register(new core\cpt\EventCPT());
         $this->loader->register(new core\cpt\RaceCPT());
+        $this->loader->register(new core\cpt\LeagueCPT());
 
         // register the front
         $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
