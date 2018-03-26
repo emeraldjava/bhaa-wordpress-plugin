@@ -36,6 +36,9 @@ class Main {
         $this->loader = new utils\Loader();
         $this->set_locale();
 
+        // register the front
+        $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
+
         // register the BHAA objects with support actions and filters.
         $this->loader->register(new admin\AdminController( $this->get_plugin_name(), $this->get_version()));
         $this->loader->register(new admin\RunnerAdminController());
@@ -45,8 +48,6 @@ class Main {
         $this->loader->register(new core\cpt\RaceCPT());
         $this->loader->register(new core\cpt\LeagueCPT());
 
-        // register the front
-        $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
     }
     /**
      * Define the locale for this plugin for internationalization.

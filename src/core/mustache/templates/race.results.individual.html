@@ -3,23 +3,23 @@
     <h4>Distance {{dist}}{{unit}}</h4>
     <table class="table table-striped table-bordered" width="100%">
         <tr>
-            <th>Place</th>
+            <!--<th>Place</th>-->
             <th>Name</th>
-            <th>Cat</th>
-            <th>Company</th>
-            <th>Std</th>
-            <th>Number</th>
+            <!--<th>Cat</th>-->
+            <!--<th>Company</th>-->
+            <!--<th>Std</th>-->
+            <th>Pos</th>
             <th>Time</th>
         </tr>
     {{# runners}}
         <tr id="{{id}}">
-            <td>{{#isAdmin}}<a target="_self" class="bhaa-url-link" href="{{formUrl}}&raceresult={{id}}">{{position}}</a>{{/isAdmin}}{{^isAdmin}}{{position}}{{/isAdmin}}</td>
-            <td><a class="bhaa-url-link" r="{{runner}}" href="./runner?id={{runner}}">{{display_name}}</a></td>
-            <td>{{category}}{{gender}} p{{posincat}}</td>
-            <td><a class="bhaa-url-link" href="/?post_type=house&p={{cid}}">{{cname}}</a></td>
-            <td>{{standard}}->[{{actualstandard}}]->{{poststandard}}</td>
-            <td>{{racenumber}}</td>
-            <td>{{racetime}}</td>
+            <td><span><b>{{display_name}}</b><br/>
+                {{gender}}{{category}} - {{cname}} | <i>Bib</i>:{{racenumber}}</span>
+            </td>
+            <!--<td><a class="bhaa-url-link" href="/?post_type=house&p={{cid}}">{{cname}}</a></td>-->
+            <!--<td>{{standard}}->[{{actualstandard}}]->{{poststandard}}</td>-->
+            <td data-th="Pos:">{{position}}</td>
+            <td data-th="Time:">{{racetime}}</td>
         </tr>
     {{/ runners}}
     </table>

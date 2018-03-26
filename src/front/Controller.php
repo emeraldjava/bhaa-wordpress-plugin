@@ -21,26 +21,27 @@ class Controller implements Actionable {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+        add_action('wp_enqueue_scripts', array($this,'bhaa_enqueue_styles'));
+        add_action('wp_enqueue_scripts', array($this,'bhaa_enqueue_scripts'));
     }
 
     public function get_actions() {
-        return array(
-            'admin_enqueue_scripts' => 'enqueue_styles',
-            'admin_enqueue_scripts' => 'enqueue_scripts'
-        );
+        return array();
     }
 
     /**
      * Register the stylesheets for the public-facing side of the site.
      */
-    public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
+    public function bhaa_enqueue_styles() {
+        error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-public.css');
+        wp_enqueue_style( $this->plugin_name.'_css', plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-public.css', array(), $this->version, 'all' );
     }
 
     /**
      * Register the stylesheets for the public-facing side of the site.
      */
-    public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
+    public function bhaa_enqueue_scripts() {
+        error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-public.js');
+        wp_enqueue_script( $this->plugin_name.'_js', plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-public.js', array( 'jquery' ), $this->version, false );
     }
 }

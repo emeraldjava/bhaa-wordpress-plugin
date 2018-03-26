@@ -6,7 +6,7 @@
  * Plugin Name:       bhaa_wordpress_plugin
  * Plugin URI:        https://github.com/emeraldjava/bhaa_wordpress_plugin
  * Description:       Plugin for the Business House Athletic Association. Handles user registration, race results and leagues.
- * Version:           2018.03.23
+ * Version:           2018.03.26
  * Author:            emeraldjava
  * Author URI:        https://github.com/emeraldjava
  * License:           GPL-2.0+

@@ -28,6 +28,8 @@ class AdminController implements Actionable {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+        add_action('admin_enqueue_scripts', array($this,'bhaa_admin_enqueue_styles'));
+        add_action('admin_enqueue_scripts', array($this,'bhaa_admin_enqueue_scripts'));
     }
 
     /**
@@ -40,8 +42,6 @@ class AdminController implements Actionable {
      */
     public function get_actions() {
         return array(
-            'admin_enqueue_scripts' => 'enqueue_styles',
-            'admin_enqueue_scripts' => 'enqueue_scripts',
             'admin_menu' => 'bhaa_admin_menu'
         );
     }
@@ -61,14 +61,16 @@ class AdminController implements Actionable {
     /**
      * Register the stylesheets for the admin area.
      */
-    public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+    public function bhaa_admin_enqueue_styles() {
+        error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css');
+        wp_enqueue_style( $this->plugin_name.'_admin_css', plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css', array(), $this->version, 'all' );
     }
 
     /**
      * Register the JavaScript for the admin area.
      */
-    public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+    public function bhaa_admin_enqueue_scripts() {
+        error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js');
+        wp_enqueue_script( $this->plugin_name.'_admin_js', plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js', array( 'jquery' ), $this->version, false );
     }
 }

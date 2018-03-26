@@ -1,10 +1,9 @@
 <?php
 get_header();
-
-echo '<div class="container_wrap main_color main">
-    <div class="container template-blog template-single-blog">
-    <div class="content units content">';
-echo $raceResultTable;
+echo '<div class="wrap">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">';
+echo get_query_var('raceResultTable');
 echo '</div></div></div>';
 get_footer();
 ?>

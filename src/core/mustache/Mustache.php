@@ -9,6 +9,7 @@
 namespace BHAA\core\mustache;
 
 use Mustache_Engine;
+use Mustache_Loader_FilesystemLoader;
 
 class Mustache {
 

@@ -11,8 +11,8 @@ namespace BHAA\admin;
 use BHAA\admin\manager\RunnerManager;
 use BHAA\utils\Actionable;
 use BHAA\utils\Filterable;
-use BHAA\core\Runner;
-use BHAA\Connections;
+use BHAA\core\runner\Runner;
+use BHAA\core\Connections;
 
 class RunnerAdminController implements Filterable, Actionable {
 
