@@ -33,7 +33,7 @@ class Controller implements Actionable {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function bhaa_enqueue_styles() {
-        error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-public.css');
+        //error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-public.css');
         wp_enqueue_style( $this->plugin_name.'_css', plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-public.css', array(), $this->version, 'all' );
     }
 
@@ -41,7 +41,7 @@ class Controller implements Actionable {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function bhaa_enqueue_scripts() {
-        error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-public.js');
+        //error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-public.js');
         wp_enqueue_script( $this->plugin_name.'_js', plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-public.js', array( 'jquery' ), $this->version, false );
     }
 }

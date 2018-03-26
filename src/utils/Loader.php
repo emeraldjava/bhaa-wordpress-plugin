@@ -68,10 +68,10 @@ class Loader {
      */
     private function register_action(Actionable $object, $name, $parameters) {
         if (is_string($parameters)) {
-            error_log('action1: '.get_class($object).'.'.$name.' -> '.$parameters);
+            //error_log('action1: '.get_class($object).'.'.$name.' -> '.$parameters);
             add_action($name, array($object, $parameters));
         } elseif (is_array($parameters) && isset($parameters[0])) {
-            error_log('action2: '.get_class($object).'.'.$name.' -> '.implode(",", $parameters[0]));
+            //error_log('action2: '.get_class($object).'.'.$name.' -> '.implode(",", $parameters[0]));
             add_action($name, array($object, $parameters[0]), isset($parameters[1]) ? $parameters[1] : 10, isset($parameters[2]) ? $parameters[2] : 1);
         }
     }

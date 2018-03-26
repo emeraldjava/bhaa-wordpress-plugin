@@ -25,8 +25,8 @@ class RunnerAdminController implements Filterable, Actionable {
     public function get_filters() {
         //error_log('RunnerAdminController.get_filters');
         return array(
-            'manage_users_columns' => 'bhaa_manage_users_columns',
-            'manage_users_custom_column' => array('bhaa_manage_users_custom_column',10,3),
+            //'manage_users_columns' => 'bhaa_manage_users_columns',
+            //'manage_users_custom_column' => array('bhaa_manage_users_custom_column',10,3),
             //'manage_users_sortable_columns' => 'bhaa_manage_users_sortable_column'
             //'user_row_actions' => array('bhaa_user_row_actions_runner_link',10,2)
         );
@@ -34,8 +34,8 @@ class RunnerAdminController implements Filterable, Actionable {
 
     public function get_actions() {
         return array(
-            'admin_menu' => 'bhaa_admin_sub_menu',
-            'admin_action_bhaa_runner_assign_to_role'=>'bhaa_runner_assign_to_role'
+            //'admin_menu' => 'bhaa_admin_sub_menu',
+            //'admin_action_bhaa_runner_assign_to_role'=>'bhaa_runner_assign_to_role'
         );
     }
 

@@ -42,8 +42,16 @@ class AdminController implements Actionable {
      */
     public function get_actions() {
         return array(
-            'admin_menu' => 'bhaa_admin_menu'
+            'admin_menu' => 'bhaa_admin_menu',
+            'admin_action_bhaa_export_members' => 'bhaa_export_members'
         );
+    }
+
+    function bhaa_export_members() {
+        error_log('bhaa_export_members');
+
+        wp_redirect( $_SERVER['HTTP_REFERER'] );
+        exit();
     }
 
     public function bhaa_admin_menu() {
@@ -62,15 +70,19 @@ class AdminController implements Actionable {
      * Register the stylesheets for the admin area.
      */
     public function bhaa_admin_enqueue_styles() {
-        error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css');
-        wp_enqueue_style( $this->plugin_name.'_admin_css', plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css', array(), $this->version, 'all' );
+        //error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css');
+        wp_enqueue_style( $this->plugin_name.'_admin_css',
+            plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css',
+            array(), $this->version, 'all' );
     }
 
     /**
      * Register the JavaScript for the admin area.
      */
     public function bhaa_admin_enqueue_scripts() {
-        error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js');
-        wp_enqueue_script( $this->plugin_name.'_admin_js', plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js', array( 'jquery' ), $this->version, false );
+        //error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js');
+        wp_enqueue_script( $this->plugin_name.'_admin_js',
+            plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js',
+            array( 'jquery' ), $this->version, false );
     }
 }
