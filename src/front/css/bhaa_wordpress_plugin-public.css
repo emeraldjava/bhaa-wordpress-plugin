@@ -4,22 +4,13 @@
  */
 
 /**
- * https://stackoverflow.com/questions/32301206/how-to-fold-table-columns-into-rows-on-mobile-devices
-https://results.nyrr.org/event/18VNYC/finishers#gender=M&page=1
- tr:nth-of-type(odd) {
-    background: #eee;
-}
+ https://stackoverflow.com/questions/25121144/alternating-row-colors-in-bootstrap-3-no-table
  */
-@media only screen and (max-width: 40em) {
-    thead th:not(:first-child) {
-        display: none;
-    }
+.row-striped:nth-of-type(odd){
+    background-color: #efefef;
+}
 
-    td, th {
-        display: block;
-    }
-
-    td[data-th]:before  {
-        content: attr(data-th);
-    }
+.row-striped:nth-of-type(even){
+    background-color: #ffffff;
+    font-size: .8em;
 }

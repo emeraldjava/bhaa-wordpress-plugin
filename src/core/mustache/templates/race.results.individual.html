@@ -1,26 +1,15 @@
-<div class="container">
-    <h3>{{racename}}</h3>
-    <h4>Distance {{dist}}{{unit}}</h4>
-    <table class="table table-striped table-bordered" width="100%">
-        <tr>
-            <!--<th>Place</th>-->
-            <th>Name</th>
-            <!--<th>Cat</th>-->
-            <!--<th>Company</th>-->
-            <!--<th>Std</th>-->
-            <th>Pos</th>
-            <th>Time</th>
-        </tr>
-    {{# runners}}
-        <tr id="{{id}}">
-            <td><span><b>{{display_name}}</b><br/>
-                {{gender}}{{category}} - {{cname}} | <i>Bib</i>:{{racenumber}}</span>
-            </td>
-            <!--<td><a class="bhaa-url-link" href="/?post_type=house&p={{cid}}">{{cname}}</a></td>-->
-            <!--<td>{{standard}}->[{{actualstandard}}]->{{poststandard}}</td>-->
-            <td data-th="Pos:">{{position}}</td>
-            <td data-th="Time:">{{racetime}}</td>
-        </tr>
-    {{/ runners}}
-    </table>
+<h3>{{racename}}</h3>
+<h4>Distance {{dist}}{{unit}}</h4>
+<div class="container-fluid">
+ {{# runners}}
+    <div class="row row-striped" id="{{id}}">
+        <div class="col-sm-8">P{{position}} <b>{{display_name}}</b></div>
+        <div class="col-sm-4" data-th="Time:">Time: {{racetime}}</div>
+    </div>
+    <div class="row row-striped row-minor">
+        <div class="col-sm-4">Cat: {{gender}}{{category}}</div>
+        <div class="col-sm-4">Company: {{cname}}</div>
+        <div class="col-sm-4"><i>Bib</i>:{{racenumber}}</div>
+    </div>
+{{/ runners}}
 </div>
