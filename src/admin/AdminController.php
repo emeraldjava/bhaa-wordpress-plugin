@@ -8,6 +8,7 @@
 
 namespace BHAA\admin;
 
+use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Actionable;
 
 class AdminController implements Actionable {
@@ -49,7 +50,8 @@ class AdminController implements Actionable {
 
     function bhaa_export_members() {
         error_log('bhaa_export_members');
-
+        $runnerManager = new RunnerManager();
+        $runnerManager->getMembers();
         wp_redirect( $_SERVER['HTTP_REFERER'] );
         exit();
     }
