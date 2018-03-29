@@ -86,7 +86,39 @@ class RunnerManager {
             ORDER BY lastname ASC, firstname ASC';
         return $wpdb->get_results($SQL,ARRAY_A);
     }
-
+    
+    public function getNewOnlineBHAAMembers(){
+        global $wpdb;
+        $SQL = 'SELECT wp_users.id as id,
+            TRIM(LOWER(REPLACE(wp_users.display_name," ","."))) as label,
+            TRIM(first_name.meta_value) as firstname,
+            TRIM(last_name.meta_value) as lastname,
+            wp_users.user_email as email,
+            CASE WHEN reg.REG_paid = "15.000" THEN "M" ELSE "D" END as status,
+            "2018-03-30" AS renewaldate,
+            COALESCE(gender.meta_value,"M") as gender,
+            COALESCE(TRIM(house.post_title),"Day Runner") as companyname,
+            COALESCE(company.meta_value,1) as companyid,
+            COALESCE(TRIM(house.post_title),"Day Runner") as teamname,
+            COALESCE(company.meta_value,1) as teamid,
+            COALESCE(standard.meta_value,10) as standard,
+            COALESCE(dob.meta_value,"1980-01-01") as dob
+            FROM wp_esp_registration as reg
+            JOIN wp_usermeta eeAttendee on (eeAttendee.meta_value=reg.ATT_ID and eeAttendee.meta_key="wp_EE_Attendee_ID")
+            JOIN wp_users on (eeAttendee.user_id=wp_users.id)
+            left join wp_usermeta first_name on (first_name.user_id=wp_users.id and first_name.meta_key="first_name")
+            left join wp_usermeta last_name on (last_name.user_id=wp_users.id and last_name.meta_key="last_name")
+            left join wp_usermeta dob on (dob.user_id=wp_users.id and dob.meta_key="bhaa_runner_dateofbirth")
+            left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key="bhaa_runner_status")
+            left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key="bhaa_runner_gender")
+            left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
+            left join wp_posts house on (house.id=company.meta_value and house.post_type="house")
+            left join wp_usermeta standard on (standard.user_id=wp_users.id and standard.meta_key="bhaa_runner_standard")
+            WHERE reg.EVT_ID=5651
+            AND reg.REG_paid!=0
+            ORDER BY lastname ASC, firstname ASC';
+        return $wpdb->get_results($SQL,ARRAY_A);
+    }
 
     /**
      * https://tommcfarlin.com/wordpress-user-role/
