@@ -11,7 +11,8 @@
       "BHAA\\" : "src"
     },
     "psr-0": {
-      "Mustache\\" : "/mustache/mustache/src"
+      "Mustache\\" : "/mustache/mustache/src",
+      "League\\" : "/league/csv/src"
     }
   }
 }

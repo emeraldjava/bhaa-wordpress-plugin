@@ -13,14 +13,21 @@
 <div class="wrap">
     <h1>BHAA Runners Admin</h1>
 
-    <h2>Assign BHAA Members ID's to Role</h2>
-    <div>
-        <form action="<?php echo admin_url('admin.php')?>" method="POST">
-            <?php wp_nonce_field('bhaa_runner_assign_to_role')?>
-            <input type="hidden" name="action" value="bhaa_runner_assign_to_role"/>
-            <input type="text" name="members" value=""/>
-            <input type="submit" value="Assign Role"/>
-        </form>
-        <div><p><?php echo $this->runnerAdminMessage?></p></div>
-    </div>
+    <table border="1">
+        <tbody>
+        <tr>
+            <th>BHAA ID</th>
+            <th>Athlete</th>
+        </tr>
+        <?php
+        if ( ! empty( $user_query->results ) ) {
+            foreach ( $user_query->results as $user ) {
+                echo sprintf('<tr><td>%d</td><td>%s</td></tr>',
+                    $user->ID,
+                    $user->display_name);
+            }
+        }
+        ?>
+        </tbody>
+    </table>
 </div>

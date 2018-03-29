@@ -11,6 +11,9 @@ namespace BHAA\admin;
 use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Actionable;
 
+use League\Csv\Writer;
+use SplTempFileObject;
+
 class AdminController implements Actionable {
 
     /**
@@ -44,19 +47,21 @@ class AdminController implements Actionable {
     public function get_actions() {
         return array(
             'admin_menu' => 'bhaa_admin_menu',
-            'admin_action_bhaa_export_members' => 'bhaa_export_members'
+            'admin_action_bhaa_export_members' => 'bhaa_export_members',
+            'admin_action_bhaa_registrar_export_members' => 'bhaa_registrar_export_members'
         );
     }
 
     function bhaa_export_members() {
         error_log('bhaa_export_members');
         $runnerManager = new RunnerManager();
-        $runnerManager->getMembers();
+        $user_query = $runnerManager->getMembers();
+        include_once('partials/bhaa_admin_runners.php');
         wp_redirect( $_SERVER['HTTP_REFERER'] );
         exit();
     }
 
-    public function bhaa_admin_menu() {
+    function bhaa_admin_menu() {
         add_menu_page('BHAA Admin Page', 'BHAA',
             'manage_options', 'bhaa', array($this, 'bhaa_admin_main'));
     }
@@ -65,7 +70,35 @@ class AdminController implements Actionable {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
+        $exportMembersLink = $this->generate_admin_url_link('Export Members','bhaa_registrar_export_members');
         include_once( 'partials/bhaa_admin_main.php' );
+    }
+
+    /**
+     * https://csv.thephpleague.com/9.0/connections/output/
+     */
+    function bhaa_registrar_export_members() {
+        $runnerManager = new RunnerManager();
+        $user_query = $runnerManager->getMembers();
+
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Description: File Transfer');
+        header('Content-Disposition: attachment; filename="bhaa-members.csv"');
+
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        foreach ($user_query as $person) {
+            $csv->insertOne($person);
+//            $csv->insertOne($user_query->toArray());
+        }
+//        $csv->insertOne(['foo', 'bar']);
+        $csv->output('bhaa-members.csv');
+        die;
+    }
+
+    private function generate_admin_url_link($name,$action) {
+        $nonce = wp_create_nonce( $action );
+        $link = admin_url('admin.php?action='.$action);
+        return '<a href='.$link.'>'.$name.'</a>';
     }
 
     /**

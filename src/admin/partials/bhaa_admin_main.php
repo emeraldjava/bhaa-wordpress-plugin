@@ -13,10 +13,6 @@
 <div class="wrap">
     <h1>BHAA Admin Page</h1>
 
-    <h2>BHAA Membership</h2>
-    <form method="POST" action="<?php echo admin_url( 'admin.php' ); ?>">
-        <?php wp_nonce_field( 'bhaa_export_members' ); ?>
-        <input type="hidden" name="action" value="bhaa_export_members" />
-        <input type="submit" value="Export Member Details" />
-    </form>
+    <?php echo $exportMembersLink;?>
+
 </div>

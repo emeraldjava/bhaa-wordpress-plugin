@@ -19,29 +19,39 @@ class RunnerManager {
      *
      */
     public function getMembers() {
-        $args = array(
-            'role'    => 'bhaamember',
-            'orderby' => 'display_name',
-            'order'   => 'ASC',
-            'meta_query' => array(
-                'relation' => 'OR',
-                array('key' => 'first_name','compare' => 'like', 'value' => $query),
-                array('key' => 'bhaa_runner_status','compare'=>'!=','value'=>'D')
-            )
-        );
-
-        // The Query
-        $user_query = new WP_User_Query( $args );
-
-        // User Loop
-        if ( ! empty( $user_query->get_results() ) ) {
-            echo '<p>Total Members ' . $user_query->get_total() . '</p>';
-            foreach ( $user_query->get_results() as $user ) {
-                echo '<p>' . $user->display_name . '</p>';
-            }
-        } else {
-            echo 'No users found.';
-        }
+        global $wpdb;
+        $SQL = 'SELECT wp_users.id AS id,
+            TRIM(LOWER(REPLACE(wp_users.display_name," ","."))) AS label,
+            TRIM(first_name.meta_value) AS firstname,
+            TRIM(last_name.meta_value) AS lastname,
+            wp_users.user_email AS email,
+            status.meta_value AS status,
+            renewaldate.meta_value AS renewaldate,
+            gender.meta_value AS gender,
+            TRIM(house.post_title) AS companyname,
+            company.meta_value AS companyid,
+            CASE WHEN r2s.p2p_from IS NOT NULL THEN TRIM(sectorteam.post_title) ELSE TRIM(house.post_title) END AS teamname,
+            CASE WHEN r2s.p2p_from IS NOT NULL THEN r2s.p2p_from ELSE r2c.p2p_from END AS teamid,
+            IFNULL(standard.meta_value,0) AS standard,
+            dob.meta_value AS dob
+            FROM wp_users
+            JOIN wp_usermeta capabilities on (capabilities.user_id=wp_users.id and capabilities.meta_key="wp_capabilities")
+            LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
+            LEFT JOIN wp_p2p r2s ON (r2s.p2p_to=wp_users.id AND r2s.p2p_type = "sectorteam_to_runner")
+            LEFT JOIN wp_usermeta first_name ON (first_name.user_id=wp_users.id AND first_name.meta_key="first_name")
+            LEFT JOIN wp_usermeta last_name ON (last_name.user_id=wp_users.id AND last_name.meta_key="last_name")
+            LEFT JOIN wp_usermeta dob ON (dob.user_id=wp_users.id AND dob.meta_key="bhaa_runner_dateofbirth")
+            LEFT JOIN wp_usermeta status ON (status.user_id=wp_users.id AND status.meta_key="bhaa_runner_status")
+            LEFT JOIN wp_usermeta gender ON (gender.user_id=wp_users.id AND gender.meta_key="bhaa_runner_gender")
+            LEFT JOIN wp_usermeta company ON (company.user_id=wp_users.id AND company.meta_key="bhaa_runner_company")
+            LEFT JOIN wp_usermeta standard ON (standard.user_id=wp_users.id AND standard.meta_key="bhaa_runner_standard")
+            LEFT JOIN wp_usermeta renewaldate ON (renewaldate.user_id=wp_users.id AND renewaldate.meta_key="bhaa_runner_dateofrenewal")
+            LEFT JOIN wp_posts house ON (house.id=company.meta_value AND house.post_type="house")
+            LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
+            WHERE capabilities.meta_value LIKE("%bhaamember%") AND TRIM(IFNULL(wp_users.display_name,"")) <> ""
+            ORDER BY lastname,firstname';
+        //error_log($SQL);
+        return $wpdb->get_results($SQL,ARRAY_A);
     }
 
 
