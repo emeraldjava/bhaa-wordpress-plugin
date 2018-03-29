@@ -13,6 +13,6 @@
 <div class="wrap">
     <h1>BHAA Admin Page</h1>
 
-    <?php echo $exportMembersLink;?>
-
+    <?php echo $exportBHAAMembersLink;?>
+    <?php echo $exportEventMembersLink;?>
 </div>

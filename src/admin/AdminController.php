@@ -48,7 +48,8 @@ class AdminController implements Actionable {
         return array(
             'admin_menu' => 'bhaa_admin_menu',
             'admin_action_bhaa_export_members' => 'bhaa_export_members',
-            'admin_action_bhaa_registrar_export_members' => 'bhaa_registrar_export_members'
+            'admin_action_bhaa_registrar_export_members' => 'bhaa_registrar_export_members',
+            'admin_action_bhaa_registrar_export_online' => 'bhaa_registrar_export_online'
         );
     }
 
@@ -70,7 +71,8 @@ class AdminController implements Actionable {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
-        $exportMembersLink = $this->generate_admin_url_link('Export Members','bhaa_registrar_export_members');
+        $exportBHAAMembersLink = $this->generate_admin_url_link('Export BHAA Members','bhaa_registrar_export_members');
+        $exportEventMembersLink = $this->generate_admin_url_link('Export Event Online Members','bhaa_registrar_export_online');
         include_once( 'partials/bhaa_admin_main.php' );
     }
 
@@ -79,15 +81,25 @@ class AdminController implements Actionable {
      */
     function bhaa_registrar_export_members() {
         $runnerManager = new RunnerManager();
-        $user_query = $runnerManager->getMembers();
-
+        $bhaaMembers = $runnerManager->getBHAAMembers();
         // https://csv.thephpleague.com/9.0/connections/output/
         // https://mattstauffer.com/blog/export-an-eloquent-collection-to-a-csv-with-league-csv/
         $csv = Writer::createFromFileObject(new SplTempFileObject());
-        foreach ($user_query as $person) {
-            $csv->insertOne($person);
+        foreach ($bhaaMembers as $runner) {
+            $csv->insertOne($runner);
         }
-        $csv->output('bhaa-members.'.date("y.m.d-H.m.s").'.csv');
+        $csv->output('bhaa.members.'.date("y.m.d-H.m.s").'.csv');
+        die;
+    }
+
+    function bhaa_registrar_export_online() {
+        $runnerManager = new RunnerManager();
+        $registeredOnline = $runnerManager->getEventOnlineMembers();
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        foreach ($registeredOnline as $runner) {
+            $csv->insertOne($runner);
+        }
+        $csv->output('bhaa.online.members.'.date("y.m.d-H.m.s").'.csv');
         die;
     }
 
