@@ -42,20 +42,15 @@ class RaceCPT implements Actionable, Filterable {
     }
 
     function bhaa_race_cpt_single_template($template) {
-        var_dump(get_post_type(get_queried_object_id()));
         if ('race' == get_post_type(get_queried_object_id())) {
             global $post_id;
-            error_log($post_id.' '.get_the_ID());
-
-            // load results and call mustash
+            // load results
             $raceResult = new RaceResult();
             $res = $raceResult->getRaceResults(get_the_ID());
-            //var_dump($res);
-
+            // call the template
             $mustache = new Mustache();
             $raceResultTable = $mustache->renderRaceResults($res, false, './url', 'name', '5', 'km', 'C');
             set_query_var( 'raceResultTable', $raceResultTable );
-            //error_log($raceResultTable);
             $template = plugin_dir_path(__FILE__) . '/partials/race/race.php';
         }
         return $template;
