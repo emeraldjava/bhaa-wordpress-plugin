@@ -75,23 +75,19 @@ class AdminController implements Actionable {
     }
 
     /**
-     * https://csv.thephpleague.com/9.0/connections/output/
+     * Export the existing members
      */
     function bhaa_registrar_export_members() {
         $runnerManager = new RunnerManager();
         $user_query = $runnerManager->getMembers();
 
-        header('Content-Type: text/csv; charset=UTF-8');
-        header('Content-Description: File Transfer');
-        header('Content-Disposition: attachment; filename="bhaa-members.csv"');
-
+        // https://csv.thephpleague.com/9.0/connections/output/
+        // https://mattstauffer.com/blog/export-an-eloquent-collection-to-a-csv-with-league-csv/
         $csv = Writer::createFromFileObject(new SplTempFileObject());
         foreach ($user_query as $person) {
             $csv->insertOne($person);
-//            $csv->insertOne($user_query->toArray());
         }
-//        $csv->insertOne(['foo', 'bar']);
-        $csv->output('bhaa-members.csv');
+        $csv->output('bhaa-members.'.date("y.m.d-H.m.s").'.csv');
         die;
     }
 
