@@ -4,7 +4,8 @@
   "type" : "wordpress-plugin",
   "require": {
     "mustache/mustache": "2.12.0",
-    "league/csv": "^9.1"
+    "league/csv": "^9.1",
+    "scribu/lib-posts-to-posts": "dev-master"
   },
   "autoload" : {
     "psr-4" : {
