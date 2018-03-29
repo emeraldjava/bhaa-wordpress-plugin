@@ -41,7 +41,7 @@ class Main {
 
         // register the BHAA objects with support actions and filters.
         $this->loader->register(new admin\AdminController( $this->get_plugin_name(), $this->get_version()));
-        //$this->loader->register(new admin\RunnerAdminController());
+        $this->loader->register(new admin\RunnerAdminController());
 
         // register the core objects
         $this->loader->register(new core\cpt\EventCPT());

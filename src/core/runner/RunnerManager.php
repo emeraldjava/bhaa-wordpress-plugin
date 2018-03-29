@@ -50,7 +50,6 @@ class RunnerManager {
             LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
             WHERE capabilities.meta_value LIKE("%bhaamember%") AND TRIM(IFNULL(wp_users.display_name,"")) <> ""
             ORDER BY lastname,firstname';
-        //error_log($SQL);
         return $wpdb->get_results($SQL,ARRAY_A);
     }
 
@@ -119,12 +118,44 @@ class RunnerManager {
             ORDER BY lastname ASC, firstname ASC';
         return $wpdb->get_results($SQL,ARRAY_A);
     }
+    
+    public function listEERegisteredRunners() {
+        global $wpdb;
+        $SQL = 'SELECT wp_users.id as id,
+            reg.EVT_ID,
+            TRIM(LOWER(REPLACE(wp_users.display_name," ","."))) as label,
+            reg.ATT_ID as reg_id,
+            reg.REG_paid as paid,
+            COALESCE(status.meta_value,"x") as m_status,
+            capability.meta_value as capability,
+            COALESCE(gender.meta_value,"x") as m_gender,
+            COALESCE(ee_gender.ANS_value,"x") as ee_gender,
+            COALESCE(company.meta_value,1) as m_company,
+            COALESCE(TRIM(ee_company.ANS_value),"x") as ee_company,
+            COALESCE(dob.meta_value,"x") as m_dob,
+            COALESCE(ee_dob.ANS_value,"x") as ee_dob
+            FROM wp_esp_registration as reg
+            JOIN wp_usermeta eeAttendee on (eeAttendee.meta_value=reg.ATT_ID and eeAttendee.meta_key="wp_EE_Attendee_ID")
+            JOIN wp_users on (eeAttendee.user_id=wp_users.id)
+            left join wp_usermeta dob on (dob.user_id=wp_users.id and dob.meta_key="bhaa_runner_dateofbirth")
+            left join wp_esp_answer ee_dob on (ee_dob.REG_ID=reg.REG_ID and ee_dob.QST_ID=11)
+            left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key="bhaa_runner_status")
+            left join wp_usermeta capability on (capability.user_id=wp_users.id and capability.meta_key="wp_capabilities")
+            left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key="bhaa_runner_gender")
+            left join wp_esp_answer ee_gender on (ee_gender.REG_ID=reg.REG_ID and ee_gender.QST_ID=13)
+            left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
+            left join wp_esp_answer ee_company on (ee_company.REG_ID=reg.REG_ID and ee_company.QST_ID=12)
+            WHERE reg.EVT_ID IN (5654,5651)
+            AND reg.REG_paid!=0
+            ORDER BY wp_users.display_name,reg.EVT_ID';
+        return $wpdb->get_results($SQL,OBJECT);
+    }
 
     /**
      * https://tommcfarlin.com/wordpress-user-role/
      * @param $user_id
      */
-    public function set_user_role( $user_id ) {
+    private function set_user_role( $user_id ) {
         // Define a user role based on its index in the array.
         $roles = array(
             'bhaamember',
@@ -136,7 +167,7 @@ class RunnerManager {
         $user->set_role( $role );
     }
 
-    function getMembersNotInRole() {
+    private function getMembersNotInRole() {
         $args = array(
             'number' => 25,
             'fields' => 'all',

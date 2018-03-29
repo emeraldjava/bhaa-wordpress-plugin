@@ -8,7 +8,7 @@
 
 namespace BHAA\admin;
 
-use BHAA\admin\manager\RunnerManager;
+use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Actionable;
 use BHAA\utils\Filterable;
 use BHAA\core\runner\Runner;
@@ -23,7 +23,6 @@ class RunnerAdminController implements Filterable, Actionable {
     }
 
     public function get_filters() {
-        //error_log('RunnerAdminController.get_filters');
         return array(
             //'manage_users_columns' => 'bhaa_manage_users_columns',
             //'manage_users_custom_column' => array('bhaa_manage_users_custom_column',10,3),
@@ -34,8 +33,8 @@ class RunnerAdminController implements Filterable, Actionable {
 
     public function get_actions() {
         return array(
-            //'admin_menu' => 'bhaa_admin_sub_menu',
-            //'admin_action_bhaa_runner_assign_to_role'=>'bhaa_runner_assign_to_role'
+            'admin_menu' => 'bhaa_admin_sub_menu',
+            'admin_action_bhaa_runner_assign_to_role'=>'bhaa_runner_assign_to_role'
         );
     }
 
@@ -48,6 +47,8 @@ class RunnerAdminController implements Filterable, Actionable {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
+        $runnerManager = new RunnerManager();
+        $rows = $runnerManager->listEERegisteredRunners();
         include_once( 'partials/bhaa_admin_runners.php' );
     }
 
@@ -55,7 +56,7 @@ class RunnerAdminController implements Filterable, Actionable {
         if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_assign_to_role')) {
             error_log("bhaa_runner_assign_to_role :: ".$_REQUEST['members']);
             $runnerManager = new RunnerManager();
-            $runnerManager->set_user_role($_REQUEST['members']);
+            //$runnerManager->set_user_role($_REQUEST['members']);
         }
         wp_redirect(wp_get_referer());
         exit();
