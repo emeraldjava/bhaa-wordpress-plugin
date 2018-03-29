@@ -8,6 +8,7 @@
 
 namespace BHAA\core\runner;
 
+use p2p_get_connections;
 
 class Runner {
 
@@ -28,4 +29,148 @@ class Runner {
     const WOMAN = 'W';
 
     const BHAA_RUNNER_STANDARD = 'bhaa_runner_standard';
+
+    var $user_data;
+    var $meta;
+
+    function __construct($user_id) {
+        //var_dump('user:'.$user_id);
+
+        //$this->user = get_userdata($user_id);
+        $user = (array) @get_user_by( 'id', $user_id )->data;
+        //var_dump('user:'.print_r($this->user,true));
+
+        //$user_meta = get_user_meta($user_id);//,"",false);
+        //$this->meta = get_user_meta($user_id);
+        $this->meta = @array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
+        //var_dump('meta:'.print_r($this->meta,true));
+
+        // @
+        $this->user_data = @array_merge($user, $this->meta);
+        //var_dump($this->user_data);
+
+        // https://github.com/scribu/wp-posts-to-posts/wiki/Checking-specific-connections
+//        $sectorteam = p2p_get_connections(Connections::SECTORTEAM_TO_RUNNER,array(
+//            'direction' => 'all',
+//            'to' => $user_id,
+//            'fields' => 'p2p_from'
+//        ));
+//        //error_log('sector '.print_r($sectorteam,true));
+//        $this->user_data = @array_merge($this->user_data, array('sectorteam'=>$sectorteam[0]) );
+
+//        $company = p2p_get_connections(Connections::HOUSE_TO_RUNNER,array(
+//            'direction' => 'all',
+//            'to' => $user_id,
+//            'fields' => 'p2p_from'
+//        ));
+//        //error_log('company '.print_r($company,true));
+//        $this->user_data = @array_merge($this->user_data, array('company'=>$company[0]));
+
+        //var_dump('user_data:'.print_r($this->user_data,true));
+    }
+
+    function __get($var) {
+        if (!@array_key_exists($var, $this->user_data)){
+            return null;//$this->default;
+        }
+        return $this->user_data[$var];
+    }
+
+    function getID() {
+        return $this->__get('ID');
+    }
+
+    function getUserEmail() {
+        return $this->__get('user_email');
+    }
+
+    function getFirstName() {
+        return $this->first_name;
+    }
+
+    function getLastName() {
+        return $this->last_name;
+    }
+
+    function getFullName() {
+        return $this->getFirstName().' '.$this->getLastName();
+    }
+
+    function getDateOfBirth() {
+        return $this->__get(Runner::BHAA_RUNNER_DATEOFBIRTH);
+    }
+
+    function getMobile() {
+        return $this->__get(Runner::BHAA_RUNNER_MOBILEPHONE);
+    }
+
+    function getStandard() {
+        return $this->__get(Runner::BHAA_RUNNER_STANDARD);
+    }
+
+    function getGender() {
+        return $this->__get(Runner::BHAA_RUNNER_GENDER);
+    }
+
+    function getStatus() {
+        return $this->__get(Runner::BHAA_RUNNER_STATUS);
+    }
+
+    function getDateOfRenewal() {
+        return $this->__get(Runner::BHAA_RUNNER_DATEOFRENEWAL);
+    }
+
+    function getInsertDate() {
+        return $this->__get(Runner::BHAA_RUNNER_INSERTDATE);
+    }
+
+    function getCompanyId() {
+        return $this->__get('company');
+        //return $this->__get(Runner::BHAA_RUNNER_COMPANY);
+    }
+
+    function getSectorTeamId() {
+        return $this->__get('sectorteam');
+    }
+
+    function getMetaData() {
+        return $this->meta;
+    }
+
+    /**
+     * Return a url link the runners company.
+     * @return string
+     */
+    function getCompanyName($admin_url) {
+        $cid = $this->getCompanyId();
+        if(isset($cid)) {
+            if($admin_url=="false"){
+                return sprintf('<a href="%s">%s</a>',get_permalink($cid),get_the_title($cid));
+            } else {
+                return sprintf('<a href="%s">Edit %s</a>',get_edit_post_link($cid),get_the_title($cid));
+            }
+        } else {
+            // no company
+            return '';
+        }
+    }
+
+    /**
+     * Return a url link to the sector team
+     * @param unknown $admin_url
+     * @return string
+     */
+    function getSectorTeam($admin_url) {
+        $id = $this->getSectorTeamId();
+        if(isset($id)) {
+            if($admin_url=="false"){
+                return sprintf('<a href="%s">%s</a>',get_permalink($id),get_the_title($id));
+            } else {
+                return sprintf('<a href="%s">Edit %s</a>',get_edit_post_link($id),get_the_title($id));
+            }
+        } else {
+            // no sector team
+            return '';
+        }
+    }
 }

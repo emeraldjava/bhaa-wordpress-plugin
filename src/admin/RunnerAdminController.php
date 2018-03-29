@@ -34,16 +34,18 @@ class RunnerAdminController implements Filterable, Actionable {
     public function get_actions() {
         return array(
             'admin_menu' => 'bhaa_admin_sub_menu',
-            'admin_action_bhaa_runner_assign_to_role'=>'bhaa_runner_assign_to_role'
+            'admin_action_bhaa_runner'=>'bhaa_admin_runner'
         );
     }
 
     public function bhaa_admin_sub_menu() {
-        add_submenu_page('bhaa', 'BHAA Runner Admin', 'Runner',
+        add_submenu_page('bhaa', 'BHAA Runner Admin', 'Runners',
+            'manage_options', 'bhaa_admin_runners', array($this, 'bhaa_admin_runners'));
+        add_submenu_page(null, 'BHAA Runner Admin', 'Runners',
             'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
     }
 
-    public function bhaa_admin_runner() {
+    public function bhaa_admin_runners() {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
@@ -52,15 +54,23 @@ class RunnerAdminController implements Filterable, Actionable {
         include_once( 'partials/bhaa_admin_runners.php' );
     }
 
-    function bhaa_runner_assign_to_role() {
-        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_assign_to_role')) {
-            error_log("bhaa_runner_assign_to_role :: ".$_REQUEST['members']);
-            $runnerManager = new RunnerManager();
-            //$runnerManager->set_user_role($_REQUEST['members']);
+    public function bhaa_admin_runner() {
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
-        wp_redirect(wp_get_referer());
-        exit();
+        $runner = new Runner($_REQUEST['id']);
+        include_once( 'partials/bhaa_admin_runner.php' );
     }
+
+//    function bhaa_runner_assign_to_role() {
+//        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_assign_to_role')) {
+//            error_log("bhaa_runner_assign_to_role :: ".$_REQUEST['members']);
+//            $runnerManager = new RunnerManager();
+//            //$runnerManager->set_user_role($_REQUEST['members']);
+//        }
+//        wp_redirect(wp_get_referer());
+//        exit();
+//    }
 
     function bhaa_manage_users_sortable_column( $columns ) {
         $column[Runner::BHAA_RUNNER_STATUS] = __('Status', Runner::BHAA_RUNNER_STATUS);

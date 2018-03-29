@@ -17,7 +17,6 @@
         <tr>
             <th>ID</th>
             <th>Event</th>
-            <th>Name</th>
             <th>REG</th>
             <th>PAID</th>
             <th>Status</th>
@@ -31,14 +30,14 @@
         </tr>
         <?php
         foreach ( $rows as $row ) {
-            echo sprintf('<tr><td>%d</td><td>%d</td><td>%s</td>
+            echo sprintf('<tr><td><a href="./admin.php?action=bhaa_runner&id=%d">%d %s</a></td><td>%d</td>
                 <td>%d</td><td>%d</td>
                 <td>%s</td><td>%s</td>
                 <td>%s</td><td>%s</td>
                 <td>%s</td><td>%s</td>
                 <td>%s</td><td>%s</td>
                 </tr>',
-                $row->id,$row->EVT_ID,$row->label,
+                $row->id,$row->id,$row->label,$row->EVT_ID,
                 $row->reg_id,$row->paid,
                 $row->m_status,$row->capability,
                 $row->m_gender,$row->ee_gender,
