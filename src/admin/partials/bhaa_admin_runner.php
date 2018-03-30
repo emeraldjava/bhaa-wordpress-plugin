@@ -10,18 +10,17 @@
     echo sprintf('<div>DOB : %s</div>',$runner->getDateOfBirth());
     echo sprintf('<div>Gender : %s</div>',$runner->getGender());
     echo sprintf('<div>Status : %s</div>',$runner->getStatus());
+    echo sprintf('<div>DateOfRenewal : %s</div>',$runner->getDateOfRenewal());
 
-    echo sprintf('<hr/><div><p>Status: %s. DateOfRenewal %s</p>
-            <form action="%s" method="POST">
-                '.wp_nonce_field('bhaa_runner_renew_action').'
-			    <input type="hidden" name="action" value="bhaa_runner_renew_action" />
-				<input type="hidden" name="id" value="%d"/>
-				<input type="submit" value="Renew Runner"/>
-				</form></div>',
-                $runner->getStatus(),
-				$runner->getDateOfRenewal(),
-                admin_url( 'admin.php' ),
-                $runner->getID());
+    echo '<hr/>';
+
+    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+                wp_nonce_field('bhaa_runner_dob_action').'
+			    <input type="hidden" name="action" value="bhaa_runner_dob_action"/>
+				<input type="text" name="dob" value="'.$runner->getDateOfBirth().'"/>
+				<input type="hidden" name="id" value="'.$runner->getID().'"/>
+				<input type="submit" value="DateOfBirth"/>
+				</form></div>');
 
     echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
                 wp_nonce_field('bhaa_runner_gender_action').'
@@ -30,6 +29,14 @@
 				<input type="hidden" name="id" value="'.$runner->getID().'"/>
 				<input type="submit" value="Gender"/>
 				</form></div>');
+
+    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+                wp_nonce_field('bhaa_runner_renew_action').'
+			    <input type="hidden" name="action" value="bhaa_runner_renew_action" />
+				<input type="hidden" name="id" value="%d"/>
+				<input type="submit" value="Renew Runner"/>
+				</form></div>',
+                $runner->getID());
 
     //echo var_dump($runner->getMetaData());
     ?>
