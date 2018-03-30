@@ -178,6 +178,6 @@ class Runner {
         update_user_meta($this->getID(), Runner::BHAA_RUNNER_STATUS, 'M');
         update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
         add_role('bhaamember','bhaamember',null);
-        error_log('renewed() '.$this->getID().' '.$this->getUserEmail());
+        error_log('renewed() '.$this->getID().' '.$this->getEmail());
     }
 }

@@ -24,6 +24,7 @@ class RunnerAdminController implements Filterable, Actionable {
 
     public function get_filters() {
         return array(
+            'user_row_actions'=>array('bhaa_user_row_actions_runner_link',10,2)
             //'manage_users_columns' => 'bhaa_manage_users_columns',
             //'manage_users_custom_column' => array('bhaa_manage_users_custom_column',10,3),
             //'manage_users_sortable_columns' => 'bhaa_manage_users_sortable_column'
@@ -98,6 +99,13 @@ class RunnerAdminController implements Filterable, Actionable {
         }
         wp_redirect(wp_get_referer());
         exit();
+    }
+
+    function bhaa_user_row_actions_runner_link( $actions, $user ) {
+        if ( current_user_can('manage_options') ) {
+            $actions['bhaa_runner_view'] = sprintf('<a target="_new" href="./admin.php?action=bhaa_runner&id='.$user->ID.'">Runner</a>');
+        }
+        return $actions;
     }
 
     function bhaa_manage_users_sortable_column( $columns ) {
@@ -183,13 +191,6 @@ class RunnerAdminController implements Filterable, Actionable {
             default:
         }
         return '';
-    }
-
-    function bhaa_user_row_actions_runner_link( $actions, $user ) {
-        if ( current_user_can('manage_options') ) {
-            $actions['bhaa_runner_view'] = '<a target="_new" href="/runner/?id='.$user->ID.'">Runner</a>';
-        }
-        return $actions;
     }
 
     function setRunnerManager(RunnerManager $runnerManager){
