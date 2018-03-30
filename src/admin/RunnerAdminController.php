@@ -37,7 +37,8 @@ class RunnerAdminController implements Filterable, Actionable {
             'admin_action_bhaa_runner'=>'bhaa_admin_runner',
             'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action',
             'admin_action_bhaa_runner_gender_action'=>'bhaa_runner_gender_action',
-            'admin_action_bhaa_runner_dob_action'=>'bhaa_runner_dob_action'
+            'admin_action_bhaa_runner_dob_action'=>'bhaa_runner_dob_action',
+            'admin_action_bhaa_runner_standard_action'=>'bhaa_runner_standard_action'
         );
     }
 
@@ -86,6 +87,14 @@ class RunnerAdminController implements Filterable, Actionable {
         if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_dob_action')) {
             error_log('bhaa_runner_dob_action '.$_POST['id'].' -> '.$_POST['dob']);
             update_user_meta($_POST['id'],'bhaa_runner_dateofbirth',trim($_POST['dob']));
+        }
+        wp_redirect(wp_get_referer());
+        exit();
+    }
+
+    function bhaa_runner_standard_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_standard_action')) {
+            update_user_meta($_POST['id'],'bhaa_runner_standard',trim($_POST['standard']));
         }
         wp_redirect(wp_get_referer());
         exit();

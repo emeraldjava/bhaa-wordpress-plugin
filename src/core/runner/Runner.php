@@ -80,7 +80,7 @@ class Runner {
         return $this->__get('ID');
     }
 
-    function getUserEmail() {
+    function getEmail() {
         return $this->__get('user_email');
     }
 
