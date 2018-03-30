@@ -147,7 +147,7 @@ class RunnerManager {
             left join wp_esp_answer ee_company on (ee_company.REG_ID=reg.REG_ID and ee_company.QST_ID=12)
             WHERE reg.EVT_ID IN (5654,5651)
             AND reg.REG_paid!=0
-            ORDER BY wp_users.display_name,reg.EVT_ID';
+            ORDER BY reg.EVT_ID,wp_users.display_name,reg.EVT_ID';
         return $wpdb->get_results($SQL,OBJECT);
     }
 

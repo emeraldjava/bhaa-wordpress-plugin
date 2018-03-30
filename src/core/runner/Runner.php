@@ -173,4 +173,11 @@ class Runner {
             return '';
         }
     }
+
+    function renew() {
+        update_user_meta($this->getID(), Runner::BHAA_RUNNER_STATUS, 'M');
+        update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
+        add_role('bhaamember','bhaamember',null);
+        error_log('renewed() '.$this->getID().' '.$this->getUserEmail());
+    }
 }

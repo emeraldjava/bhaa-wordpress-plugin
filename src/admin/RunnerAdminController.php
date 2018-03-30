@@ -34,7 +34,8 @@ class RunnerAdminController implements Filterable, Actionable {
     public function get_actions() {
         return array(
             'admin_menu' => 'bhaa_admin_sub_menu',
-            'admin_action_bhaa_runner'=>'bhaa_admin_runner'
+            'admin_action_bhaa_runner'=>'bhaa_admin_runner',
+            'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action'
         );
     }
 
@@ -60,6 +61,15 @@ class RunnerAdminController implements Filterable, Actionable {
         }
         $runner = new Runner($_REQUEST['id']);
         include_once( 'partials/bhaa_admin_runner.php' );
+    }
+
+    function bhaa_runner_renew_action() {
+        if(current_user_can('edit_users')) { //} && wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
+            $runner = new Runner($_POST['id']);
+            $runner->renew();
+        }
+        wp_redirect(wp_get_referer());
+        exit();
     }
 
 //    function bhaa_runner_assign_to_role() {
