@@ -35,7 +35,8 @@ class RunnerAdminController implements Filterable, Actionable {
         return array(
             'admin_menu' => 'bhaa_admin_sub_menu',
             'admin_action_bhaa_runner'=>'bhaa_admin_runner',
-            'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action'
+            'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action',
+            'admin_action_bhaa_runner_gender_action'=>'bhaa_runner_gender_action'
         );
     }
 
@@ -64,7 +65,7 @@ class RunnerAdminController implements Filterable, Actionable {
     }
 
     function bhaa_runner_renew_action() {
-        if(current_user_can('edit_users')) { //} && wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
+        if(current_user_can('edit_users') && wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
             $runner = new Runner($_POST['id']);
             $runner->renew();
         }
@@ -72,15 +73,13 @@ class RunnerAdminController implements Filterable, Actionable {
         exit();
     }
 
-//    function bhaa_runner_assign_to_role() {
-//        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_assign_to_role')) {
-//            error_log("bhaa_runner_assign_to_role :: ".$_REQUEST['members']);
-//            $runnerManager = new RunnerManager();
-//            //$runnerManager->set_user_role($_REQUEST['members']);
-//        }
-//        wp_redirect(wp_get_referer());
-//        exit();
-//    }
+    function bhaa_runner_gender_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_gender_action')) {
+            update_user_meta($_POST['id'],'bhaa_runner_gender',trim($_POST['gender']));
+        }
+        wp_redirect(wp_get_referer());
+        exit();
+    }
 
     function bhaa_manage_users_sortable_column( $columns ) {
         $column[Runner::BHAA_RUNNER_STATUS] = __('Status', Runner::BHAA_RUNNER_STATUS);
