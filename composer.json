@@ -3,9 +3,10 @@
   "description" : "bhaa_wordpress_plugin",
   "type" : "wordpress-plugin",
   "require": {
+    "scribu/scb-framework": "dev-master",
+    "scribu/lib-posts-to-posts": "dev-master",
     "mustache/mustache": "2.12.0",
-    "league/csv": "^9.1",
-    "scribu/lib-posts-to-posts": "dev-master"
+    "league/csv": "^9.1"
   },
   "autoload" : {
     "psr-4" : {
