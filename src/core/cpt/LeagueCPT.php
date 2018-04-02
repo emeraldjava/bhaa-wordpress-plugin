@@ -30,8 +30,8 @@ class LeagueCPT implements Actionable, Filterable {
 
     public function get_filters() {
         return array(
-            'post_row_actions' => array('bhaa_league_post_row_actions',0,2),
-            'single_template' => 'bhaa_single_league_template'
+            'post_row_actions' => array('bhaa_league_post_row_actions',0,2)
+            //'single_template' => 'bhaa_single_league_template'
         );
     }
 
