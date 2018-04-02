@@ -12,6 +12,94 @@ use WP_User_Query;
 
 class RunnerManager {
 
+    function runnerExists($runnerId) {
+        global $wpdb;
+        return $wpdb->get_var($wpdb->prepare('select count(id) as isrunner from wp_users where id=%d',$runnerId));
+    }
+
+    function getNextDayRunnerId() {
+        global $wpdb;
+        return $wpdb->get_var('select users.id + 1 from wp_users as users left outer join wp_users as r on users.id + 1 = r.id 
+          where r.id is null and users.id>10001 and users.id<50000 limit 1');
+    }
+
+    function getNextBHAARunnerId() {
+        global $wpdb;
+        return $wpdb->get_var('select users.id + 1 from wp_users as users left outer join wp_users as r on users.id + 1 = r.id
+			where r.id is null and users.id>1000 and users.id<9999 limit 1');
+    }
+
+    function createNewUser($firstname,$surname,$email,$gender,$dateofbirth,$id,$isNewMember) {
+        //require_once( ABSPATH . 'wp-includes/user.php' );
+
+        //$firstname = $this->formatDisplayName($firstname);
+        //$surname = $this->formatDisplayName($surname);
+
+        // format the username
+        $username = $firstname.'.'.$surname;
+        $username = str_replace(' ', '', $username);
+        $username = str_replace("'", '', $username);
+        $username = strtolower($username);
+
+        // check for a unique username
+        if(username_exists($username)) {
+            $username = $username.'.'.$id;
+        }
+
+        if($email=='')
+            $email = 'x'.$username.'@bhaa.ie';
+
+        if($gender!='M')
+            $gender='W';
+
+        $password =  wp_hash_password($id);
+
+        // insert the user via SQL
+        $this->insertUser($id,$username,$password,$email);
+        // update the wp_user
+        $res = wp_update_user(array(
+            'ID'            => $id,
+            'user_login'    => $username,
+            'user_email'    => $email,
+            'nickname' => $username,
+            'display_name'=> $firstname.' '.$surname,
+            'first_name' => $firstname,
+            'last_name'=> $surname
+        ));
+        if(is_wp_error($res))
+            error_log('update user error '.$res->get_error_message());
+
+        update_user_meta( $id, Runner::BHAA_RUNNER_GENDER, $gender);
+        update_user_meta( $id, Runner::BHAA_RUNNER_DATEOFBIRTH, $dateofbirth);
+        update_user_meta( $id, Runner::BHAA_RUNNER_INSERTDATE, date('Y-m-d'));
+
+        if($isNewMember){
+            update_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M');
+            update_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
+            wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ) );
+        } else {
+            update_user_meta( $id, Runner::BHAA_RUNNER_STATUS,'D');
+        }
+        return $id;
+    }
+
+    private function insertUser($id,$name,$password,$email) {
+        global $wpdb;
+        $sql = $wpdb->prepare(
+            'INSERT INTO wp_users(
+                ID,
+                user_login,
+                user_pass,
+                user_nicename,
+                user_email,
+                user_status,
+                display_name,
+                user_registered)
+                VALUES (%d,%s,%s,%s,%s,%d,%s,NOW())',
+            $id,$name,$password,$name,$email,0,$name);
+        $wpdb->query($sql);
+    }
+
     /**
      * https://code.tutsplus.com/tutorials/mastering-wp_user_query--cms-23204
      * https://wordpress.stackexchange.com/questions/219686/how-can-i-get-a-list-of-users-by-their-role

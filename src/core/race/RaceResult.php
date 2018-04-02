@@ -8,11 +8,134 @@
 
 namespace BHAA\core\race;
 
+use BHAA\core\runner\RunnerManager;
+
 /**
  * Class RaceResult
  * @package BHAA\core\race
  */
 class RaceResult {
+
+    const RAN = 'RAN';
+    const RACE_REG = 'RACE_REG';
+    const RACE_ORG = 'RACE_ORG';
+    const PRE_REG = 'PRE_REG';
+
+    function processRaceResults($raceId,String $resultText) {
+        error_log('bhaa_race_load_results('.strlen($resultText).')');
+        $results = explode("\n",$resultText);
+        error_log('Number of rows '.sizeof($results));
+        foreach($results as $result) {
+            // http://stackoverflow.com/questions/13430120/str-getcsv-alternative-for-older-php-version-gives-me-an-empty-array-at-the-e
+            $singleResult = explode(',', $result);
+            $this->addRaceResult($raceId, $singleResult);
+        }
+    }
+
+    public function addRaceResult($race,$details) {
+        global $wpdb;
+        // check if the runner exists
+        $position = $details[0];
+        $bib = $details[1];
+        $runner_id = trim($details[2]);
+        $racetime = $details[3];
+        $firstname = $details[5];
+        $surname = $details[4];
+        $email = '';
+        $gender = $details[6];
+        $dob = $details[8];
+        $memberType = trim($details[12]);
+
+        $runnerManager = new RunnerManager();
+        if($runner_id<0){
+            if($memberType=='New Member'){
+                $runner_id = $runnerManager->getNextBHAARunnerId();
+                $isNewMember = true;
+                error_log($position.' new BHAA Member runner '.$runner_id);
+            } else {
+                $runner_id = $runnerManager->getNextDayRunnerId();
+                $isNewMember = false;
+                error_log($position.' new DAY runner '.$runner_id);
+            }
+            $dateofbirth = date("Y-m-d", strtotime(str_replace('/','-',$dob)));
+            $runnerManager->createNewUser($firstname,$surname,'',$gender,$dateofbirth,$runner_id,$isNewMember);
+        } else {
+            error_log('existing runner '.$runner_id. ' '.$runnerManager->runnerExists($runner_id));
+        }
+
+        // convert Senior to S
+        $category = $this->getAgeCategory($details[9]);
+
+        if($details[0]!=0) {
+            $res = $wpdb->insert(
+                'wp_bhaa_raceresult',
+                array(
+                    'race' => $race,
+                    'position' => $details[0],
+                    'racenumber' => $details[1],
+                    'runner' => $runner_id,
+                    'racetime' => $racetime,
+                    'category' => $category,
+                    'standard' => ($details[7] == '') ? null : $details[7],
+                    'class' => RaceResult::RAN)
+            );
+            error_log(sprintf('%d , %d. %s %s %s',$wpdb->insert_id,$runner_id,$firstname,$surname,$racetime));
+            $res = $wpdb->insert_id;
+        }
+        return $res;
+    }
+
+    function getAgeCategory($ageCategory) {
+        // convert Senior to S
+        $category = 'S';
+        switch ($ageCategory) {
+            case 'Senior':
+                $category = 'S';
+                break;
+            case 'A':
+                $category = '35';
+                break;
+            case '1':
+            case 'B':
+                $category = '40';
+                break;
+            case '2':
+            case 'C':
+                $category = '45';
+                break;
+            case '3':
+            case 'D':
+                $category = '50';
+                break;
+            case '4':
+            case 'E':
+                $category = '55';
+                break;
+            case '5':
+            case 'F':
+                $category = '60';
+                break;
+            case '6':
+            case 'G':
+                $category = '65';
+                break;
+            case '7':
+            case 'H':
+                $category = '70';
+                break;
+            case '8':
+            case 'I':
+                $category = '75';
+                break;
+            case '9':
+            case 'J':
+                $category = '80';
+                break;
+            default:
+                $category = 'S';
+        }
+        return $category;
+    }
 
     function getRaceResults($race) {
         global $wpdb;
@@ -32,5 +155,13 @@ class RaceResult {
         $SQL = $wpdb->prepare($query,$race);
         //error_log($SQL);
         return $wpdb->get_results($SQL,OBJECT);
+    }
+
+    function deleteRaceResults($race) {
+        global $wpdb;
+        $res = $wpdb->delete(
+            'wp_bhaa_raceresult',
+            array('race' => $race)
+        );
     }
 }

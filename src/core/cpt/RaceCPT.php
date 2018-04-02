@@ -20,14 +20,14 @@ class RaceCPT implements Actionable, Filterable {
     const BHAA_RACE_TYPE = 'bhaa_race_type';
     const BHAA_RACE_TEAM_RESULTS = 'bhaa_race_team_results';
 
-    //private $mustache;
-
     public function get_actions() {
         return array(
             'init' => 'bhaa_register_race_cpt',
             'add_meta_boxes' => 'bhaa_race_meta_data',
-            'add_meta_boxes' => 'bhaa_team_meta_data',
-            'save_post' => 'bhaa_save_race_meta'
+            //'add_meta_boxes' => 'bhaa_team_meta_data',
+            'save_post' => 'bhaa_save_race_meta',
+            'admin_action_bhaa_race_delete_results'=>'bhaa_race_delete_results',
+            'admin_action_bhaa_race_load_results'=>'bhaa_race_load_results'
         );
     }
 
@@ -37,7 +37,8 @@ class RaceCPT implements Actionable, Filterable {
      */
     public function get_filters() {
         return array(
-            'single_template' => 'bhaa_race_cpt_single_template'
+            'single_template' => 'bhaa_race_cpt_single_template',
+            'post_row_actions' => array('bhaa_race_post_row_actions',0,2)
         );
     }
 
@@ -76,10 +77,8 @@ class RaceCPT implements Actionable, Filterable {
 
     function bhaa_race_edit_result() {
         $raceResult = RaceResult::get_instance()->getRaceResult($_GET['raceresult']);
-        //var_dump($raceResult);
         $link = admin_url('admin.php'); // do we need the raceresult id?
         $raceLink = $this->generate_edit_raceresult_link($raceResult->race);
-        //var_dump($link);
         include plugin_dir_path( __FILE__ ) . 'template/bhaa_race_edit_result.php';
     }
 
@@ -110,23 +109,16 @@ class RaceCPT implements Actionable, Filterable {
     function bhaa_race_delete_results() {
         $raceResult = new RaceResult();
         $raceResult->deleteRaceResults($_GET['post_id']);
-        queue_flash_message("bhaa_race_delete_results ".$_GET['post_id']);
+        //queue_flash_message("bhaa_race_delete_results ".$_GET['post_id']);
         wp_redirect(wp_get_referer());
         exit();
     }
+
     function bhaa_race_load_results() {
+        $race = get_post($_GET['post_id']);
+        $resultText = $race->post_content;
         $raceResult = new RaceResult();
-        $post = get_post($_GET['post_id']);
-        $resultText = $post->post_content;
-        error_log('bhaa_race_load_results('.strlen($resultText).')');
-        $results = explode("\n",$resultText);
-        error_log('Number of rows '.sizeof($results));
-        foreach($results as $result) {
-            // http://stackoverflow.com/questions/13430120/str-getcsv-alternative-for-older-php-version-gives-me-an-empty-array-at-the-e
-            $details = explode(',',$result);
-            $raceResult->addRaceResult($_GET['post_id'],$details);
-        }
-        queue_flash_message('bhaa_race_load_results '.sizeof($results));
+        $raceResult->processRaceResults($race->ID,$race->post_content);
         wp_redirect(wp_get_referer());
         exit();
     }
@@ -300,7 +292,7 @@ class RaceCPT implements Actionable, Filterable {
         add_meta_box(
             'bhaa-race-meta',
             __( 'Race Details', 'bhaa-race-meta' ),
-            array(&$this, 'bhaa_race_meta_fields'),
+            array($this, 'bhaa_race_meta_fields'),
             'race',
             'side',
             'high'
@@ -311,56 +303,14 @@ class RaceCPT implements Actionable, Filterable {
         add_meta_box(
             'bhaa-race-team-meta',
             __( 'Team Results', 'bhaa-race-team-meta' ),
-            array(&$this, 'bhaa_race_team_result_textarea'),
+            array($this, 'bhaa_race_team_result_textarea'),
             'race',
             'normal',
             'high'
         );
     }
 
-    private function get_admin_url_links($post) {
-        return array(
-            'bhaa_race_delete_results' => $this->generate_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
-            'bhaa_race_load_results' => $this->generate_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results'),
-            'bhaa_race_positions' => $this->generate_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
-            'bhaa_race_pace' => $this->generate_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
-            'bhaa_race_pos_in_cat' => $this->generate_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
-            'bhaa_race_pos_in_std' => $this->generate_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
-            'bhaa_race_update_standards' => $this->generate_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
-            'bhaa_race_league' => $this->generate_admin_url_link('bhaa_race_league',$post->ID,'League Points'),
-            'bhaa_race_all' => $this->generate_admin_url_link('bhaa_race_all',$post->ID,'All'),
-            'bhaa_race_delete_team_results' => $this->generate_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams'),
-            'bhaa_race_load_team_results' => $this->generate_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
-            'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
-            'bhaa_race_export_racemaster' => $this->generate_admin_url_link('bhaa_race_export_racemaster',$post->ID,'Export RaceMaster')
-        );
-    }
-
-    /**
-     * Use the admin.php page as the hook point
-     * http://shibashake.com/wordpress-theme/obscure-wordpress-errors-why-where-and-how
-     */
-    private function generate_admin_url_link($action,$post_id,$name) {
-        $nonce = wp_create_nonce( $action );
-        $link = admin_url('admin.php?action='.$action.'&post_type=race&post_id='.$post_id);
-        return '<a href='.$link.'>'.$name.'</a>';
-    }
-
-    /**
-     * Return a edit link to a specific set of race results
-
-     */
-    function generate_edit_raceresult_link($post_id) {
-        // http://bhaaie/wp-admin/edit.php?post_type=race&page=bhaa_race_edit_results
-        return '<a href='.admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$post_id).'>Edit Results</a>';
-    }
-
-    /**
-     * display the meta fields
-     * http://www.netmagazine.com/tutorials/user-friendly-custom-fields-meta-boxes-wordpress
-     * @param unknown_type $post
-     */
-    public function bhaa_race_meta_fields( $post ) {
+    function bhaa_race_meta_fields( $post ) {
         //wp_nonce_field( plugin_basename( __FILE__ ), 'bhaa_race_meta_data' );
 
         $distance = get_post_custom_values(RaceCpt::BHAA_RACE_DISTANCE, $post->ID);
@@ -385,7 +335,25 @@ class RaceCPT implements Actionable, Filterable {
         echo implode('<br/>', $this->get_admin_url_links($post));
     }
 
-    public function bhaa_race_team_result_textarea( $post ) {
+    /**
+     * Use the admin.php page as the hook point
+     * http://shibashake.com/wordpress-theme/obscure-wordpress-errors-why-where-and-how
+     */
+    private function generate_race_admin_url_link($action,$post_id,$name) {
+        //$nonce = wp_create_nonce( $action );
+        $link = admin_url('admin.php?action='.$action.'&post_type=race&post_id='.$post_id);
+        return '<a href='.$link.'>'.$name.'</a>';
+    }
+
+    /**
+     * Return a edit link to a specific set of race results
+     */
+    function generate_edit_raceresult_link($post_id) {
+        // http://bhaaie/wp-admin/edit.php?post_type=race&page=bhaa_race_edit_results
+        return '<a href='.admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$post_id).'>Edit Results</a>';
+    }
+
+    function bhaa_race_team_result_textarea( $post ) {
         $teamresults = get_post_meta($post->ID,RaceCpt::BHAA_RACE_TEAM_RESULTS,true);
         echo '<textarea name='.RaceCpt::BHAA_RACE_TEAM_RESULTS.' id='.RaceCpt::BHAA_RACE_TEAM_RESULTS.'
 			 rows="20" cols="80" style="width:99%">'.$teamresults.'</textarea>';
@@ -422,5 +390,23 @@ class RaceCPT implements Actionable, Filterable {
             error_log($post_id .' -> '.RaceCpt::BHAA_RACE_TEAM_RESULTS.' -> '.$_POST[RaceCpt::BHAA_RACE_TEAM_RESULTS]);
             update_post_meta( $post_id, RaceCpt::BHAA_RACE_TEAM_RESULTS, $_POST[RaceCpt::BHAA_RACE_TEAM_RESULTS] );
         }
+    }
+
+    function get_admin_url_links($post) {
+        return array(
+            'bhaa_race_delete_results' => $this->generate_race_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
+            'bhaa_race_load_results' => $this->generate_race_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results')
+            //'bhaa_race_positions' => $this->generate_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
+            //'bhaa_race_pace' => $this->generate_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
+            //'bhaa_race_pos_in_cat' => $this->generate_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
+            //'bhaa_race_pos_in_std' => $this->generate_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
+            //'bhaa_race_update_standards' => $this->generate_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
+            //'bhaa_race_league' => $this->generate_admin_url_link('bhaa_race_league',$post->ID,'League Points'),
+            //'bhaa_race_all' => $this->generate_admin_url_link('bhaa_race_all',$post->ID,'All'),
+            //'bhaa_race_delete_team_results' => $this->generate_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams'),
+            //'bhaa_race_load_team_results' => $this->generate_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
+            //'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
+            //'bhaa_race_export_racemaster' => $this->generate_admin_url_link('bhaa_race_export_racemaster',$post->ID,'Export RaceMaster')
+        );
     }
 }
