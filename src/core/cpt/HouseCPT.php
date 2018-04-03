@@ -19,17 +19,17 @@ class HouseCPT implements Actionable, Filterable {
 
     public function get_actions() {
         return array(
-            'init' => 'bhaa_register_cpt_house',
-            'init' => 'bhaa_register_taxonomy_sector',
-            'init' => 'bhaa_register_taxonomy_teamtype'
+            'init' => 'bhaa_register_cpt_house'
+            //'init' => 'bhaa_register_taxonomy_sector',
+            //'init' => 'bhaa_register_taxonomy_teamtype'
         );
     }
 
     public function get_filters() {
-        return array(
-            'manage_house_posts_columns' => array('bhaa_manage_house_posts_columns',0,2),
-            'manage_house_posts_custom_column' => 'bhaa_manage_house_posts_custom_column'
-        );
+        return array();
+//            'manage_house_posts_columns' => array('bhaa_manage_house_posts_columns',0,2),
+//            'manage_house_posts_custom_column' => 'bhaa_manage_house_posts_custom_column'
+//        );
     }
 
     function bhaa_manage_house_posts_columns( $columns ) {
@@ -66,7 +66,6 @@ class HouseCPT implements Actionable, Filterable {
                 break;
             default:
         }
-        return $return;
     }
 
     function bhaa_register_cpt_house() {

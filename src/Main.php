@@ -46,8 +46,8 @@ class Main {
         // register the core objects
         $this->loader->register(new core\cpt\EventCPT());
         $this->loader->register(new core\cpt\RaceCPT());
+        $this->loader->register(new core\cpt\HouseCPT());
         $this->loader->register(new core\cpt\LeagueCPT());
-
     }
     /**
      * Define the locale for this plugin for internationalization.

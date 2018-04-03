@@ -138,7 +138,7 @@ class RunnerManager {
             LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
             WHERE status.meta_value="%s" AND TRIM(IFNULL(wp_users.display_name,"")) <> ""
             ORDER BY lastname,firstname',$status);
-        error_log($SQL);
+        //error_log($SQL);
         return $wpdb->get_results($SQL,ARRAY_A);
     }
 
