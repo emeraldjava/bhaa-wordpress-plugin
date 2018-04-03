@@ -106,9 +106,9 @@ class RunnerManager {
      * https://generatewp.com/wp_user_query/
      *
      */
-    public function getBHAAMembers() {
+    public function getBHAAMembers($status="M") {
         global $wpdb;
-        $SQL = 'SELECT wp_users.id AS id,
+        $SQL = $wpdb->prepare('SELECT wp_users.id AS id,
             TRIM(LOWER(REPLACE(wp_users.display_name," ","."))) AS label,
             TRIM(first_name.meta_value) AS firstname,
             TRIM(last_name.meta_value) AS lastname,
@@ -136,8 +136,9 @@ class RunnerManager {
             LEFT JOIN wp_usermeta renewaldate ON (renewaldate.user_id=wp_users.id AND renewaldate.meta_key="bhaa_runner_dateofrenewal")
             LEFT JOIN wp_posts house ON (house.id=company.meta_value AND house.post_type="house")
             LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
-            WHERE capabilities.meta_value LIKE("%bhaamember%") AND TRIM(IFNULL(wp_users.display_name,"")) <> ""
-            ORDER BY lastname,firstname';
+            WHERE status.meta_value="%s" AND TRIM(IFNULL(wp_users.display_name,"")) <> ""
+            ORDER BY lastname,firstname',$status);
+        error_log($SQL);
         return $wpdb->get_results($SQL,ARRAY_A);
     }
 
@@ -168,7 +169,7 @@ class RunnerManager {
             left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
             left join wp_posts house on (house.id=company.meta_value and house.post_type="house")
             left join wp_usermeta standard on (standard.user_id=wp_users.id and standard.meta_key="bhaa_runner_standard")
-            WHERE reg.EVT_ID=5654
+            WHERE reg.EVT_ID=5655
             AND reg.REG_paid!=0
             ORDER BY lastname ASC, firstname ASC';
         return $wpdb->get_results($SQL,ARRAY_A);
@@ -233,7 +234,7 @@ class RunnerManager {
             left join wp_esp_answer ee_gender on (ee_gender.REG_ID=reg.REG_ID and ee_gender.QST_ID=13)
             left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
             left join wp_esp_answer ee_company on (ee_company.REG_ID=reg.REG_ID and ee_company.QST_ID=12)
-            WHERE reg.EVT_ID IN (5654,5651)
+            WHERE reg.EVT_ID IN (5651,5655)
             AND reg.REG_paid!=0
             ORDER BY reg.EVT_ID,wp_users.display_name,reg.EVT_ID';
         return $wpdb->get_results($SQL,OBJECT);

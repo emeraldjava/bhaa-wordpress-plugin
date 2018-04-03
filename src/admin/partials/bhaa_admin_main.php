@@ -11,7 +11,13 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
     <h1>BHAA Admin Page</h1>
-    <?php echo $exportBHAAMembersLink;?>
+    <ul>
+        <li><?php echo $exportBHAAMembersLink;?></li>
+        <li><?php echo $exportBHAAInactiveMembersLink;?></li>
+        <li><?php echo $exportBHAADayMembersLink;?></li>
+    </ul>
+    <hr/>
     <?php echo $exportEventMembersLink;?>
+    <hr/>
     <?php echo $exportNewBHAAMembersLink;?>
 </div>

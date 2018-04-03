@@ -49,6 +49,8 @@ class AdminController implements Actionable {
             'admin_menu' => 'bhaa_admin_menu',
             'admin_action_bhaa_export_members' => 'bhaa_export_members',
             'admin_action_bhaa_registrar_export_members' => 'bhaa_registrar_export_members',
+            'admin_action_bhaa_registrar_export_inactive_members' => 'bhaa_registrar_export_inactive_members',
+            'admin_action_bhaa_registrar_export_day_members' => 'bhaa_registrar_export_day_members',
             'admin_action_bhaa_registrar_export_online' => 'bhaa_registrar_export_online',
             'admin_action_bhaa_registrar_export_new_online_members' => 'bhaa_registrar_export_new_online_members'
         );
@@ -73,6 +75,9 @@ class AdminController implements Actionable {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
         $exportBHAAMembersLink = $this->generate_admin_url_link('Export BHAA Members','bhaa_registrar_export_members');
+        $exportBHAAInactiveMembersLink = $this->generate_admin_url_link('Export Inactive Members','bhaa_registrar_export_inactive_members');
+        $exportBHAADayMembersLink = $this->generate_admin_url_link('Export Day Members','bhaa_registrar_export_day_members');
+
         $exportEventMembersLink = $this->generate_admin_url_link('Export Online Members','bhaa_registrar_export_online');
         $exportNewBHAAMembersLink = $this->generate_admin_url_link('Export New Online BHAA Members','bhaa_registrar_export_new_online_members');
         include_once( 'partials/bhaa_admin_main.php' );
@@ -91,6 +96,28 @@ class AdminController implements Actionable {
             $csv->insertOne($runner);
         }
         $csv->output('bhaa.members.'.date("y.m.d-H.m.s").'.csv');
+        die;
+    }
+
+    function bhaa_registrar_export_inactive_members() {
+        $runnerManager = new RunnerManager();
+        $bhaaMembers = $runnerManager->getBHAAMembers("I");
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        foreach ($bhaaMembers as $runner) {
+            $csv->insertOne($runner);
+        }
+        $csv->output('bhaa.inactive.'.date("y.m.d-H.m.s").'.csv');
+        die;
+    }
+
+    function bhaa_registrar_export_day_members() {
+        $runnerManager = new RunnerManager();
+        $bhaaMembers = $runnerManager->getBHAAMembers("D");
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        foreach ($bhaaMembers as $runner) {
+            $csv->insertOne($runner);
+        }
+        $csv->output('bhaa.day.'.date("y.m.d-H.m.s").'.csv');
         die;
     }
 
