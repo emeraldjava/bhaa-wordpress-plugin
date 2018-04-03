@@ -45,7 +45,7 @@ class RunnerAdminController implements Filterable, Actionable {
     }
 
     public function bhaa_admin_sub_menu() {
-        add_submenu_page('bhaa', 'BHAA Runner Admin', 'Runners',
+        add_submenu_page(null, 'BHAA Runner Admin', 'Runners',
             'manage_options', 'bhaa_admin_runners', array($this, 'bhaa_admin_runners'));
         add_submenu_page(null, 'BHAA Runner Admin', 'Runner',
             'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
