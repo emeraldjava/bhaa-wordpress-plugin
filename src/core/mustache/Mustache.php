@@ -13,6 +13,9 @@ use Mustache_Loader_FilesystemLoader;
 
 class Mustache {
 
+    const RACE_RESULTS_INDIVIDUAL = 'race.results.individual.html';
+    const EDIT_RACE_RESULTS_INDIVIDUAL = 'edit.race.results.individual.html';
+
     private $mustache = null;
 
     public function __construct() {
@@ -34,8 +37,8 @@ class Mustache {
     'unit'=>get_post_meta($race,'bhaa_race_unit',true),
     'type'=>get_post_meta($race,'bhaa_race_type',true),
      */
-    public function renderRaceResults($results,$isAdmin,$link,$racename,$dist,$unit,$type) {
-        return $this->mustache->loadTemplate('race.results.individual.html')
+    public function renderRaceResults($template,$results,$isAdmin,$link,$racename,$dist,$unit,$type) {
+        return $this->mustache->loadTemplate($template)
             ->render(array(
                     'runners'=>$results,
                     'isAdmin'=>$isAdmin,

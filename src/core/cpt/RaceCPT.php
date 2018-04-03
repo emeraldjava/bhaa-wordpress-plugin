@@ -27,7 +27,8 @@ class RaceCPT implements Actionable, Filterable {
             //'add_meta_boxes' => 'bhaa_team_meta_data',
             'save_post' => 'bhaa_save_race_meta',
             'admin_action_bhaa_race_delete_results'=>'bhaa_race_delete_results',
-            'admin_action_bhaa_race_load_results'=>'bhaa_race_load_results'
+            'admin_action_bhaa_race_load_results'=>'bhaa_race_load_results',
+            'admin_menu'=>'bhaa_race_sub_menu'
         );
     }
 
@@ -50,7 +51,9 @@ class RaceCPT implements Actionable, Filterable {
             $res = $raceResult->getRaceResults(get_the_ID());
             // call the template
             $mustache = new Mustache();
-            $raceResultTable = $mustache->renderRaceResults($res, false, './url', 'name', '5', 'km', 'C');
+            $raceResultTable = $mustache->renderRaceResults(
+                Mustache::RACE_RESULTS_INDIVIDUAL, $res,
+                false, './url', 'K-Club', '10', 'km', 'C');
             set_query_var( 'raceResultTable', $raceResultTable );
             $template = plugin_dir_path(__FILE__) . '/partials/race/race.php';
         }
@@ -59,23 +62,34 @@ class RaceCPT implements Actionable, Filterable {
 
     /**
      * Add sub-menus under the BHAA Races to edit all race results or a specific one. Make first parameter null to hide.
+     * 'edit.php?post_type=race'
      */
     function bhaa_race_sub_menu() {
         // see http://websitesthatdontsuck.com/2011/11/adding-a-sub-menu-to-a-custom-post-type/ - 'edit.php?post_type=race'
-        add_submenu_page( null, 'Edit Results', 'Edit Results',
+        add_submenu_page( 'edit.php?post_type=race', 'Edit Results', 'Edit Results',
             'manage_options', 'bhaa_race_edit_results',
             array($this,'bhaa_race_edit_results'));
         // make first element null to hide - 'edit.php?post_type=race'
-        add_submenu_page( null, 'Edit Result', 'Edit Result',
+        add_submenu_page( 'edit.php?post_type=race', 'Edit Result', 'Edit Result',
             'manage_options', 'bhaa_race_edit_result',
             array($this,'bhaa_race_edit_result'));
     }
 
     function bhaa_race_edit_results() {
-        include plugin_dir_path( __FILE__ ) . 'template/bhaa_race_edit_results.php';
+        error_log('bhaa_race_edit_results '.$_GET['id']);
+        $raceResult = new RaceResult();
+        $res = $raceResult->getRaceResults($_GET['id']);
+        // call the template
+        $mustache = new Mustache();
+        $raceResultTable = $mustache->renderRaceResults(
+            Mustache::EDIT_RACE_RESULTS_INDIVIDUAL, $res,
+            true, './url', 'K-Club', '10', 'km', 'C');
+        set_query_var( 'raceResultTable', $raceResultTable );
+        include plugin_dir_path( __FILE__ ) . 'partials/race/edit_results.php';
     }
 
     function bhaa_race_edit_result() {
+        error_log('bhaa_race_edit_result');
         $raceResult = RaceResult::get_instance()->getRaceResult($_GET['raceresult']);
         $link = admin_url('admin.php'); // do we need the raceresult id?
         $raceLink = $this->generate_edit_raceresult_link($raceResult->race);
@@ -341,7 +355,7 @@ class RaceCPT implements Actionable, Filterable {
      */
     private function generate_race_admin_url_link($action,$post_id,$name) {
         //$nonce = wp_create_nonce( $action );
-        $link = admin_url('admin.php?action='.$action.'&post_type=race&post_id='.$post_id);
+        $link = admin_url('edit.php?post_type=race&page='.$action.'&post_id='.$post_id);
         return '<a href='.$link.'>'.$name.'</a>';
     }
 
@@ -395,7 +409,8 @@ class RaceCPT implements Actionable, Filterable {
     function get_admin_url_links($post) {
         return array(
             'bhaa_race_delete_results' => $this->generate_race_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
-            'bhaa_race_load_results' => $this->generate_race_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results')
+            'bhaa_race_load_results' => $this->generate_race_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results'),
+            'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID)
             //'bhaa_race_positions' => $this->generate_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
             //'bhaa_race_pace' => $this->generate_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
             //'bhaa_race_pos_in_cat' => $this->generate_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
