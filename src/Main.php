@@ -48,6 +48,7 @@ class Main {
         $this->loader->register(new core\cpt\RaceCPT());
         $this->loader->register(new core\cpt\HouseCPT());
         $this->loader->register(new core\cpt\LeagueCPT());
+        new core\Connections();
     }
     /**
      * Define the locale for this plugin for internationalization.
