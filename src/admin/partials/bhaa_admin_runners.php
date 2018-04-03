@@ -30,7 +30,7 @@
         </tr>
         <?php
         foreach ( $rows as $row ) {
-            echo sprintf('<tr><td><a href="./admin.php?action=bhaa_runner&id=%d">%d %s</a></td><td>%d</td>
+            echo sprintf('<tr><td><a href="./admin.php?page=bhaa_admin_runner&id=%d">%d %s</a></td><td>%d</td>
                 <td>%d</td><td>%d</td>
                 <td>%s</td><td>%s</td>
                 <td>%s</td><td>%s</td>

@@ -12,7 +12,7 @@
         {{# runners}}
         <tr id="{{id}}">
             <td>{{#isAdmin}}<a target="_self" class="bhaa-url-link" href="{{formUrl}}&raceresult={{id}}">{{position}}</a>{{/isAdmin}}{{^isAdmin}}{{position}}{{/isAdmin}}</td>
-            <td><a class="bhaa-url-link" r="{{runner}}" href="./admin.php?action=bhaa_runner&id={{runner}}">{{firstname}} {{surname}}</a></td>
+            <td><a class="bhaa-url-link" r="{{runner}}" href="./admin.php?page=bhaa_admin_runner&id={{runner}}">{{firstname}} {{surname}}</a></td>
             <td>{{category}}{{gender}} p{{posincat}}</td>
             <td><a class="bhaa-url-link" href="/?post_type=house&p={{cid}}">{{cname}}</a></td>
             <td>{{standard}}->[{{actualstandard}}]->{{poststandard}}</td>

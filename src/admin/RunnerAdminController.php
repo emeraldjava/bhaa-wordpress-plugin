@@ -36,6 +36,7 @@ class RunnerAdminController implements Filterable, Actionable {
         return array(
             'admin_menu' => 'bhaa_admin_sub_menu',
             'admin_action_bhaa_runner'=>'bhaa_admin_runner',
+            'admin_action_bhaa_runner_email_action'=>'bhaa_runner_email_action',
             'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action',
             'admin_action_bhaa_runner_gender_action'=>'bhaa_runner_gender_action',
             'admin_action_bhaa_runner_dob_action'=>'bhaa_runner_dob_action',
@@ -46,7 +47,7 @@ class RunnerAdminController implements Filterable, Actionable {
     public function bhaa_admin_sub_menu() {
         add_submenu_page('bhaa', 'BHAA Runner Admin', 'Runners',
             'manage_options', 'bhaa_admin_runners', array($this, 'bhaa_admin_runners'));
-        add_submenu_page(null, 'BHAA Runner Admin', 'Runners',
+        add_submenu_page(null, 'BHAA Runner Admin', 'Runner',
             'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
     }
 
@@ -106,6 +107,15 @@ class RunnerAdminController implements Filterable, Actionable {
             $actions['bhaa_runner_view'] = sprintf('<a target="_new" href="./admin.php?action=bhaa_runner&id='.$user->ID.'">Runner</a>');
         }
         return $actions;
+    }
+
+    function bhaa_runner_email_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_email_action')) {
+            error_log('bhaa_runner_email_action '.$_POST['id'].' -> '.$_POST['email']);
+            wp_update_user( array ( 'ID' => $_POST['id'], 'user_email' => trim($_POST['email']) ) ) ;
+        }
+        wp_redirect(wp_get_referer());
+        exit();
     }
 
     function bhaa_manage_users_sortable_column( $columns ) {

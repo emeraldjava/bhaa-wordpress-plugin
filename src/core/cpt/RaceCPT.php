@@ -66,17 +66,17 @@ class RaceCPT implements Actionable, Filterable {
      */
     function bhaa_race_sub_menu() {
         // see http://websitesthatdontsuck.com/2011/11/adding-a-sub-menu-to-a-custom-post-type/ - 'edit.php?post_type=race'
-        add_submenu_page( 'edit.php?post_type=race', 'Edit Results', 'Edit Results',
+        add_submenu_page( null, 'Edit Results', 'Edit Results',
             'manage_options', 'bhaa_race_edit_results',
             array($this,'bhaa_race_edit_results'));
         // make first element null to hide - 'edit.php?post_type=race'
-        add_submenu_page( 'edit.php?post_type=race', 'Edit Result', 'Edit Result',
+        add_submenu_page( null, 'Edit Result', 'Edit Result',
             'manage_options', 'bhaa_race_edit_result',
             array($this,'bhaa_race_edit_result'));
     }
 
     function bhaa_race_edit_results() {
-        error_log('bhaa_race_edit_results '.$_GET['id']);
+        //error_log('bhaa_race_edit_results '.$_GET['id']);
         $raceResult = new RaceResult();
         $res = $raceResult->getRaceResults($_GET['id']);
         // call the template
@@ -89,7 +89,7 @@ class RaceCPT implements Actionable, Filterable {
     }
 
     function bhaa_race_edit_result() {
-        error_log('bhaa_race_edit_result');
+        //error_log('bhaa_race_edit_result');
         $raceResult = RaceResult::get_instance()->getRaceResult($_GET['raceresult']);
         $link = admin_url('admin.php'); // do we need the raceresult id?
         $raceLink = $this->generate_edit_raceresult_link($raceResult->race);
