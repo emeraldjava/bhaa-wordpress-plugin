@@ -121,21 +121,26 @@ class RaceCPT implements Actionable, Filterable {
     }
 
     function bhaa_race_delete_results() {
-        $raceResult = new RaceResult();
-        $raceResult->deleteRaceResults($_GET['post_id']);
-        //queue_flash_message("bhaa_race_delete_results ".$_GET['post_id']);
-        wp_redirect(wp_get_referer());
-        exit();
+        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_delete_results')) {
+            $raceResult = new RaceResult();
+            $raceResult->deleteRaceResults($_GET['post_id']);
+            //queue_flash_message("bhaa_race_delete_results ".$_GET['post_id']);
+            wp_redirect(wp_get_referer());
+            exit();
+        }
     }
 
     function bhaa_race_load_results() {
-        $race = get_post($_GET['post_id']);
-        $resultText = $race->post_content;
-        $raceResult = new RaceResult();
-        $raceResult->processRaceResults($race->ID,$race->post_content);
-        wp_redirect(wp_get_referer());
-        exit();
+        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_delete_results')) {
+            $race = get_post($_GET['post_id']);
+            $resultText = $race->post_content;
+            $raceResult = new RaceResult();
+            $raceResult->processRaceResults($race->ID, $race->post_content);
+            wp_redirect(wp_get_referer());
+            exit();
+        }
     }
+
     function bhaa_race_positions() {
         $raceResult = new RaceResult();
         $raceResult->updatePositions($_GET['post_id']);
@@ -349,24 +354,6 @@ class RaceCPT implements Actionable, Filterable {
         echo implode('<br/>', $this->get_admin_url_links($post));
     }
 
-    /**
-     * Use the admin.php page as the hook point
-     * http://shibashake.com/wordpress-theme/obscure-wordpress-errors-why-where-and-how
-     */
-    private function generate_race_admin_url_link($action,$post_id,$name) {
-        //$nonce = wp_create_nonce( $action );
-        $link = admin_url('edit.php?post_type=race&page='.$action.'&post_id='.$post_id);
-        return '<a href='.$link.'>'.$name.'</a>';
-    }
-
-    /**
-     * Return a edit link to a specific set of race results
-     */
-    function generate_edit_raceresult_link($post_id) {
-        // http://bhaaie/wp-admin/edit.php?post_type=race&page=bhaa_race_edit_results
-        return '<a href='.admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$post_id).'>Edit Results</a>';
-    }
-
     function bhaa_race_team_result_textarea( $post ) {
         $teamresults = get_post_meta($post->ID,RaceCpt::BHAA_RACE_TEAM_RESULTS,true);
         echo '<textarea name='.RaceCpt::BHAA_RACE_TEAM_RESULTS.' id='.RaceCpt::BHAA_RACE_TEAM_RESULTS.'
@@ -423,5 +410,26 @@ class RaceCPT implements Actionable, Filterable {
             //'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
             //'bhaa_race_export_racemaster' => $this->generate_admin_url_link('bhaa_race_export_racemaster',$post->ID,'Export RaceMaster')
         );
+    }
+
+    private function generate_race_admin_url_link($action,$post_id,$link_title) {
+        $adminURL = add_query_arg(
+            array('action'=>$action,
+                'post_type'=>'race',
+                'post_id'=>$post_id
+            ),admin_url());
+        return '<a href='.wp_nonce_url($adminURL, $action).'>'.$link_title.'</a>';
+    }
+
+    /**
+     * Return a edit link to a specific set of race results
+     */
+    private function generate_edit_raceresult_link($post_id) {
+        $editURL = add_query_arg(
+            array('page'=>'bhaa_race_edit_results',
+                'post_type'=>'race',
+                'id'=>$post_id
+            ),admin_url('edit.php'));
+        return '<a href='.$editURL.'>Edit Results</a>';
     }
 }
