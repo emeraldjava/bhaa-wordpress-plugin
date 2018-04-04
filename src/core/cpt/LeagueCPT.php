@@ -255,9 +255,9 @@ class LeagueCPT implements Actionable, Filterable {
 
     private function get_admin_url_links($post) {
         return array(
-            'bhaa_league_delete' => $this->generate_admin_url_link('bhaa_league_delete',$post->ID,'Delete'),
-            'bhaa_league_populate' => $this->generate_admin_url_link('bhaa_league_populate',$post->ID,'Populate'),
-            'bhaa_league_top_ten' => $this->generate_admin_url_link('bhaa_league_top_ten',$post->ID,'Export Top Ten')
+            'bhaa_league_delete' => $this->generate_league_admin_url_link('bhaa_league_delete',$post->ID,'Delete'),
+            'bhaa_league_populate' => $this->generate_league_admin_url_link('bhaa_league_populate',$post->ID,'Populate'),
+            'bhaa_league_top_ten' => $this->generate_league_admin_url_link('bhaa_league_top_ten',$post->ID,'Export Top Ten')
         );
     }
 
@@ -265,8 +265,13 @@ class LeagueCPT implements Actionable, Filterable {
      * Use the admin.php page as the hook point
      * http://shibashake.com/wordpress-theme/obscure-wordpress-errors-why-where-and-how
      */
-    private function generate_admin_url_link($action,$leagueId,$name) {
-        return '<a href='.wp_nonce_url(admin_url('admin.php?action='.$action.'&post_type=league&post_id='.$leagueId), $action).'>'.$name.'</a>';
+    private function generate_league_admin_url_link($action,$leagueId,$link_title) {
+        $adminURL = add_query_arg(
+            array('action'=>$action,
+                'post_type'=>'league',
+                'post_id'=>$leagueId
+            ),admin_url('admin.php'));
+        return '<a href='.wp_nonce_url($adminURL, $action).'>'.$link_title.'</a>';
     }
 
     function bhaa_register_league_cpt() {
