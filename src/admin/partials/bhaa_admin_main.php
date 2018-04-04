@@ -15,9 +15,8 @@
         <li><?php echo $exportBHAAMembersLink;?></li>
         <li><?php echo $exportBHAAInactiveMembersLink;?></li>
         <li><?php echo $exportBHAADayMembersLink;?></li>
+        <li><?php echo $exportEventMembersLink;?></li>
     </ul>
-    <hr/>
-    <?php echo $exportEventMembersLink;?>
     <hr/>
     <?php echo $exportNewBHAAMembersLink;?>
 </div>

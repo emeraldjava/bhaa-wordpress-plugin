@@ -77,8 +77,8 @@ class AdminController implements Actionable {
         $exportBHAAMembersLink = $this->generate_admin_url_link('Export BHAA Members','bhaa_registrar_export_members');
         $exportBHAAInactiveMembersLink = $this->generate_admin_url_link('Export Inactive Members','bhaa_registrar_export_inactive_members');
         $exportBHAADayMembersLink = $this->generate_admin_url_link('Export Day Members','bhaa_registrar_export_day_members');
+        $exportEventMembersLink = $this->generate_admin_url_link('Export Pre-Registered Online Members','bhaa_registrar_export_online');
 
-        $exportEventMembersLink = $this->generate_admin_url_link('Export Online Members','bhaa_registrar_export_online');
         $exportNewBHAAMembersLink = $this->generate_admin_url_link('Export New Online BHAA Members','bhaa_registrar_export_new_online_members');
         include_once( 'partials/bhaa_admin_main.php' );
     }

@@ -16,19 +16,12 @@ use BHAA\core\Connections;
 
 class RunnerAdminController implements Filterable, Actionable {
 
-    //private $runnerManager;
-
-    public function __construct() {
-        $this->runnerAdminMessage = '';
-    }
-
     public function get_filters() {
         return array(
+            'user_row_actions'=>array('bhaa_user_row_actions_runner_link',10,2),
+            'manage_users_columns'=>array('bhaa_manage_users_columns',10,3),
+            'manage_users_custom_column'=>array('bhaa_manage_users_custom_column',10,3),
             'user_row_actions'=>array('bhaa_user_row_actions_runner_link',10,2)
-            //'manage_users_columns' => 'bhaa_manage_users_columns',
-            //'manage_users_custom_column' => array('bhaa_manage_users_custom_column',10,3),
-            //'manage_users_sortable_columns' => 'bhaa_manage_users_sortable_column'
-            //'user_row_actions' => array('bhaa_user_row_actions_runner_link',10,2)
         );
     }
 
@@ -104,7 +97,8 @@ class RunnerAdminController implements Filterable, Actionable {
 
     function bhaa_user_row_actions_runner_link( $actions, $user ) {
         if ( current_user_can('manage_options') ) {
-            $actions['bhaa_runner_view'] = sprintf('<a target="_new" href="./admin.php?action=bhaa_runner&id='.$user->ID.'">Runner</a>');
+            $actions['bhaa_runner_view'] =
+                sprintf('<a target="_new" href="./admin.php?page=bhaa_admin_runner&id='.$user->ID.'">Runner</a>');
         }
         return $actions;
     }
@@ -116,11 +110,6 @@ class RunnerAdminController implements Filterable, Actionable {
         }
         wp_redirect(wp_get_referer());
         exit();
-    }
-
-    function bhaa_manage_users_sortable_column( $columns ) {
-        $column[Runner::BHAA_RUNNER_STATUS] = __('Status', Runner::BHAA_RUNNER_STATUS);
-        return $column;
     }
 
     /**
@@ -152,7 +141,7 @@ class RunnerAdminController implements Filterable, Actionable {
         $column[Runner::BHAA_RUNNER_STATUS] = __('Status', Runner::BHAA_RUNNER_STATUS);
         $column[Runner::BHAA_RUNNER_GENDER] = __('Gender', Runner::BHAA_RUNNER_GENDER);
         //$column[Runner::BHAA_RUNNER_DATEOFRENEWAL] = __('Renewal', Runner::BHAA_RUNNER_DATEOFRENEWAL);
-        //$column[Runner::BHAA_RUNNER_DATEOFBIRTH] = __('DoB', Runner::BHAA_RUNNER_DATEOFBIRTH);
+        $column[Runner::BHAA_RUNNER_DATEOFBIRTH] = __('DoB', Runner::BHAA_RUNNER_DATEOFBIRTH);
         //$column[Runner::BHAA_RUNNER_COMPANY] = __('Company', Runner::BHAA_RUNNER_COMPANY);
         //$column[Connections::HOUSE_TO_RUNNER] = __('Team', Connections::HOUSE_TO_RUNNER);
         //$column[Connections::SECTORTEAM_TO_RUNNER] = __('SectorTeam', Connections::SECTORTEAM_TO_RUNNER);
@@ -171,9 +160,9 @@ class RunnerAdminController implements Filterable, Actionable {
 //            case Runner::BHAA_RUNNER_DATEOFRENEWAL:
 //                return get_user_meta($user_id,Runner::BHAA_RUNNER_DATEOFRENEWAL,true);
 //                break;
-//            case Runner::BHAA_RUNNER_DATEOFBIRTH:
-//                return get_user_meta($user_id,Runner::BHAA_RUNNER_DATEOFBIRTH,true);
-//                break;
+            case Runner::BHAA_RUNNER_DATEOFBIRTH:
+                return get_user_meta($user_id,Runner::BHAA_RUNNER_DATEOFBIRTH,true);
+                break;
 //            case Runner::BHAA_RUNNER_COMPANY:
 //                $company = get_user_meta($user_id,Runner::BHAA_RUNNER_COMPANY,true);
 //                if(isset($company))
