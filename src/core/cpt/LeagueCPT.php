@@ -56,15 +56,15 @@ class LeagueCPT implements Actionable, Filterable {
      * http://wordpress.stackexchange.com/questions/82761/how-can-i-link-post-row-actions-with-a-custom-action-function?rq=1
      */
     function bhaa_league_delete() {
-        global $typenow;
-        if( 'league' != $typenow )
-            return;
-        $leagueId = $_GET['post_id'];
-        $leagueHandler = $this->getLeagueHandler($leagueId);
-        $leagueHandler->deleteLeague();
-        queue_flash_message("bhaa_league_delete");
-        wp_redirect( $_SERVER['HTTP_REFERER'] );
-        exit();
+        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_delete')) {
+            error_log('bhaa_league_delete');
+            $leagueId = $_GET['post_id'];
+            //$leagueHandler = $this->getLeagueHandler($leagueId);
+            //$leagueHandler->deleteLeague();
+            //queue_flash_message("bhaa_league_delete");
+            wp_redirect($_SERVER['HTTP_REFERER']);
+            exit();
+        }
     }
 
     /**
@@ -72,19 +72,26 @@ class LeagueCPT implements Actionable, Filterable {
      * http://wordpress.stackexchange.com/questions/10500/how-do-i-best-handle-custom-plugin-page-actions
      */
     function bhaa_league_populate() {
-        error_log('bhaa_league_populate');
-        $leagueId = $_GET['post_id'];
-        $leagueHandler = $this->getLeagueHandler($leagueId);
-        $leagueHandler->loadLeague();
-        queue_flash_message("bhaa_league_populate");
-        wp_redirect( $_SERVER['HTTP_REFERER'] );
-        exit();
+        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_populate')) {
+            error_log('bhaa_league_populate');
+            $leagueId = $_GET['post_id'];
+            //$leagueHandler = $this->getLeagueHandler($leagueId);
+            //$leagueHandler->loadLeague();
+            //queue_flash_message("bhaa_league_populate");
+            wp_redirect($_SERVER['HTTP_REFERER']);
+            exit();
+        }
     }
 
     function bhaa_league_top_ten() {
-        $leagueId = $_GET['post_id'];
-        $leagueHandler = $this->getLeagueHandler($leagueId);
-        $leagueHandler->exportLeagueTopTen();
+        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_top_ten')) {
+            error_log('bhaa_league_top_ten');
+            $leagueId = $_GET['post_id'];
+            //$leagueHandler = $this->getLeagueHandler($leagueId);
+            //$leagueHandler->exportLeagueTopTen();
+            wp_redirect($_SERVER['HTTP_REFERER']);
+            exit();
+        }
     }
 
     /**
@@ -94,6 +101,7 @@ class LeagueCPT implements Actionable, Filterable {
      */
     private function getLeagueHandler($leagueid) {
         $type = get_post_meta($leagueid,LeagueCpt::BHAA_LEAGUE_TYPE,true);
+        return "To Do";
         if($type=='I')
             return new IndividualLeague($leagueid);
         else
@@ -257,10 +265,8 @@ class LeagueCPT implements Actionable, Filterable {
      * Use the admin.php page as the hook point
      * http://shibashake.com/wordpress-theme/obscure-wordpress-errors-why-where-and-how
      */
-    private function generate_admin_url_link($action,$post_id,$name) {
-        $nonce = wp_create_nonce( $action );
-        $link = admin_url('admin.php?action='.$action.'&post_type=league&post_id='.$post_id);
-        return '<a href='.$link.'>'.$name.'</a>';
+    private function generate_admin_url_link($action,$leagueId,$name) {
+        return '<a href='.wp_nonce_url(admin_url('admin.php?action='.$action.'&post_type=league&post_id='.$leagueId), $action).'>'.$name.'</a>';
     }
 
     function bhaa_register_league_cpt() {
