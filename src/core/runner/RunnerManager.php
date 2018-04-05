@@ -55,7 +55,9 @@ class RunnerManager {
         $password =  wp_hash_password($id);
 
         // insert the user via SQL
-        $this->insertUser($id,$username,$password,$email);
+        if($isNewMember) {
+            $this->insertUser($id,$username,$password,$email);
+        }
         // update the wp_user
         $res = wp_update_user(array(
             'ID'            => $id,
@@ -69,14 +71,14 @@ class RunnerManager {
         if(is_wp_error($res))
             error_log('update user error '.$res->get_error_message());
 
-        update_user_meta( $id, Runner::BHAA_RUNNER_GENDER, $gender);
-        update_user_meta( $id, Runner::BHAA_RUNNER_DATEOFBIRTH, $dateofbirth);
-        update_user_meta( $id, Runner::BHAA_RUNNER_INSERTDATE, date('Y-m-d'));
+        add_user_meta( $id, Runner::BHAA_RUNNER_GENDER, $gender, true);
+        add_user_meta( $id, Runner::BHAA_RUNNER_DATEOFBIRTH, $dateofbirth, true);
+        add_user_meta( $id, Runner::BHAA_RUNNER_INSERTDATE, date('Y-m-d'), true);
 
         if($isNewMember){
-            update_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M');
-            update_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
-            wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ) );
+            add_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M', true);
+            add_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'), true);
+            add_user_meta( array( 'ID' => $id, 'role' => 'bhaamember' ) , true);
         } else {
             update_user_meta( $id, Runner::BHAA_RUNNER_STATUS,'D');
         }
@@ -157,7 +159,8 @@ class RunnerManager {
             COALESCE(TRIM(house.post_title),"Day Runner") as teamname,
             COALESCE(company.meta_value,1) as teamid,
             COALESCE(standard.meta_value,10) as standard,
-            COALESCE(dob.meta_value,"1980-01-01") as dob
+            COALESCE(dob.meta_value,"1980-01-01") as dob,
+            reg.REG_paid as paid
             FROM wp_esp_registration as reg
             JOIN wp_usermeta eeAttendee on (eeAttendee.meta_value=reg.ATT_ID and eeAttendee.meta_key="wp_EE_Attendee_ID")
             JOIN wp_users on (eeAttendee.user_id=wp_users.id)
