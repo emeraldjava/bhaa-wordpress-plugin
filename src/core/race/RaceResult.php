@@ -21,6 +21,14 @@ class RaceResult {
     const RACE_ORG = 'RACE_ORG';
     const PRE_REG = 'PRE_REG';
 
+    private $wpdb;
+    private $tablename = 'wp_bhaa_raceresult';
+
+    public function __construct() {
+        global $wpdb;
+        $this->wpdb = $wpdb;
+    }
+
     function processRaceResults($raceId,String $resultText) {
         error_log('bhaa_race_load_results('.strlen($resultText).')');
         $results = explode("\n",$resultText);
@@ -33,7 +41,6 @@ class RaceResult {
     }
 
     public function addRaceResult($race,$details) {
-        global $wpdb;
         // check if the runner exists
         $position = $details[0];
         $bib = $details[1];
@@ -67,8 +74,8 @@ class RaceResult {
         $category = $this->getAgeCategory($details[9]);
 
         if($details[0]!=0) {
-            $res = $wpdb->insert(
-                'wp_bhaa_raceresult',
+            $res = $this->wpdb->insert(
+                $this->tablename,
                 array(
                     'race' => $race,
                     'position' => $details[0],
@@ -80,7 +87,7 @@ class RaceResult {
                     'class' => RaceResult::RAN)
             );
             error_log(sprintf('%d , %d. %s %s %s',$wpdb->insert_id,$runner_id,$firstname,$surname,$racetime));
-            $res = $wpdb->insert_id;
+            $res = $this->wpdb->insert_id;
         }
         return $res;
     }
@@ -138,7 +145,6 @@ class RaceResult {
     }
 
     function getRaceResults($race) {
-        global $wpdb;
         $query = "SELECT wp_bhaa_raceresult.*,
                 first_name.meta_value AS firstname, 
                 UPPER(last_name.meta_value) AS surname,
@@ -152,16 +158,65 @@ class RaceResult {
                 left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key='bhaa_runner_company')
                 left join wp_posts on (wp_posts.post_type='house' and company.meta_value=wp_posts.id)
                 where race=%d and wp_bhaa_raceresult.class='RAN' and position<=500 ORDER BY position";
-        $SQL = $wpdb->prepare($query,$race);
+        $SQL = $this->wpdb->prepare($query,$race);
         //error_log($SQL);
-        return $wpdb->get_results($SQL,OBJECT);
+        return $this->wpdb->get_results($SQL,OBJECT);
     }
 
     function deleteRaceResults($race) {
-        global $wpdb;
-        $res = $wpdb->delete(
-            'wp_bhaa_raceresult',
+        $res = $this->wpdb->delete(
+            $this->tablename,
             array('race' => $race)
         );
+    }
+
+    function getRaceResult($racerresult) {
+        return $this->wpdb->get_row("SELECT * FROM wp_bhaa_raceresult WHERE ID=".$racerresult);
+    }
+
+    function deleteRaceResult($racerresult) {
+        return $this->wpdb->delete($this->tablename, array( 'id' => $racerresult ), array('%d'));
+    }
+
+    function updateRaceResult($id,$race,$runner,$time,$standard,$poststandard,$number=0) {
+        error_log(sprintf('updateRunnersRaceResultStandard %d,%d,%d,%s,%d,%d',$id,$race,$runner,$time,$standard,$poststandard));
+        if(isset($id)&&$id!=0) {
+
+            // lookup the standard if not defined.
+            if($standard==0) {
+                $runnerObj = new Runner($runner);
+                $standard = $runnerObj->getStandard();
+            }
+
+            $res = $this->wpdb->update(
+                'wp_bhaa_raceresult',
+                array('runner' => $runner,
+                    'race'=>$race,
+                    'standard' => $standard,
+                    'poststandard'=>$poststandard,
+                    'racenumber'=>$number,
+                    'racetime'=>$time),
+                array('id' => $id)
+            );
+        } else {
+            $raceObj = new Race($race);
+            $ageCategory = $raceObj->getRunnersAgeCategory($runner);
+            $res = $this->wpdb->insert(
+                'wp_bhaa_raceresult',
+                array('runner' => $runner,
+                    'race'=>$race,
+                    'racetime'=>$time,
+                    'standard' => $standard,
+                    'poststandard'=>$poststandard,
+                    'class'=>"RAN",
+                    'position'=>1,
+                    'category'=>$ageCategory
+                ));
+            $this->updatePositions($race);
+        }
+    }
+
+    function updatePositions($race) {
+        //$this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
     }
 }
