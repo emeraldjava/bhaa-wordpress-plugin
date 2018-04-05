@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.04.05 Add league controller and classes.
 - 2018.04.04 Update the BHAA columns on the User page.
 - 2018.04.03 Add register csv file export links.
 - 2018.03.15 New version of the plugin using composer, psr-4 naming.

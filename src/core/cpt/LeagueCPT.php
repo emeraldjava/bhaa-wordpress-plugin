@@ -21,10 +21,7 @@ class LeagueCPT implements Actionable, Filterable {
             'init' => 'bhaa_register_league_cpt',
             'add_meta_boxes' => 'bhaa_league_meta_data',
             'save_post' => 'bhaa_league_save_meta_data',
-            'admin_menu' => 'bhaa_league_populate_metabox',
-            'admin_action_bhaa_league_delete' => 'bhaa_league_delete',
-            'admin_action_bhaa_league_populate' => 'bhaa_league_populate',
-            'admin_action_bhaa_league_top_ten' => 'bhaa_league_top_ten'
+            'admin_menu' => 'bhaa_league_populate_metabox'
         );
     }
 
@@ -49,63 +46,6 @@ class LeagueCPT implements Actionable, Filterable {
     function bhaa_league_populate_fields() {
         global $post;
         echo implode('<br/>', $this->get_admin_url_links($post));
-    }
-
-    /**
-     * Handle the URL GET call to edit.php
-     * http://wordpress.stackexchange.com/questions/82761/how-can-i-link-post-row-actions-with-a-custom-action-function?rq=1
-     */
-    function bhaa_league_delete() {
-        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_delete')) {
-            error_log('bhaa_league_delete');
-            $leagueId = $_GET['post_id'];
-            //$leagueHandler = $this->getLeagueHandler($leagueId);
-            //$leagueHandler->deleteLeague();
-            //queue_flash_message("bhaa_league_delete");
-            wp_redirect($_SERVER['HTTP_REFERER']);
-            exit();
-        }
-    }
-
-    /**
-     * Handle submit of the FORM
-     * http://wordpress.stackexchange.com/questions/10500/how-do-i-best-handle-custom-plugin-page-actions
-     */
-    function bhaa_league_populate() {
-        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_populate')) {
-            error_log('bhaa_league_populate');
-            $leagueId = $_GET['post_id'];
-            //$leagueHandler = $this->getLeagueHandler($leagueId);
-            //$leagueHandler->loadLeague();
-            //queue_flash_message("bhaa_league_populate");
-            wp_redirect($_SERVER['HTTP_REFERER']);
-            exit();
-        }
-    }
-
-    function bhaa_league_top_ten() {
-        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_top_ten')) {
-            error_log('bhaa_league_top_ten');
-            $leagueId = $_GET['post_id'];
-            //$leagueHandler = $this->getLeagueHandler($leagueId);
-            //$leagueHandler->exportLeagueTopTen();
-            wp_redirect($_SERVER['HTTP_REFERER']);
-            exit();
-        }
-    }
-
-    /**
-     * Return a specific class for handling league actions.
-     * @param unknown $leagueid
-     * @return IndividualLeague|TeamLeague
-     */
-    private function getLeagueHandler($leagueid) {
-        $type = get_post_meta($leagueid,LeagueCpt::BHAA_LEAGUE_TYPE,true);
-        return "To Do";
-        if($type=='I')
-            return new IndividualLeague($leagueid);
-        else
-            return new TeamLeague($leagueid);
     }
 
     /**

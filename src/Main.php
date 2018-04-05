@@ -43,6 +43,7 @@ class Main {
         $this->loader->register(new admin\AdminController( $this->get_plugin_name(), $this->get_version()));
         $this->loader->register(new admin\RunnerAdminController());
         $this->loader->register(new admin\RaceAdminController());
+        $this->loader->register(new admin\LeagueAdminController());
 
         // register the core objects
         $this->loader->register(new core\cpt\EventCPT());
