@@ -16,7 +16,16 @@
 
     echo '<hr/>';
 
-    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+    echo sprintf('<div>Name <form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+                wp_nonce_field('bhaa_runner_rename_action').'
+                <input type="hidden" name="action" value="bhaa_runner_rename_action" />
+				<input type="text" name="first_name" value="%s"/>
+				<input type="text" name="last_name" value="%s"/>
+				<input type="hidden" name="id" value="%d"/>
+				<input type="submit" value="Rename"/>
+				</form></div>',$runner->getFirstName(),$runner->getLastName(),$runner->getID());
+
+    echo sprintf('<div>Email <form action="'.admin_url( 'admin.php' ).'" method="POST">'.
                 wp_nonce_field('bhaa_runner_email_action').'
 			    <input type="hidden" name="action" value="bhaa_runner_email_action"/>
 				<input type="text" name="email" value="%s"/>
@@ -24,7 +33,7 @@
 				<input type="submit" value="Email"/>
 				</form></div>',$runner->getEmail(),$runner->getID());
     
-    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+    echo sprintf('<div>Date of Birth <form action="'.admin_url( 'admin.php' ).'" method="POST">'.
                 wp_nonce_field('bhaa_runner_dob_action').'
 			    <input type="hidden" name="action" value="bhaa_runner_dob_action"/>
 				<input type="text" name="dob" value="'.$runner->getDateOfBirth().'"/>
@@ -32,7 +41,7 @@
 				<input type="submit" value="DateOfBirth"/>
 				</form></div>');
 
-    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+    echo sprintf('<div>Gender <form action="'.admin_url( 'admin.php' ).'" method="POST">'.
                 wp_nonce_field('bhaa_runner_gender_action').'
 			    <input type="hidden" name="action" value="bhaa_runner_gender_action" />
 				<input type="text" size=1 name="gender" id="gender" value="'.$runner->getGender().'"/>
@@ -40,7 +49,7 @@
 				<input type="submit" value="Gender"/>
 				</form></div>');
 
-    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+    echo sprintf('<div>Standard <form action="'.admin_url( 'admin.php' ).'" method="POST">'.
         wp_nonce_field('bhaa_runner_standard_action').'
 			    <input type="hidden" name="action" value="bhaa_runner_standard_action" />
 				<input type="text" size=1 name="standard" id="standard" value="'.$runner->getStandard().'"/>

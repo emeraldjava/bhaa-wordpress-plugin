@@ -29,6 +29,7 @@ class RunnerAdminController implements Filterable, Actionable {
         return array(
             'admin_menu' => 'bhaa_admin_sub_menu',
             'admin_action_bhaa_runner'=>'bhaa_admin_runner',
+            'admin_action_bhaa_runner_rename_action'=>'bhaa_runner_rename_action',
             'admin_action_bhaa_runner_email_action'=>'bhaa_runner_email_action',
             'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action',
             'admin_action_bhaa_runner_gender_action'=>'bhaa_runner_gender_action',
@@ -65,6 +66,19 @@ class RunnerAdminController implements Filterable, Actionable {
         if(current_user_can('edit_users') && wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
             $runner = new Runner($_POST['id']);
             $runner->renew();
+        }
+        wp_redirect(wp_get_referer());
+        exit();
+    }
+
+    function bhaa_runner_rename_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_rename_action')) {
+            $first_name = $_POST['first_name'];
+            wp_update_user( array ( 'ID' => $_POST['id'], 'first_name' => $first_name ) ) ;
+            $last_name = $_POST['last_name'];
+            wp_update_user( array ( 'ID' => $_POST['id'], 'last_name' => $last_name ) ) ;
+            wp_update_user( array ('ID' => $_POST['id'], 'display_name' => $first_name." ".$last_name));
+            wp_update_user( array ('ID' => $_POST['id'], 'user_nicename' =>  $first_name."-".$last_name));
         }
         wp_redirect(wp_get_referer());
         exit();
