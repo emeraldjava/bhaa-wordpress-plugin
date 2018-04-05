@@ -50,12 +50,14 @@
 				</form></div>');
 
     echo sprintf('<div>Standard <form action="'.admin_url( 'admin.php' ).'" method="POST">'.
-        wp_nonce_field('bhaa_runner_standard_action').'
+                wp_nonce_field('bhaa_runner_standard_action').'
 			    <input type="hidden" name="action" value="bhaa_runner_standard_action" />
 				<input type="text" size=1 name="standard" id="standard" value="'.$runner->getStandard().'"/>
 				<input type="hidden" name="id" value="%d"/>
 				<input type="submit" value="Standard"/>
 				</form></div>',$runner->getID());
+
+    echo '<hr/>';
 
     echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
                 wp_nonce_field('bhaa_runner_renew_action').'
@@ -63,6 +65,7 @@
 				<input type="hidden" name="id" value="%d"/>
 				<input type="submit" value="Renew Runner"/>
 				</form></div>',$runner->getID());
+
 
     //echo var_dump($runner->getMetaData());
     ?>
