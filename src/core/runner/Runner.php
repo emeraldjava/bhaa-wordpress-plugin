@@ -8,6 +8,7 @@
 
 namespace BHAA\core\runner;
 
+use BHAA\core\Connections;
 use p2p_get_connections;
 
 class Runner {
@@ -30,6 +31,7 @@ class Runner {
 
     const BHAA_RUNNER_STANDARD = 'bhaa_runner_standard';
 
+    var $user;
     var $user_data;
     var $meta;
 
@@ -37,7 +39,7 @@ class Runner {
         //var_dump('user:'.$user_id);
 
         //$this->user = get_userdata($user_id);
-        $user = (array) @get_user_by( 'id', $user_id )->data;
+        $this->user = (array) @get_user_by( 'id', $user_id )->data;
         //var_dump('user:'.print_r($this->user,true));
 
         //$user_meta = get_user_meta($user_id);//,"",false);
@@ -46,25 +48,25 @@ class Runner {
         //var_dump('meta:'.print_r($this->meta,true));
 
         // @
-        $this->user_data = @array_merge($user, $this->meta);
+        $this->user_data = @array_merge($this->user, $this->meta);
         //var_dump($this->user_data);
 
         // https://github.com/scribu/wp-posts-to-posts/wiki/Checking-specific-connections
-//        $sectorteam = p2p_get_connections(Connections::SECTORTEAM_TO_RUNNER,array(
-//            'direction' => 'all',
-//            'to' => $user_id,
-//            'fields' => 'p2p_from'
-//        ));
-//        //error_log('sector '.print_r($sectorteam,true));
-//        $this->user_data = @array_merge($this->user_data, array('sectorteam'=>$sectorteam[0]) );
+        $sectorteam = p2p_get_connections(Connections::SECTORTEAM_TO_RUNNER,array(
+            'direction' => 'all',
+            'to' => $user_id,
+            'fields' => 'p2p_from'
+        ));
+        //error_log('sector '.print_r($sectorteam,true));
+        $this->user_data = @array_merge($this->user_data, array('sectorteam'=>$sectorteam[0]) );
 
-//        $company = p2p_get_connections(Connections::HOUSE_TO_RUNNER,array(
-//            'direction' => 'all',
-//            'to' => $user_id,
-//            'fields' => 'p2p_from'
-//        ));
+        $company = p2p_get_connections(Connections::HOUSE_TO_RUNNER,array(
+            'direction' => 'all',
+            'to' => $user_id,
+            'fields' => 'p2p_from'
+        ));
 //        //error_log('company '.print_r($company,true));
-//        $this->user_data = @array_merge($this->user_data, array('company'=>$company[0]));
+        $this->user_data = @array_merge($this->user_data, array('company'=>$company[0]));
 
         //var_dump('user_data:'.print_r($this->user_data,true));
     }
@@ -126,7 +128,23 @@ class Runner {
 
     function getCompanyId() {
         return $this->__get('company');
-        //return $this->__get(Runner::BHAA_RUNNER_COMPANY);
+    }
+
+    /**
+     * See https://github.com/scribu/wp-posts-to-posts/issues/261
+     */
+    function getCompany() {
+        $args = array(
+            'connected_type' => 'house_to_runner',
+            'connected_items' => $this->user,
+            'suppress_filters' => false,
+            'nopaging' => true
+        );
+        $connected = get_posts( $args );
+        if(count($connected))
+            return $connected[0];
+        else
+            return null;
     }
 
     function getSectorTeamId() {

@@ -57,6 +57,13 @@
 				<input type="submit" value="Standard"/>
 				</form></div>',$runner->getID());
 
+    if($runner->getCompany()!=null) {
+        echo sprintf('<div>Company <a href="%s">%s</a></div>',
+            get_permalink($runner->getCompany()->ID),$runner->getCompany()->post_title);
+    } else {
+        echo "No Company";
+    }
+
     echo '<hr/>';
 
     echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
