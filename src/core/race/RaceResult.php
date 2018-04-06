@@ -219,4 +219,16 @@ class RaceResult {
     function updatePositions($race) {
         //$this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
     }
+
+    function listAllRaces() {
+        $query = "SELECT race.ID,race.post_title,race.post_date as racedate,
+              event.ID,event.post_title as event FROM wp_posts as race
+            JOIN wp_p2p event_to_race on 
+            (event_to_race.p2p_to=race.ID and event_to_race.p2p_type='event_to_race')
+            JOIN wp_posts event on (event.ID=event_to_race.p2p_from)
+            WHERE race.post_type in ('race')
+            ORDER BY race.post_date DESC";
+        //$SQL = $this->wpdb->prepare($query);
+        return $this->wpdb->get_results($query,OBJECT);
+    }
 }
