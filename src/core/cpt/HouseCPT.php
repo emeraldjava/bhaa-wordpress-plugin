@@ -17,19 +17,26 @@ class HouseCPT implements Actionable, Filterable {
     const COMPANY_TEAM = 'company';
     const SECTOR_TEAM = 'sector';
 
+    /**
+     * 'init' => 'bhaa_register_taxonomy_sector',
+     * 'init' => 'bhaa_register_taxonomy_teamtype'
+     * @return array
+     */
     public function get_actions() {
         return array(
             'init' => 'bhaa_register_cpt_house'
-            //'init' => 'bhaa_register_taxonomy_sector',
-            //'init' => 'bhaa_register_taxonomy_teamtype'
         );
     }
 
+    /**
+     * 'manage_house_posts_columns' => array('bhaa_manage_house_posts_columns',0,2),
+     * 'manage_house_posts_custom_column' => 'bhaa_manage_house_posts_custom_column'
+     * @return array
+     */
     public function get_filters() {
-        return array();
-//            'manage_house_posts_columns' => array('bhaa_manage_house_posts_columns',0,2),
-//            'manage_house_posts_custom_column' => 'bhaa_manage_house_posts_custom_column'
-//        );
+        return array(
+            'single_template' => 'bhaa_cpt_house_single_template'
+        );
     }
 
     function bhaa_manage_house_posts_columns( $columns ) {
@@ -86,10 +93,10 @@ class HouseCPT implements Actionable, Filterable {
 
         $houseArgs = array(
             'labels' => $houseLabels,
-            'hierarchical' => true,
+            'hierarchical' => false,
             'description' => 'BHAA House Details',
             'supports' => array('title','editor','excerpt','thumbnail','comments'),// add 'page-attributes' for parent hierarchy
-            'taxonomies' => array('sector','category'),
+            'taxonomies' => array(),//'sector','category'),
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => true,
@@ -101,8 +108,8 @@ class HouseCPT implements Actionable, Filterable {
             'can_export' => true,
             'rewrite' => true,
             'capability_type' => 'post',
-            'show_in_rest' => true,
-            'rest_controller_class' => 'WP_REST_Posts_Controller'
+            'show_in_rest' => false
+            //'rest_controller_class' => 'WP_REST_Posts_Controller'
         );
         register_post_type( 'house', $houseArgs );
     }
@@ -252,5 +259,26 @@ class HouseCPT implements Actionable, Filterable {
         //To make a column 'un-sortable' remove it from the array
         unset($columns['date']);
         return $columns;
+    }
+
+    function bhaa_cpt_house_single_template($template) {
+        global $wp_query, $post;
+        if ($post->post_type == "house") {
+        //if ('house' == get_post_type(get_queried_object_id())) {
+            error_log('bhaa_cpt_house_single_template '.get_post_type(get_queried_object_id()));
+
+            global $post_id;
+            // load results
+//            $raceResult = new RaceResult();
+//            $res = $raceResult->getRaceResults(get_the_ID());
+//            // call the template
+//            $mustache = new Mustache();
+//            $raceResultTable = $mustache->renderRaceResults(
+//                Mustache::RACE_RESULTS_INDIVIDUAL, $res,
+//                false, './url', 'K-Club', '10', 'km', 'C');
+//            set_query_var( 'raceResultTable', $raceResultTable );
+            $template = plugin_dir_path(__FILE__) . '/partials/house/house.php';
+        }
+        return $template;
     }
 }

@@ -38,12 +38,12 @@ class RaceCPT implements Actionable, Filterable {
      */
     public function get_filters() {
         return array(
-            'single_template' => 'bhaa_race_cpt_single_template',
+            'single_template' => 'bhaa_cpt_race_single_template',
             'post_row_actions' => array('bhaa_race_post_row_actions',0,2)
         );
     }
 
-    function bhaa_race_cpt_single_template($template) {
+    function bhaa_cpt_race_single_template($template) {
         if ('race' == get_post_type(get_queried_object_id())) {
             global $post_id;
             // load results

@@ -27,8 +27,8 @@ class LeagueCPT implements Actionable, Filterable {
 
     public function get_filters() {
         return array(
-            'post_row_actions' => array('bhaa_league_post_row_actions',0,2)
-            //'single_template' => 'bhaa_single_league_template'
+            'post_row_actions' => array('bhaa_league_post_row_actions',0,2),
+            'single_template' => 'bhaa_cpt_league_single_template'
         );
     }
 
@@ -51,7 +51,7 @@ class LeagueCPT implements Actionable, Filterable {
     /**
      * http://wordpress.stackexchange.com/questions/17385/custom-post-type-templates-from-plugin-folder
      */
-    function bhaa_single_league_template($single) {
+    function bhaa_cpt_league_single_template($template) {
         global $wp_query, $post;
         /* Checks for single template by post type */
         if ($post->post_type == "league") {
@@ -60,15 +60,15 @@ class LeagueCPT implements Actionable, Filterable {
             // check if this is a division sub-query
             if(isset($wp_query->query_vars['division'])) {
                 $division = urldecode($wp_query->query_vars['division']);
-                return BHAA_PLUGIN_DIR.'/includes/templates/single-league-division.php';
+                return  plugin_dir_path(__FILE__) . '/partials/league/single-league-division.php';
             } else {
                 if($type=='T')
-                    return BHAA_PLUGIN_DIR.'/includes/templates/single-league-team.php';
+                    return plugin_dir_path(__FILE__) . '/partials/league/single-league-team.php';
                 else
-                    return BHAA_PLUGIN_DIR.'/front/partials/league/single-league-individual.php';
+                    return plugin_dir_path(__FILE__) . '/partials/league/single-league-individual.php';
             }
         }
-        return $single;
+        return $template;
     }
 
     /**
