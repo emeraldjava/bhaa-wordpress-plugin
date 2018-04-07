@@ -55,9 +55,9 @@ class RunnerManager {
         $password =  wp_hash_password($id);
 
         // insert the user via SQL
-        if($isNewMember) {
+        //if(!$isNewMember) {
             $this->insertUser($id,$username,$password,$email);
-        }
+        //}
         // update the wp_user
         $res = wp_update_user(array(
             'ID'            => $id,
