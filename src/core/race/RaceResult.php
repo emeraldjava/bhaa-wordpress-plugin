@@ -86,7 +86,7 @@ class RaceResult {
                     'standard' => ($details[7] == '') ? null : $details[7],
                     'class' => RaceResult::RAN)
             );
-            error_log(sprintf('%d , %d. %s %s %s',$wpdb->insert_id,$runner_id,$firstname,$surname,$racetime));
+            error_log(sprintf('%d , %d. %s %s %s',$this->wpdb->insert_id,$runner_id,$firstname,$surname,$racetime));
             $res = $this->wpdb->insert_id;
         }
         return $res;

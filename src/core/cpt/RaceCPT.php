@@ -53,7 +53,7 @@ class RaceCPT implements Actionable, Filterable {
             $mustache = new Mustache();
             $raceResultTable = $mustache->renderRaceResults(
                 Mustache::RACE_RESULTS_INDIVIDUAL, $res,
-                false, './url', 'K-Club', '10', 'km', 'C');
+                false, './url', 'Race', '10', 'km', 'C');
             set_query_var( 'raceResultTable', $raceResultTable );
             $template = plugin_dir_path(__FILE__) . '/partials/race/race.php';
         }
@@ -131,7 +131,7 @@ class RaceCPT implements Actionable, Filterable {
     }
 
     function bhaa_race_load_results() {
-        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_delete_results')) {
+        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_load_results')) {
             $race = get_post($_GET['post_id']);
             $resultText = $race->post_content;
             $raceResult = new RaceResult();

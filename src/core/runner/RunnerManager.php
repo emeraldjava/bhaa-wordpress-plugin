@@ -78,7 +78,7 @@ class RunnerManager {
         if($isNewMember){
             add_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M', true);
             add_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'), true);
-            add_user_meta( array( 'ID' => $id, 'role' => 'bhaamember' ) , true);
+            wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ));
         } else {
             update_user_meta( $id, Runner::BHAA_RUNNER_STATUS,'D');
         }
