@@ -1,0 +1,22 @@
+<div>
+{{# division}}
+<div id="division{{code}}" class="division">
+<div id="title"><label><a href="{{url}}?division={{code}}"/>{{name}}</a></label></div>
+<div>{{summary[0].leaguedivision}} <i>Standards:{{summary.min}}-{{summary.max}}. Runners:{{count}}</i></div>
+</div>
+{{/ division}}
+<table width="100%" class="table-1">
+<thead>
+<tr>
+<th>Pos</th>
+<th>Athlete</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody>
+{{# summary }}
+<tr>{{> summary_row_detailed }}</tr>
+{{/ summary }}
+</tbody>
+</table>
+</div>

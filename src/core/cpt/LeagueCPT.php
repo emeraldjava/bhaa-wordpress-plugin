@@ -62,77 +62,13 @@ class LeagueCPT implements Actionable, Filterable {
                 $division = urldecode($wp_query->query_vars['division']);
                 return  plugin_dir_path(__FILE__) . '/partials/league/single-league-division.php';
             } else {
-                if($type=='T')
-                    return plugin_dir_path(__FILE__) . '/partials/league/single-league-team.php';
-                else
+                //if($type=='T')
+                //    return plugin_dir_path(__FILE__) . '/partials/league/single-league-team.php';
+                //else
                     return plugin_dir_path(__FILE__) . '/partials/league/single-league-individual.php';
             }
         }
         return $template;
-    }
-
-    /**
-     * should be moved to the league post
-     * @param unknown $atts
-     * @return string
-     */
-    public function bhaa_league_shortcode($atts) {
-
-        extract( shortcode_atts(
-            array(
-                'division' => 'A',
-                'top' => '100'
-            ), $atts ) );
-
-        $id = get_the_ID();
-        $post = get_post( $id );
-
-        $leagueSummary = new LeagueSummary($id);
-        $summary = $leagueSummary->getDivisionSummary($atts['division'],$atts['top']);
-
-        // division summary
-        if($atts['top']!=1000) {
-            //$template = $this->mustache->loadTemplate('division-summary');
-            return Bhaa_Mustache::get_instance()->loadTemplate('division-summary')->render(
-                array(
-                    'division' => $atts['division'],
-                    'id'=>$id,
-                    'top'=> $atts['top'],
-                    'url'=> get_permalink( $id ),
-                    'linktype' => $leagueSummary->getLinkType(),
-                    'summary' => $summary
-                ));
-        } else {
-
-            //error_log('bhaa_league_shortcode detailed');
-            if(strpos($atts['division'],'L'))
-                $events = $leagueSummary->getLeagueRaces('W');
-            else
-                $events = $leagueSummary->getLeagueRaces('M');
-
-            return Bhaa_Mustache::get_instance()->loadTemplate('division-detailed')->render(
-                array(
-                    'division' => $atts['division'],
-                    'id'=>$id,
-                    'top'=> $atts['top'],
-                    'url'=> get_permalink( $id ),
-                    'summary' => $summary,
-                    'linktype' => $leagueSummary->getLinkType(),
-                    'events' => $events,
-                    'matchEventResult' => function($text, Mustache_LambdaHelper $helper) {
-                        $results = explode(',',$helper->render($text));
-                        //error_log($helper->render($text).' '.$results);
-                        $row = '';
-                        foreach($results as $result) {
-                            if($result==0)
-                                $row .= '<td>-</td>';
-                            else
-                                $row .= '<td>'.$result.'</td>';
-                        }
-                        return $row;
-                    }
-                ));
-        }
     }
 
     public function bhaa_league_meta_data() {

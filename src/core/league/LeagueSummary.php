@@ -1,0 +1,122 @@
+<?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: e074820
+ * Date: 05/04/2018
+ * Time: 16:17
+ */
+
+namespace BHAA\core\league;
+
+class LeagueSummary {
+
+    private $wpdb;
+	private $leagueid;
+	private $type;
+
+	function __construct($leagueid) {
+    	global $wpdb;
+        $this->wpdb = $wpdb;
+		$this->leagueid=$leagueid;
+		$this->type = get_post_meta($this->leagueid,'bhaa_league_type',true);
+	}
+
+	function getType() {
+		return $this->type;
+	}
+
+	function getTableName() {
+		return 'wp_bhaa_leaguesummary';
+	}
+
+	function getWpdb() {
+	    return $this->wpdb;
+	}
+
+	function getLinkType() {
+		if($this->getType()=='T')
+			return 'house/?p';
+		else
+			return 'runner/?id';
+	}
+
+	function getDivisions() {
+		//$type = get_post_meta($this->leagueid,LeagueCpt::BHAA_LEAGUE_TYPE,true);
+		//error_log('getDivisions() '.$type);
+		if($this->type == 'I') {
+			$SQL = $this->getWpdb()->prepare("select * from wp_bhaa_division where type=%s",$this->type);
+ 			error_log($SQL);
+			return $this->getWpdb()->get_results($SQL,OBJECT);
+		} else {
+			$SQL = $this->getWpdb()->prepare("select * from wp_bhaa_division where ID in (%s)","9,13");
+			error_log($SQL);
+			return $this->getWpdb()->get_results($SQL,OBJECT);
+			//return array('M','W');
+		}
+	}
+
+	function getLeagueRaces($type='') {
+		$SQL = $this->getWpdb()->prepare("select l.ID as lid,l.post_title,
+			e.ID as eid,e.post_title as etitle,LEFT(e.post_title,8) as etag,eme.event_start_date as edate,e.guid as eurl,
+			r.ID as rid,r.post_title as rtitle,r_type.meta_value as rtype
+			from wp_posts l
+			inner join wp_p2p l2e on (l2e.p2p_type='league_to_event' and l2e.p2p_from=l.ID)
+			inner join wp_posts e on (e.id=l2e.p2p_to)
+			inner join wp_em_events eme on (eme.post_id=e.id)
+			inner join wp_p2p e2r on (e2r.p2p_type='event_to_race' and e2r.p2p_from=e.ID)
+			inner join wp_posts r on (r.id=e2r.p2p_to)
+			inner join wp_postmeta r_type on (r_type.post_id=r.id and r_type.meta_key='bhaa_race_type')
+			where l.post_type='league'
+			and l.ID=%d", $this->leagueid);
+		if($type!='')
+			$SQL .= sprintf(" and r_type.meta_value in ('C','S','%s') AND r_type.meta_value!='TRACK'",$type);
+		$SQL .= ' order by eme.event_start_date ASC';
+		//echo $SQL;
+		//error_log($SQL);
+		// OBJECT, OBJECT_K, ARRAY_A, ARRAY_N
+		return $this->getWpdb()->get_results($SQL,OBJECT);
+	}
+
+	// return a summary of the top x in each division
+	function getLeagueSummaryByDivision($limit=10) {
+		global $wpdb;
+		//error_log('getLeagueSummaryByDivision '.$this->type.' '.$this->leagueid);
+		if($this->type=='I') {
+			$query = $wpdb->prepare('SELECT *,wp_users.display_name as display_name
+				FROM wp_bhaa_leaguesummary
+				join wp_users on wp_users.id=wp_bhaa_leaguesummary.leagueparticipant
+				WHERE league = %d
+				AND leagueposition <= %d
+				AND leaguetype = %s
+				order by league, leaguedivision, leagueposition',$this->leagueid,$limit,$this->type);
+		} else {
+			$query = $wpdb->prepare('SELECT *,wp_posts.post_title as display_name
+				FROM wp_bhaa_leaguesummary
+				left join wp_posts on (wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant and wp_posts.post_type="house")
+				WHERE league = %d
+				AND leagueposition <= %d
+				AND leaguetype = %s
+				order by league, leaguedivision, leagueposition',$this->leagueid,$limit,$this->type);
+		}
+		error_log($this->type.' '.$this->leagueid.' '.$query);
+		return $wpdb->get_results($query);
+	}
+
+	// get the specific of a league division and limit
+	function getDivisionSummary($division,$limit=100) {
+		if($this->type=='I') {
+			$SQL = $this->getWpdb()->prepare('select wp_bhaa_leaguesummary.*,wp_users.display_name,wp_posts.ID,wp_posts.post_title from wp_bhaa_leaguesummary
+				left join wp_users on wp_users.id=wp_bhaa_leaguesummary.leagueparticipant
+				left join wp_posts on wp_posts.post_type="house" and wp_posts.id=
+					(select meta_value from wp_usermeta where user_id=wp_bhaa_leaguesummary.leagueparticipant and meta_key="bhaa_runner_company")
+				where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
+		} else {
+			$SQL = $this->getWpdb()->prepare('select wp_bhaa_leaguesummary.*,wp_posts.post_title as display_name,wp_posts.ID,wp_posts.post_title from wp_bhaa_leaguesummary
+				left join wp_posts on (wp_posts.post_type="house" and wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant)
+				where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
+		}
+		error_log($division.' '.$SQL);
+		return $this->getWpdb()->get_results($SQL);
+	}
+}
+?>

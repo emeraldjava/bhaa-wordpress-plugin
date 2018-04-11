@@ -29,6 +29,10 @@ class RaceResult {
         $this->wpdb = $wpdb;
     }
 
+	function getTableName() {
+		return 'wp_bhaa_raceresult';
+	}
+
     function processRaceResults($raceId,String $resultText) {
         error_log('bhaa_race_load_results('.strlen($resultText).')');
         $results = explode("\n",$resultText);

@@ -52,6 +52,7 @@ class Main {
         $this->loader->register(new core\cpt\LeagueCPT());
         $this->loader->register(new core\Connections());
         new core\race\RaceResultShortcode();
+        new core\league\LeagueShortcode();
     }
     /**
      * Define the locale for this plugin for internationalization.

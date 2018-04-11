@@ -10,7 +10,7 @@ namespace BHAA\core\cpt;
 
 use BHAA\utils\Actionable;
 use BHAA\utils\Filterable;
-use BHAA\core\mustache\Mustache;
+use BHAA\core\Mustache;
 use BHAA\core\race\RaceResult;
 
 class RaceCPT implements Actionable, Filterable {
@@ -51,9 +51,16 @@ class RaceCPT implements Actionable, Filterable {
             $res = $raceResult->getRaceResults(get_the_ID());
             // call the template
             $mustache = new Mustache();
-            $raceResultTable = $mustache->renderRaceResults(
-                Mustache::RACE_RESULTS_INDIVIDUAL, $res,
-                false, './url', 'Race', '10', 'km', 'C');
+            $raceResultTable = $mustache->renderTemplate(
+                'race.results.individual',
+                array(
+                    'runners'=>$res,
+                    'isAdmin'=>false,
+                    'formUrl'=>'link',
+                    'racename'=>'racename',
+                    'dist'=>'dist',
+                    'unit'=>'unit',
+                    'type'=>'type'));
             set_query_var( 'raceResultTable', $raceResultTable );
             $template = plugin_dir_path(__FILE__) . '/partials/race/race.php';
         }
@@ -81,9 +88,16 @@ class RaceCPT implements Actionable, Filterable {
         $res = $raceResult->getRaceResults($_GET['id']);
         // call the template
         $mustache = new Mustache();
-        $raceResultTable = $mustache->renderRaceResults(
-            Mustache::EDIT_RACE_RESULTS_INDIVIDUAL, $res,
-            true, './url', 'K-Club', '10', 'km', 'C');
+        $raceResultTable = $mustache->renderTemplate(
+                        'edit.race.results.individual',
+                        array(
+                            'runners'=>$res,
+                            'isAdmin'=>true,
+                            'formUrl'=>'link',
+                            'racename'=>'racename',
+                            'dist'=>'dist',
+                            'unit'=>'unit',
+                            'type'=>'type'));
         set_query_var( 'raceResultTable', $raceResultTable );
         include plugin_dir_path( __FILE__ ) . 'partials/race/edit_results.php';
     }
