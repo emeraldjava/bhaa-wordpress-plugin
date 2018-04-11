@@ -11,7 +11,7 @@ namespace BHAA\core\race;
 class RaceResultShortcode {
 
     function __construct() {
-        add_shortcode('bhaa_race_title'     ,array($this,'bhaa_race_title'));
+        add_shortcode('bhaa_race_title'     ,array($this,'bhaa_race_title_shortcode'));
         add_shortcode('bhaa_race_results'   ,array($this,'bhaa_race_results_shortcode'));
     }
 
@@ -21,7 +21,7 @@ class RaceResultShortcode {
         include_once( 'partials/list.race.results.php' );
     }
 
-    function bhaa_race_title() {
+    function bhaa_race_title_shortcode() {
         global $post;
         return 'Race '.$post->post_title.' on date '.$post->post_date;
     }

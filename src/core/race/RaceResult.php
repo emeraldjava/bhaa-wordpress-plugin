@@ -235,4 +235,29 @@ class RaceResult {
         //$SQL = $this->wpdb->prepare($query);
         return $this->wpdb->get_results($query,OBJECT);
     }
+
+    function getRunnerResults($runner) {
+        $query = $this->wpdb->prepare("SELECT
+              rr.racetime,
+              rr.position,
+              rr.standard,
+              rr.poststandard,
+              rr.runner,
+              rr.id,
+              race.id as race_id,
+              event.post_title as event_title,
+              event.post_name as event_name,
+              event.ID as event_id,
+              race_distance.meta_value as race_distance,
+              race_unit.meta_value as race_unit
+            FROM wp_bhaa_raceresult rr
+              JOIN wp_posts race on (rr.race=race.ID)
+              JOIN wp_postmeta race_distance on (race_distance.post_id=race.id and race_distance.meta_key='bhaa_race_distance')
+              JOIN wp_postmeta race_unit on (race_unit.post_id=race.id and race_unit.meta_key='bhaa_race_unit')
+              JOIN wp_p2p event_to_race on (event_to_race.p2p_to=race.ID and event_to_race.p2p_type='event_to_race')
+              JOIN wp_posts event on (event.ID=event_to_race.p2p_from)
+            WHERE rr.runner=%d AND rr.class IN ('RAN','RACE_ORG')
+            ORDER BY race.post_date desc",$runner);
+        return $this->wpdb->get_results($query, ARRAY_A);
+    }
 }

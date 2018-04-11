@@ -53,6 +53,7 @@ class Main {
         $this->loader->register(new core\Connections());
         new core\race\RaceResultShortcode();
         new core\league\LeagueShortcode();
+        new core\runner\RunnerShortcode();
     }
     /**
      * Define the locale for this plugin for internationalization.
