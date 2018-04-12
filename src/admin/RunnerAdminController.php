@@ -59,6 +59,9 @@ class RunnerAdminController implements Filterable, Actionable {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
         $runner = new Runner($_REQUEST['id']);
+        $runnerManager = new RunnerManager();
+        $matchedRunners = $runnerManager->findMatchingRunners($_REQUEST['id']);
+
         include_once( 'partials/bhaa_admin_runner.php' );
     }
 

@@ -272,4 +272,64 @@ class RunnerManager {
         $user_query = new WP_User_Query( $args );
         $runners = $user_query->get_results();
     }
+
+    /**
+     * @param $runner
+     */
+    function findMatchingRunners($runner) {
+        $user_info = get_userdata($runner);
+        $bhaa_runner_dateofbirth = get_user_meta($runner,'bhaa_runner_dateofbirth',true);
+
+        $queryMatchAll = new WP_User_Query(
+            array(
+                'exclude' => array($runner),
+                'fields' => 'all_with_meta',
+                'meta_query' => array(
+                    array(
+                        'key' => 'last_name',
+                        'value' => $user_info->user_lastname,
+                        'compare' => '='),
+                    array(
+                        'key' => 'first_name',
+                        'value' => $user_info->user_firstname,
+                        'compare' => '='),
+                    array(
+                        'key' => 'bhaa_runner_dateofbirth',
+                        'value' => $bhaa_runner_dateofbirth,
+                        'compare' => '='
+                    ))));
+
+        $queryMatchName = new WP_User_Query(
+            array(
+                'exclude' => array($runner),
+                'fields' => 'all_with_meta',
+                'meta_query' => array(
+                    array(
+                        'key' => 'last_name',
+                        'value' => $user_info->user_lastname,
+                        'compare' => '='),
+                    array(
+                        'key' => 'first_name',
+                        'value' => $user_info->user_firstname,
+                        'compare' => '='
+                    ))));
+
+        $queryMatchLastDob = new WP_User_Query(
+            array(
+                'exclude' => array($runner),
+                'fields' => 'all_with_meta',
+                'meta_query' => array(
+                    array(
+                        'key' => 'last_name',
+                        'value' => $user_info->user_lastname,
+                        'compare' => '='),
+                    array(
+                        'key' => 'bhaa_runner_dateofbirth',
+                        'value' => $bhaa_runner_dateofbirth,
+                        'compare' => '='
+                    ))));
+
+        // merge the three results
+        $users = array_merge( $queryMatchAll->get_results(), $queryMatchName->get_results(), $queryMatchLastDob->get_results());
+    }
 }
