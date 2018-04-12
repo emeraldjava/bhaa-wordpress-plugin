@@ -245,6 +245,8 @@ class RaceResult {
               rr.runner,
               rr.id,
               race.id as race_id,
+              race.post_name as race_name,
+              race.post_date as race_date,
               event.post_title as event_title,
               event.post_name as event_name,
               event.ID as event_id,
