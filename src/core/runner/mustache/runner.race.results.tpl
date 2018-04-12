@@ -1,22 +1,22 @@
-<div class="container">
+<div class="container-fluid">
     <table class="table table-sm table-striped table-bordered" width="100%">
-        <tr>
-            <th>Event</th>
+        <div class="row">
+            <div class="col-sm-6">Event</div>
             <!--<th>Date</th>-->
-            <th>Distance</th>
-            <th>Pos</th>
-            <th>Time</th>
-            <th>Std</th>
-        </tr>
+            <div class="col-sm-2">Distance</div>
+            <div class="col-sm-1">Pos</div>
+            <div class="col-sm-2">Time</div>
+            <div class="col-sm-1">Std</div>
+        </div>
         {{# runners}}
-        <tr>
-            <td><a class='bhaa-url-link' href='{{url}}/race/{{race_name}}'><b>{{event_name}}</b></a></td>
-            <!--<td>{{race_date}}</td>-->
-            <td>{{race_distance}} {{race_unit}}</td>
-            <td>{{position}}</td>
-            <td>{{racetime}}</td>
-            <td>{{standard}}</td>
-        </tr>
+        <div class="row" id="{{id}}">
+            <div class="col-sm-6"><a class='bhaa-url-link' href='{{url}}/race/{{race_name}}'><b>{{event_name}}</b></a></div>
+            <!--<div>{{race_date}}</div>-->
+            <div class="col-sm-2">{{race_distance}} {{race_unit}}</div>
+            <div class="col-sm-1">{{position}}</div>
+            <div class="col-sm-2">{{racetime}}</div>
+            <div class="col-sm-1">{{standard}}</div>
+        </div>
         {{/ runners}}
     </table>
 </div>
