@@ -7,7 +7,8 @@
  */
 
 namespace BHAA\core;
-use BHAA\utils\Filterable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 
 /**
  * Class Connections
@@ -18,7 +19,7 @@ use BHAA\utils\Filterable;
 
  * @package BHAA\core
  */
-class Connections implements Filterable {
+class Connections implements Loadable {
     
     const EVENT_TO_RACE = 'event_to_race';
     const LEAGUE_TO_EVENT = 'league_to_event';
@@ -30,17 +31,12 @@ class Connections implements Filterable {
     // indicates a team that 6 leagues points for organising an event
     const TEAM_POINTS = 'team_points';
 
-    function __construct() {
-        add_action('p2p_init',array(&$this,'bhaa_connection_types'));
-        add_action('p2p_created_connection',array($this,'bhaa_p2p_created_connection'));
-        add_action('p2p_delete_connections',array($this,'bhaa_p2p_delete_connections'));
-    }
-
-    public function get_filters() {
-        return array(
-            'p2p_user_admin_column_link' => array('bhaa_change_user_to_house_column_url', 10, 2 ),
-            'p2p_post_admin_column_link' => array('bhaa_change_house_to_user_column_url', 10, 2)
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('p2p_init',$this,'bhaa_connection_types');
+        $loader->add_action('p2p_created_connection',$this,'bhaa_p2p_created_connection');
+        $loader->add_action('p2p_created_connection',$this,'bhaa_p2p_delete_connections');
+        $loader->add_filter('p2p_user_admin_column_link',$this,'bhaa_change_user_to_house_column_url',10,2);
+        $loader->add_filter('p2p_user_admin_column_link',$this,'bhaa_change_house_to_user_column_url',10,2);
     }
 
     function bhaa_connection_types() {

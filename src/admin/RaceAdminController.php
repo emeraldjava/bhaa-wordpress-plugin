@@ -8,11 +8,11 @@
 
 namespace BHAA\admin;
 
-use BHAA\utils\Actionable;
-use BHAA\utils\Filterable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 use BHAA\core\race\RaceResult;
 
-class RaceAdminController implements Filterable, Actionable {
+class RaceAdminController implements Loadable {
 
     private $raceResult;
 
@@ -20,16 +20,10 @@ class RaceAdminController implements Filterable, Actionable {
         $this->raceResult = new RaceResult();
     }
 
-    public function get_filters() {
-        return array();
-    }
-
-    public function get_actions() {
-        return array(
-            'admin_menu' => 'bhaa_admin_race_sub_menu',
-            'admin_action_bhaa_race_result_save' => 'bhaa_race_result_save',
-            'admin_action_bhaa_race_result_delete' => 'bhaa_race_result_delete'
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('admin_menu',$this,'bhaa_admin_race_sub_menu');
+        $loader->add_action('admin_action_bhaa_race_result_save',$this,'bhaa_race_result_save');
+        $loader->add_action('admin_action_bhaa_race_result_delete',$this,'bhaa_race_result_delete');
     }
 
     public function bhaa_admin_race_sub_menu() {

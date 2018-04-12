@@ -8,14 +8,13 @@
 
 namespace BHAA\core\cpt;
 
-use BHAA\utils\Actionable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 
-class EventCPT implements Actionable {
+class EventCPT implements Loadable {
 
-    public function get_actions() {
-        return array(
-            'init' => 'bhaa_register_cpt_event'
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('init',$this,'bhaa_register_cpt_event');
     }
 
     function bhaa_register_cpt_event() {

@@ -8,9 +8,10 @@
 
 namespace BHAA\front;
 
-use BHAA\utils\Actionable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 
-class Controller implements Actionable {
+class Controller implements Loadable {
 
     private $plugin_name;
     private $version;
@@ -21,12 +22,11 @@ class Controller implements Actionable {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('wp_enqueue_scripts', array($this,'bhaa_enqueue_styles'));
-        add_action('wp_enqueue_scripts', array($this,'bhaa_enqueue_scripts'));
     }
 
-    public function get_actions() {
-        return array();
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('wp_enqueue_scripts',$this,'bhaa_enqueue_styles');
+        $loader->add_action('wp_enqueue_scripts',$this,'bhaa_enqueue_scripts');
     }
 
     /**

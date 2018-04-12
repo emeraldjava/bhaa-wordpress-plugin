@@ -8,29 +8,21 @@
 
 namespace BHAA\admin;
 
-use BHAA\utils\Actionable;
-use BHAA\utils\Filterable;
-
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 use BHAA\core\league\IndividualLeague;
 use BHAA\core\league\TeamLeague;
-
 use BHAA\core\cpt\LeagueCPT;
 
-class LeagueAdminController implements Filterable, Actionable {
+class LeagueAdminController implements Loadable {
 
     function __construct() {
     }
 
-    public function get_filters() {
-        return array();
-    }
-
-    public function get_actions() {
-        return array(
-            'admin_action_bhaa_league_delete' => 'bhaa_league_delete',
-            'admin_action_bhaa_league_populate' => 'bhaa_league_populate',
-            'admin_action_bhaa_league_top_ten' => 'bhaa_league_top_ten'
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('admin_action_bhaa_league_delete',$this,'bhaa_league_delete');
+        $loader->add_action('admin_action_bhaa_league_populate',$this,'bhaa_league_populate');
+        $loader->add_action('admin_action_bhaa_league_top_ten',$this,'bhaa_league_top_ten');
     }
 
     /**

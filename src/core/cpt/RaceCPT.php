@@ -8,39 +8,29 @@
 
 namespace BHAA\core\cpt;
 
-use BHAA\utils\Actionable;
-use BHAA\utils\Filterable;
 use BHAA\core\Mustache;
 use BHAA\core\race\RaceResult;
 
-class RaceCPT implements Actionable, Filterable {
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
+
+class RaceCPT implements Loadable {
 
     const BHAA_RACE_DISTANCE = 'bhaa_race_distance';
     const BHAA_RACE_UNIT = 'bhaa_race_unit';
     const BHAA_RACE_TYPE = 'bhaa_race_type';
     const BHAA_RACE_TEAM_RESULTS = 'bhaa_race_team_results';
 
-    public function get_actions() {
-        return array(
-            'init' => 'bhaa_register_race_cpt',
-            'add_meta_boxes' => 'bhaa_race_meta_data',
-            //'add_meta_boxes' => 'bhaa_team_meta_data',
-            'save_post' => 'bhaa_save_race_meta',
-            'admin_action_bhaa_race_delete_results'=>'bhaa_race_delete_results',
-            'admin_action_bhaa_race_load_results'=>'bhaa_race_load_results',
-            'admin_menu'=>'bhaa_race_sub_menu'
-        );
-    }
-
-    /**
-     * single-race_template
-     * @return array
-     */
-    public function get_filters() {
-        return array(
-            'single_template' => 'bhaa_cpt_race_single_template',
-            'post_row_actions' => array('bhaa_race_post_row_actions',0,2)
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('init',$this,'bhaa_register_race_cpt');
+        $loader->add_action('add_meta_boxes',$this,'bhaa_race_meta_data');
+        $loader->add_action('add_meta_boxes',$this,'bhaa_team_meta_data');
+        $loader->add_action('save_post',$this,'bhaa_save_race_meta');
+        $loader->add_action('admin_action_bhaa_race_delete_results',$this,'bhaa_race_delete_results');
+        $loader->add_action('admin_action_bhaa_race_load_results',$this,'bhaa_race_load_results');
+        $loader->add_action('admin_menu',$this,'bhaa_race_sub_menu');
+        $loader->add_filter('single_template',$this,'bhaa_cpt_race_single_template');
+        $loader->add_filter('post_row_actions',$this,'bhaa_race_post_row_actions',10,2);
     }
 
     function bhaa_cpt_race_single_template($template) {

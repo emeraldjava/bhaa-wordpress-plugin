@@ -8,35 +8,24 @@
 
 namespace BHAA\core\cpt;
 
-use BHAA\utils\Actionable;
-use BHAA\utils\Filterable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 
-class HouseCPT implements Actionable, Filterable {
+class HouseCPT implements Loadable {
 
     const TEAM_TYPE = 'teamtype';
     const COMPANY_TEAM = 'company';
     const SECTOR_TEAM = 'sector';
 
     /**
-     * 'init' => 'bhaa_register_taxonomy_sector',
-     * 'init' => 'bhaa_register_taxonomy_teamtype'
-     * @return array
-     */
-    public function get_actions() {
-        return array(
-            'init' => 'bhaa_register_cpt_house'
-        );
-    }
-
-    /**
      * 'manage_house_posts_columns' => array('bhaa_manage_house_posts_columns',0,2),
      * 'manage_house_posts_custom_column' => 'bhaa_manage_house_posts_custom_column'
-     * @return array
      */
-    public function get_filters() {
-        return array(
-            'single_template' => 'bhaa_cpt_house_single_template'
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('init',$this,'bhaa_register_cpt_house');
+        $loader->add_action('init',$this,'bhaa_register_taxonomy_sector');
+        $loader->add_action('init',$this,'bhaa_register_taxonomy_teamtype');
+        $loader->add_filter('single_template',$this,'bhaa_cpt_house_single_template');
     }
 
     function bhaa_manage_house_posts_columns( $columns ) {

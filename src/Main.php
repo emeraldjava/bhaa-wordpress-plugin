@@ -37,20 +37,31 @@ class Main {
         $this->set_locale();
 
         // register the front
-        $this->loader->register(new front\Controller( $this->get_plugin_name(), $this->get_version()));
+        $controller = new front\Controller( $this->get_plugin_name(), $this->get_version());
+        $controller->registerHooks($this->loader);
 
         // register the BHAA objects with support actions and filters.
-        $this->loader->register(new admin\AdminController( $this->get_plugin_name(), $this->get_version()));
-        $this->loader->register(new admin\RunnerAdminController());
-        $this->loader->register(new admin\RaceAdminController());
-        $this->loader->register(new admin\LeagueAdminController());
+        $adminController = new admin\AdminController( $this->get_plugin_name(), $this->get_version());
+        $adminController->registerHooks($this->loader);
+        $runnerAdminController = new admin\RunnerAdminController();
+        $runnerAdminController->registerHooks($this->loader);
+        $raceAdminController = new admin\RaceAdminController();
+        $raceAdminController->registerHooks($this->loader);
+        $leagueAdminController = new admin\LeagueAdminController();
+        $leagueAdminController->registerHooks($this->loader);
 
         // register the core objects
-        $this->loader->register(new core\cpt\EventCPT());
-        $this->loader->register(new core\cpt\RaceCPT());
-        $this->loader->register(new core\cpt\HouseCPT());
-        $this->loader->register(new core\cpt\LeagueCPT());
-        $this->loader->register(new core\Connections());
+        $eventCpt = new core\cpt\EventCPT();
+        $eventCpt->registerHooks($this->loader);
+        $raceCpt = new core\cpt\RaceCPT();
+        $raceCpt->registerHooks($this->loader);
+        $houseCpt = new core\cpt\HouseCPT();
+        $houseCpt->registerHooks($this->loader);
+        $leagueCpt = new core\cpt\LeagueCPT();
+        $leagueCpt->registerHooks($this->loader);
+        $connections = new core\Connections();
+        $connections->registerHooks($this->loader);
+
         new core\race\RaceResultShortcode();
         new core\league\LeagueShortcode();
         new core\runner\RunnerShortcode();
@@ -62,14 +73,14 @@ class Main {
     private function set_locale() {
         $plugin_i18n = new utils\Internationalization();
         $plugin_i18n->set_domain( $this->get_plugin_name() );
-        $this->loader->register($plugin_i18n);
+        $plugin_i18n->registerHooks($this->loader);
     }
 
     /**
      * Run the loader to execute all of the hooks with WordPress.
      */
     public function run() {
-        $this->loader->loadActionsAndFilters();
+        $this->loader->run();
     }
     /**
      * The name of the plugin used to uniquely identify it within the context of
@@ -77,12 +88,6 @@ class Main {
      */
     public function get_plugin_name() {
         return $this->plugin_name;
-    }
-    /**
-     * The reference to the class that orchestrates the hooks with the plugin.
-     */
-    public function get_loader() {
-        return $this->loader;
     }
     /**
      * Retrieve the version number of the plugin.

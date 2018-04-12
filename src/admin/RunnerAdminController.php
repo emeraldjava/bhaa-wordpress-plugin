@@ -9,33 +9,26 @@
 namespace BHAA\admin;
 
 use BHAA\core\runner\RunnerManager;
-use BHAA\utils\Actionable;
-use BHAA\utils\Filterable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 use BHAA\core\runner\Runner;
 use BHAA\core\Connections;
 
-class RunnerAdminController implements Filterable, Actionable {
+class RunnerAdminController implements Loadable {
 
-    public function get_filters() {
-        return array(
-            'user_row_actions'=>array('bhaa_user_row_actions_runner_link',10,2),
-            'manage_users_columns'=>array('bhaa_manage_users_columns',10,3),
-            'manage_users_custom_column'=>array('bhaa_manage_users_custom_column',10,3),
-            'user_row_actions'=>array('bhaa_user_row_actions_runner_link',10,2)
-        );
-    }
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('admin_menu',$this,'bhaa_admin_sub_menu');
+        $loader->add_action('admin_action_bhaa_runner',$this,'bhaa_admin_runner');
+        $loader->add_action('admin_action_bhaa_runner_rename_action',$this,'bhaa_runner_rename_action');
+        $loader->add_action('admin_action_bhaa_runner_email_action',$this,'bhaa_runner_email_action');
+        $loader->add_action('admin_action_bhaa_runner_gender_action',$this,'bhaa_runner_gender_action');
+        $loader->add_action('admin_action_bhaa_runner_dob_action',$this,'bhaa_runner_dob_action');
+        $loader->add_action('admin_action_bhaa_runner_standard_action',$this,'bhaa_runner_standard_action');
 
-    public function get_actions() {
-        return array(
-            'admin_menu' => 'bhaa_admin_sub_menu',
-            'admin_action_bhaa_runner'=>'bhaa_admin_runner',
-            'admin_action_bhaa_runner_rename_action'=>'bhaa_runner_rename_action',
-            'admin_action_bhaa_runner_email_action'=>'bhaa_runner_email_action',
-            'admin_action_bhaa_runner_renew_action'=>'bhaa_runner_renew_action',
-            'admin_action_bhaa_runner_gender_action'=>'bhaa_runner_gender_action',
-            'admin_action_bhaa_runner_dob_action'=>'bhaa_runner_dob_action',
-            'admin_action_bhaa_runner_standard_action'=>'bhaa_runner_standard_action'
-        );
+        $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
+        $loader->add_filter('manage_users_columns',$this,'bhaa_manage_users_columns',10,3);
+        $loader->add_filter('manage_users_custom_column',$this,'bhaa_manage_users_custom_column',10,2);
+        $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
     }
 
     public function bhaa_admin_sub_menu() {

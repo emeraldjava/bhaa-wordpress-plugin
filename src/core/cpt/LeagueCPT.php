@@ -8,28 +8,21 @@
 
 namespace BHAA\core\cpt;
 
-use BHAA\utils\Actionable;
-use BHAA\utils\Filterable;
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 
-class LeagueCPT implements Actionable, Filterable {
+class LeagueCPT implements Loadable {
 
     const BHAA_LEAGUE_RACES_TO_SCORE = 'races_to_score';
     const BHAA_LEAGUE_TYPE = 'bhaa_league_type';
 
-    public function get_actions() {
-        return array(
-            'init' => 'bhaa_register_league_cpt',
-            'add_meta_boxes' => 'bhaa_league_meta_data',
-            'save_post' => 'bhaa_league_save_meta_data',
-            'admin_menu' => 'bhaa_league_populate_metabox'
-        );
-    }
-
-    public function get_filters() {
-        return array(
-            'post_row_actions' => array('bhaa_league_post_row_actions',0,2),
-            'single_template' => 'bhaa_cpt_league_single_template'
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('init',$this,'bhaa_register_league_cpt');
+        $loader->add_action('add_meta_boxes',$this,'bhaa_league_meta_data');
+        $loader->add_action('save_post',$this,'bhaa_league_save_meta_data');
+        $loader->add_action('admin_menu',$this,'bhaa_league_populate_metabox');
+        $loader->add_filter('post_row_actions',$this,'bhaa_league_post_row_actions',10,2);
+        $loader->add_filter('single_template',$this,'bhaa_cpt_league_single_template');
     }
 
     function bhaa_league_populate_metabox() {

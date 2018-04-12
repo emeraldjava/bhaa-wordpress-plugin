@@ -9,12 +9,12 @@
 namespace BHAA\admin;
 
 use BHAA\core\runner\RunnerManager;
-use BHAA\utils\Actionable;
-
+use BHAA\utils\Loadable;
+use BHAA\utils\Loader;
 use League\Csv\Writer;
 use SplTempFileObject;
 
-class AdminController implements Actionable {
+class AdminController implements Loadable {
 
     /**
      * The ID of this plugin.
@@ -32,28 +32,20 @@ class AdminController implements Actionable {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('admin_enqueue_scripts', array($this,'bhaa_admin_enqueue_styles'));
-        add_action('admin_enqueue_scripts', array($this,'bhaa_admin_enqueue_scripts'));
+        add_action('', array($this,''));
+        add_action('', array($this,''));
     }
 
-    /**
-     * Was
-     *     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-     *     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-     * in the Main class
-     * @return array
-     *
-     */
-    public function get_actions() {
-        return array(
-            'admin_menu' => 'bhaa_admin_menu',
-            'admin_action_bhaa_export_members' => 'bhaa_export_members',
-            'admin_action_bhaa_registrar_export_members' => 'bhaa_registrar_export_members',
-            'admin_action_bhaa_registrar_export_inactive_members' => 'bhaa_registrar_export_inactive_members',
-            'admin_action_bhaa_registrar_export_day_members' => 'bhaa_registrar_export_day_members',
-            'admin_action_bhaa_registrar_export_online' => 'bhaa_registrar_export_online',
-            'admin_action_bhaa_registrar_export_new_online_members' => 'bhaa_registrar_export_new_online_members'
-        );
+    public function registerHooks(Loader $loader) {
+        $loader->add_action('admin_enqueue_scripts',$this,'bhaa_admin_enqueue_styles');
+        $loader->add_action('admin_enqueue_scripts',$this,'bhaa_admin_enqueue_scripts');
+        $loader->add_action('admin_menu',$this,'bhaa_admin_menu');
+        $loader->add_action('admin_action_bhaa_export_members',$this,'bhaa_export_members');
+        $loader->add_action('admin_action_bhaa_registrar_export_members',$this,'bhaa_registrar_export_members');
+        $loader->add_action('admin_action_bhaa_registrar_export_inactive_members',$this,'bhaa_registrar_export_inactive_members');
+        $loader->add_action('admin_action_bhaa_registrar_export_day_members',$this,'bhaa_registrar_export_day_members');
+        $loader->add_action('admin_action_bhaa_registrar_export_online',$this,'bhaa_registrar_export_online');
+        $loader->add_action('admin_action_bhaa_registrar_export_new_online_members',$this,'bhaa_registrar_export_new_online_members');
     }
 
     function bhaa_export_members() {
