@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.04.13 Add unit test framework.
 - 2018.04.11 Add runner race result shortcode.
 - 2018.04.10 Add league shortcode.
 - 2018.04.09 Update mustache templates.
