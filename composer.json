@@ -24,6 +24,7 @@
     }
   },
   "require-dev": {
-    "brain/monkey": "2.*"
+    "brain/monkey": "2.*",
+    "phpunit/phpunit": "~7.0.2"
   }
 }
