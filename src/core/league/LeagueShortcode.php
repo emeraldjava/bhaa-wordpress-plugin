@@ -13,7 +13,7 @@ use BHAA\core\Mustache;
 class LeagueShortcode {
 
     function __construct() {
-        add_shortcode('bhaa_league',array($this,'bhaa_league_shortcode'));
+        add_shortcode('bhaa_league','bhaa_league_shortcode');
     }
 
     /**
