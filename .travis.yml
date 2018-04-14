@@ -9,7 +9,7 @@ before_script:
     - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
-    -  PHP_VERSION=7.1.11 /vendor/bin/phpunit
+    -  PHP_VERSION=7.1.11 ./vendor/bin/phpunit
 
 after_success:
     - ./deploy.sh ${FTP_USER} ${FTP_PASSWORD} ${FTP_SITE} ${FTP_PATH}
