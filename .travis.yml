@@ -7,6 +7,7 @@ php:
 before_script:
     - travis_retry composer self-update
     - travis_retry composer install --no-interaction --prefer-source --dev
+    - chmod +x deploy.sh
 
 script:
     -  PHP_VERSION=7.1.11 ./vendor/bin/phpunit
