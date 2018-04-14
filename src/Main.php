@@ -35,7 +35,9 @@ class Main {
         $this->version = '1.0.0';
         $this->loader = new utils\Loader();
         $this->set_locale();
+    }
 
+    function registerObjects() {
         // register the front
         $controller = new front\Controller( $this->get_plugin_name(), $this->get_version());
         $controller->registerHooks($this->loader);
@@ -80,6 +82,7 @@ class Main {
      * Run the loader to execute all of the hooks with WordPress.
      */
     public function run() {
+        $this->registerObjects();
         $this->loader->run();
     }
     /**

@@ -32,8 +32,6 @@ class AdminController implements Loadable {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('', array($this,''));
-        add_action('', array($this,''));
     }
 
     public function registerHooks(Loader $loader) {

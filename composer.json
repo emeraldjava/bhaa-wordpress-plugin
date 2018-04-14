@@ -6,8 +6,7 @@
     "scribu/scb-framework": "dev-master",
     "scribu/lib-posts-to-posts": "dev-master",
     "mustache/mustache": "2.12.0",
-    "league/csv": "^9.1",
-    "php-di/php-di": "^6.0"
+    "league/csv": "^9.1"
   },
   "autoload" : {
     "psr-4" : {
@@ -25,6 +24,6 @@
   },
   "require-dev": {
     "brain/monkey": "2.*",
-    "phpunit/phpunit": "7.1"
+    "phpunit/phpunit": "7.1.3"
   }
 }
