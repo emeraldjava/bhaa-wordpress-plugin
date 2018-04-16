@@ -19,9 +19,7 @@ class RunnerShortcode {
 
     function bhaa_runner_results_shortcode($args) {
         $raceResult = new RaceResult();
-        error_log('bhaa_runner_results_shortcode '.$_GET['id'].'-'.get_query_var('id'));
         $results = $raceResult->getRunnerResults($_GET['id']);
-
         $mustache = new Mustache();
         return $mustache->renderTemplate('runner.race.results',
             array(
@@ -29,7 +27,5 @@ class RunnerShortcode {
                 'url'=>get_site_url()
             )
         );
-
-
     }
 }
