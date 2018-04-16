@@ -14,7 +14,7 @@ use BHAA\core\Mustache;
 class RunnerShortcode {
 
     function __construct() {
-        add_shortcode('bhaa_runner_results', 'bhaa_runner_results_shortcode');
+        add_shortcode('bhaa_runner_results',array($this,'bhaa_runner_results_shortcode'));
     }
 
     function bhaa_runner_results_shortcode($args) {
