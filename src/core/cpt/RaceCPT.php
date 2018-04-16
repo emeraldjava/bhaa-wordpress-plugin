@@ -46,7 +46,7 @@ class RaceCPT implements Loadable {
                 array(
                     'runners'=>$res,
                     'isAdmin'=>false,
-                    'formUrl'=>'link',
+                    'formUrl'=>home_url(),
                     'racename'=>'racename',
                     'dist'=>'dist',
                     'unit'=>'unit',
