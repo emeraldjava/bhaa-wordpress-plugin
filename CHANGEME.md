@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.04.16 Update the bhaa_race_result shortcode to show event, races and league.
 - 2018.04.13 Add unit test framework.
 - 2018.04.11 Add runner race result shortcode.
 - 2018.04.10 Add league shortcode.
