@@ -19,6 +19,7 @@ class RunnerAdminController implements Loadable {
     public function registerHooks(Loader $loader) {
         $loader->add_action('admin_menu',$this,'bhaa_admin_sub_menu');
         $loader->add_action('admin_action_bhaa_runner',$this,'bhaa_admin_runner');
+        $loader->add_action('admin_action_bhaa_runner_renew_action',$this,'bhaa_runner_renew_action');
         $loader->add_action('admin_action_bhaa_runner_rename_action',$this,'bhaa_runner_rename_action');
         $loader->add_action('admin_action_bhaa_runner_email_action',$this,'bhaa_runner_email_action');
         $loader->add_action('admin_action_bhaa_runner_gender_action',$this,'bhaa_runner_gender_action');
@@ -59,7 +60,9 @@ class RunnerAdminController implements Loadable {
     }
 
     function bhaa_runner_renew_action() {
-        if(current_user_can('edit_users') && wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
+        //current_user_can('edit_users') &&
+        error_log('bhaa_runner_renew_action');
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
             $runner = new Runner($_POST['id']);
             $runner->renew();
         }

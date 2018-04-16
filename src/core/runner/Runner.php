@@ -65,10 +65,10 @@ class Runner {
             'to' => $user_id,
             'fields' => 'p2p_from'
         ));
-//        //error_log('company '.print_r($company,true));
+        //error_log('company '.print_r($company,true));
         $this->user_data = @array_merge($this->user_data, array('company'=>$company[0]));
 
-        //var_dump('user_data:'.print_r($this->user_data,true));
+        //error_log('user_data:'.print_r($this->user_data,true));
     }
 
     function __get($var) {
@@ -195,7 +195,7 @@ class Runner {
     function renew() {
         update_user_meta($this->getID(), Runner::BHAA_RUNNER_STATUS, 'M');
         update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
-        //wp_update_user( array( 'ID' => $this->getID(), 'role' => 'bhaamember' ) );
+        wp_update_user( array( 'ID' => $this->getID(), 'role' => 'bhaamember' ) );
         //error_log('renewed() '.$this->getID().' '.$this->getEmail());
     }
 }
