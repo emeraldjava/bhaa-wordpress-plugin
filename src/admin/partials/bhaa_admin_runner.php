@@ -58,7 +58,7 @@
 				</form></div>',$runner->getID());
 
     // company
-    if($runner->getCompany()->ID != null) {
+    if($runner->getCompany()!=null && $runner->getCompany()->ID != null) {
         echo sprintf('<div>Company %d <a href="%s">%s</a></div>',
             $runner->getCompany()->ID,get_permalink($runner->getCompany()->ID),$runner->getCompany()->post_title);
     } else {
@@ -66,35 +66,35 @@
     }
 
     // matching runners
-    if(true) {
-        $table = '<div>';
-        foreach ($matchedRunners as $matcheduser) {
-            $table .= sprintf('<div>%d <a href="%s">%s</a> DOB:%s, Status:%s, Email:%s <form action="'
-                . admin_url('admin.php') . '" method="POST">' .
-                wp_nonce_field('bhaa_runner_merge_action') . '
-                            <input type="hidden" name="action" value="bhaa_runner_merge_action"/>
-                            <input type="hidden" name="delete" value="%d"/>
-                            <input type="hidden" name="id" value="%d"/>
-                            <input type="submit" value="Delete %d and merge to %d"/>
-                            </form></div>',
-                $matcheduser->ID,
-                add_query_arg(array('id' => $matcheduser->ID), '/runner'), $matcheduser->display_name,
-                $matcheduser->bhaa_runner_dateofbirth, $matcheduser->bhaa_runner_status, $matcheduser->user_email,
-                $matcheduser->ID, $runner->getID(),
-                $matcheduser->ID, $runner->getID()
-            );
-        }
-        $table .= '</div>';
-        echo $table;
-    }
-    echo '<hr/>';
+//    if(true) {
+//        $table = '<div>';
+//        foreach ($matchedRunners as $matcheduser) {
+//            $table .= sprintf('<div>%d <a href="%s">%s</a> DOB:%s, Status:%s, Email:%s <form action="'
+//                . admin_url('admin.php') . '" method="POST">' .
+//                wp_nonce_field('bhaa_runner_merge_action') . '
+//                            <input type="hidden" name="action" value="bhaa_runner_merge_action"/>
+//                            <input type="hidden" name="delete" value="%d"/>
+//                            <input type="hidden" name="id" value="%d"/>
+//                            <input type="submit" value="Delete %d and merge to %d"/>
+//                            </form></div>',
+//                $matcheduser->ID,
+//                add_query_arg(array('id' => $matcheduser->ID), '/runner'), $matcheduser->display_name,
+//                $matcheduser->bhaa_runner_dateofbirth, $matcheduser->bhaa_runner_status, $matcheduser->user_email,
+//                $matcheduser->ID, $runner->getID(),
+//                $matcheduser->ID, $runner->getID()
+//            );
+//        }
+//        $table .= '</div>';
+//        echo $table;
+//    }
+//    echo '<hr/>';
 
-    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
-                wp_nonce_field('bhaa_runner_renew_action').'
-			    <input type="hidden" name="action" value="bhaa_runner_renew_action" />
-				<input type="hidden" name="id" value="%d"/>
-				<input type="submit" value="Renew Runner"/>
-				</form></div>',$runner->getID());
+//    echo sprintf('<div><form action="'.admin_url( 'admin.php' ).'" method="POST">'.
+//                wp_nonce_field('bhaa_runner_renew_action').'
+//			    <input type="hidden" name="action" value="bhaa_runner_renew_action" />
+//				<input type="hidden" name="id" value="%d"/>
+//				<input type="submit" value="Renew Runner"/>
+//				</form></div>',$runner->getID());
 
 
     //echo var_dump($runner->getMetaData());

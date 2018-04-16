@@ -27,7 +27,7 @@ class RunnerAdminController implements Loadable {
 
         $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
         $loader->add_filter('manage_users_columns',$this,'bhaa_manage_users_columns',10,3);
-        $loader->add_filter('manage_users_custom_column',$this,'bhaa_manage_users_custom_column',10,2);
+        $loader->add_filter('manage_users_custom_column',$this,'bhaa_manage_users_custom_column',10,3);
         $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
     }
 
