@@ -87,11 +87,11 @@ class IndividualLeague extends AbstractLeague {
     public function deleteLeague() {
 
         $SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_race_detail where league=%d',$this->leagueid);
-        error_log($SQL);
+        //error_log($SQL);
         $this->wpdb->query($SQL);
 
         $SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_leaguesummary WHERE league=%d',$this->leagueid);
-        error_log($SQL);
+        //error_log($SQL);
         $res = $this->wpdb->query($SQL);
         queue_flash_message('Delete league content '.$this->leagueid);
     }
@@ -124,7 +124,7 @@ class IndividualLeague extends AbstractLeague {
 			LEFT join wp_postmeta leaguetype on (l2e.p2p_from=leaguetype.post_id AND leaguetype.meta_key="bhaa_league_type")
 			where l2e.p2p_type="league_to_event" and l2e.p2p_from IN (%d)
 			ORDER BY eventdate',$this->leagueid);
-        error_log($SQL);
+        //error_log($SQL);
         $this->wpdb->query($SQL);
 
         $SQL = $this->wpdb->prepare(

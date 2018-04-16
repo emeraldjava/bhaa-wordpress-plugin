@@ -98,7 +98,7 @@ class LeagueSummary {
 				AND leaguetype = %s
 				order by league, leaguedivision, leagueposition',$this->leagueid,$limit,$this->type);
 		}
-		error_log($this->type.' '.$this->leagueid.' '.$query);
+		//error_log($this->type.' '.$this->leagueid.' '.$query);
 		return $wpdb->get_results($query);
 	}
 
@@ -115,7 +115,7 @@ class LeagueSummary {
 				left join wp_posts on (wp_posts.post_type="house" and wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant)
 				where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
 		}
-		error_log($division.' '.$SQL);
+		//error_log($division.' '.$SQL);
 		return $this->getWpdb()->get_results($SQL);
 	}
 }

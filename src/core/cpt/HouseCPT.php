@@ -254,7 +254,7 @@ class HouseCPT implements Loadable {
         global $wp_query, $post;
         if ($post->post_type == "house") {
         //if ('house' == get_post_type(get_queried_object_id())) {
-            error_log('bhaa_cpt_house_single_template '.get_post_type(get_queried_object_id()));
+            //error_log('bhaa_cpt_house_single_template '.get_post_type(get_queried_object_id()));
 
             global $post_id;
             // load results

@@ -88,14 +88,14 @@ class TeamLeague extends AbstractLeague {
     public function deleteLeague() {
         error_log("deleteTeamLeague(".$this->leagueid.')');
         $SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_race_detail where league=%d',$this->leagueid);
-        error_log($SQL);
+        //error_log($SQL);
         $this->wpdb->query($SQL);
         //$SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_teamsummary');
         $SQL = 'DELETE FROM wp_bhaa_teamsummary WHERE race!=3147 AND race!=3148';
-        error_log($SQL);
+        //error_log($SQL);
         $this->wpdb->query($SQL);
         $SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_leaguesummary WHERE league=%d',$this->leagueid);// leaguedivision="M" AND leaguedivision="W" AND
-        error_log($SQL);
+        //error_log($SQL);
         $this->wpdb->query($SQL);
     }
 
@@ -103,7 +103,7 @@ class TeamLeague extends AbstractLeague {
      * Load the league data
      */
     public function loadLeague() {
-        error_log("loadTeamLeague(".$this->leagueid.')');
+        //error_log("loadTeamLeague(".$this->leagueid.')');
         $SQL = $this->wpdb->prepare(
             'INSERT INTO wp_bhaa_race_detail (league,leaguetype,event,eventname,eventdate,race,racetype,distance,unit)
 			select

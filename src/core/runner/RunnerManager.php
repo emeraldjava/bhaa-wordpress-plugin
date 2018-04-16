@@ -69,7 +69,7 @@ class RunnerManager {
             'last_name'=> $surname
         ));
         if(is_wp_error($res))
-            error_log('update user error '.$res->get_error_message());
+            //error_log('update user error '.$res->get_error_message());
 
         add_user_meta( $id, Runner::BHAA_RUNNER_GENDER, $gender, true);
         add_user_meta( $id, Runner::BHAA_RUNNER_DATEOFBIRTH, $dateofbirth, true);
@@ -267,7 +267,7 @@ class RunnerManager {
                 array('key' => 'Runner::BHAA_RUNNER_STATUS','compare' => '=', 'value' => 'M')
                 )
         );
-        error_log(print_r($args,true));
+        //error_log(print_r($args,true));
         // https://stackoverflow.com/questions/24163215/use-wp-user-query
         $user_query = new WP_User_Query( $args );
         $runners = $user_query->get_results();

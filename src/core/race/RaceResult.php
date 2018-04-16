@@ -34,9 +34,9 @@ class RaceResult {
 	}
 
     function processRaceResults($raceId,String $resultText) {
-        error_log('bhaa_race_load_results('.strlen($resultText).')');
+        //error_log('bhaa_race_load_results('.strlen($resultText).')');
         $results = explode("\n",$resultText);
-        error_log('Number of rows '.sizeof($results));
+        //error_log('Number of rows '.sizeof($results));
         foreach($results as $result) {
             // http://stackoverflow.com/questions/13430120/str-getcsv-alternative-for-older-php-version-gives-me-an-empty-array-at-the-e
             $singleResult = explode(',', $result);
