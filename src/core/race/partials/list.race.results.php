@@ -1,18 +1,21 @@
 <?php
 get_header();
 echo '<div class="container_wrap">
-    <div class="container">
-    <div class="content">';
+    <div class="container">';
 
-//object(stdClass)#2366 (4) { ["ID"]=> string(4) "5575" ["post_title"]=> string(11)
-//// "AIB 2M 2018" ["racedate"]=> string(19) "2018-02-20 17:29:48" //
-/// ["event"]=> string(15) "AIB/NUI CC 2018" }
-foreach($races as $race) :
-    echo sprintf('<div>%s</div>',$race->event);
-    echo sprintf('<div>%d %s</div>',$race->ID,$race->post_title);
+foreach($events as $event) :
+    echo '<div class="row row-striped" id="'.$event->ID.'">';
+        echo sprintf('<div>Event %s</div>',$event->eventname);
+    if($event->racecount==1){
+        echo '<div>Race <a href="'.get_permalink($event->race1).'">'.get_the_title($event->race1).'</a></div>';
+    }   else {
+        echo '<div>Races <a href="'.get_permalink($event->race1).'">'.get_the_title($event->race1).' - </a>';
+        echo '<a href="'.get_permalink($event->race2).'">'.get_the_title($event->race2).'</a></div>';
+    }
+    echo '<div>League <a href="'.get_permalink($event->league).'">'.get_the_title($event->league).'</a></div>';
+    echo '</div>';
 endforeach;
 
-//echo var_dump($races[1]);
-echo '</div></div></div>';
+echo '</div></div>';
 get_footer();
 ?>

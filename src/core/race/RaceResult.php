@@ -224,14 +224,20 @@ class RaceResult {
         //$this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
     }
 
-    function listAllRaces() {
-        $query = "SELECT race.ID,race.post_title,race.post_date as racedate,
-              event.ID,event.post_title as event FROM wp_posts as race
-            JOIN wp_p2p event_to_race on 
-            (event_to_race.p2p_to=race.ID and event_to_race.p2p_type='event_to_race')
-            JOIN wp_posts event on (event.ID=event_to_race.p2p_from)
-            WHERE race.post_type in ('race')
-            ORDER BY race.post_date DESC";
+    function listEventsAndRaces() {
+        $query = "SELECT event.ID,
+            event.post_title as eventname,
+            (select count(p2p_id) from wp_p2p WHERE p2p_from=event.ID and p2p_type='event_to_race') as racecount,
+            MIN(races.p2p_to) as race1,
+            MAX(races.p2p_to) as race2,
+            league.p2p_from as league
+            FROM wp_posts as event
+            JOIN wp_p2p races on (races.p2p_from=event.ID and races.p2p_type='event_to_race')
+            LEFT JOIN wp_p2p league on (league.p2p_to=event.ID and league.p2p_type='league_to_event')
+            WHERE post_type in ('espresso_events','event')
+            AND event.ID>=4563
+            GROUP BY races.p2p_from
+            ORDER BY post_date DESC;";
         //$SQL = $this->wpdb->prepare($query);
         return $this->wpdb->get_results($query,OBJECT);
     }
