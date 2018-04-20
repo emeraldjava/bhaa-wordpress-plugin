@@ -140,6 +140,16 @@ class RunnerAdminController implements Loadable {
         exit();
     }
 
+    function bhaa_runner_move_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_merge_action')) {
+            error_log('bhaa_runner_move_action');
+            //$nextRunnerId = RunnerAdmin::get_instance()->getNextRunnerId();
+            //$this->mergeRunner($nextRunnerId,$_GET['delete'],true);
+        }
+        //wp_redirect(home_url().'/runner/?id='.$nextRunnerId);
+        exit();
+    }
+
     /**
      * via - https://code.tutsplus.com/articles/quick-tip-make-your-custom-column-sortable--wp-25095
      */
