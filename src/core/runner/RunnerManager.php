@@ -328,11 +328,8 @@ class RunnerManager {
                         'value' => $bhaa_runner_dateofbirth,
                         'compare' => '='
                     ))));
-
         // merge the three results
         $users = array_merge( $queryMatchAll->get_results(), $queryMatchName->get_results(), $queryMatchLastDob->get_results());
-        //error_log('matching runners for '.$runner.'='.count($users));
-        //var_dump($users);
         return $users;
     }
 
@@ -402,6 +399,4 @@ class RunnerManager {
         );
         error_log('merged runner '.$deleteRunner.' to '.$runner);
     }
-
-
 }

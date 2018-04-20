@@ -5,7 +5,8 @@
     <h1>BHAA Runner Admin</h1>
 
     <?php //var_dump($runner);
-    echo sprintf('<div>ID : %s</div>',$runner->getID());
+    echo sprintf('<div>ID : <a href="./runner&id=%d">%d</a></div>',$runner->getID(),$runner->getID());
+    echo sprintf('<div>Races : %s</div>',$runner->getRaceCount());
     echo sprintf('<div>NAME : %s %s</div>',$runner->getFirstName(),$runner->getLastName());
     echo sprintf('<div>Email : %s</div>',$runner->getEmail());
     echo sprintf('<div>DOB : %s</div>',$runner->getDateOfBirth());
@@ -77,7 +78,7 @@
     if(isset($matchedRunners) && count($matchedRunners)>1) {
         $table = '<div>Matched Runners';
             foreach ($matchedRunners as $matcheduser) {
-                $table .= sprintf('<div>%d <a href="%s">%s</a> DOB:%s, Status:%s, Email:%s <form action="'
+                $table .= sprintf('<div>ID <a target="_blank" href="./runner&id=%d">%d</a>. Edit <a target="_blank" href="%s">%s</a> DOB:%s, Status:%s, Email:%s <form action="'
                     . admin_url('admin.php') . '" method="POST">' .
                     wp_nonce_field('bhaa_runner_merge_action') . '
                                 <input type="hidden" name="action" value="bhaa_runner_merge_action"/>
@@ -85,8 +86,8 @@
                                 <input type="hidden" name="id" value="%d"/>
                                 <input type="submit" value="Delete %d and merge to %d"/>
                                 </form></div>',
-                    $matcheduser->ID,
-                    add_query_arg(array('id' => $matcheduser->ID), './runner'), $matcheduser->display_name,
+                    $matcheduser->ID,$matcheduser->ID,
+                    add_query_arg(array('id' => $matcheduser->ID,'page' => 'bhaa_admin_runner'), 'admin.php'), $matcheduser->display_name,
                     $matcheduser->bhaa_runner_dateofbirth, $matcheduser->bhaa_runner_status, $matcheduser->user_email,
                     $matcheduser->ID, $runner->getID(),
                     $matcheduser->ID, $runner->getID()

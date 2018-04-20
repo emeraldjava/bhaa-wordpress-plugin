@@ -60,8 +60,8 @@ class RunnerAdminController implements Loadable {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
         $runner = new Runner($_REQUEST['id']);
-        //$runnerManager = new RunnerManager();
-        $matchedRunners = $this->runnerManager->findMatchingRunners($_REQUEST['id']);
+        if($runner->getID()!=null)
+            $matchedRunners = $this->runnerManager->findMatchingRunners($_REQUEST['id']);
 
         include_once( 'partials/bhaa_admin_runner.php' );
     }

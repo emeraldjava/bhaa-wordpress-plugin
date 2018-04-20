@@ -34,6 +34,7 @@ class Runner {
     var $user;
     var $user_data;
     var $meta;
+    var $racecount;
 
     function __construct($user_id) {
         //var_dump('user:'.$user_id);
@@ -68,6 +69,11 @@ class Runner {
         //error_log('company '.print_r($company,true));
         $this->user_data = @array_merge($this->user_data, array('company'=>$company[0]));
 
+        global $wpdb;
+
+        $SQL = $wpdb->prepare('SELECT COUNT(race) as races FROM wp_bhaa_raceresult WHERE runner=%s',$user_id);
+        error_log($SQL);
+        $this->racecount = $wpdb->get_var($SQL);
         //error_log('user_data:'.print_r($this->user_data,true));
     }
 
@@ -136,6 +142,10 @@ class Runner {
 
     function getMetaData() {
         return $this->meta;
+    }
+
+    function getRaceCount() {
+        return $this->racecount;
     }
 
     /**
