@@ -44,6 +44,7 @@ curl --ftp-create-dirs -u "$1:$2" -T src/core/league/TeamLeague.php             
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/mustache/edit.race.results.individual.tpl    ftp://$3/$4/src/core/race/mustache/edit.race.results.individual.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/mustache/race.results.individual.tpl         ftp://$3/$4/src/core/race/mustache/race.results.individual.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/partials/list.race.results.php               ftp://$3/$4/src/core/race/partials/list.race.results.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/race/Race.php                                     ftp://$3/$4/src/core/race/Race.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/RaceResult.php                               ftp://$3/$4/src/core/race/RaceResult.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/RaceResultShortcode.php                      ftp://$3/$4/src/core/race/RaceResultShortcode.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/mustache/runner.race.results.tpl           ftp://$3/$4/src/core/runner/mustache/runner.race.results.tpl

@@ -225,7 +225,7 @@ class RaceResult {
     }
 
     function updatePositions($race) {
-        //$this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
+        $this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
     }
 
     function listEventsAndRaces() {
@@ -271,5 +271,67 @@ class RaceResult {
             WHERE rr.runner=%d AND rr.class IN ('RAN','RACE_ORG')
             ORDER BY race.post_date desc",$runner);
         return $this->wpdb->get_results($query, ARRAY_A);
+    }
+
+    function updateRacePace($race) {
+        // update wp_bhaa_raceresult set actualstandard=getStandard(racetime,getRaceDistanceKm(race)) where race=2504;
+        // SEC_TO_TIME(TIME_TO_SEC(_raceTime) / _distance)
+        $SQL = sprintf('update %s set pace=SEC_TO_TIME(TIME_TO_SEC(racetime)/%f),actualstandard=getStandard(racetime,getRaceDistanceKm(race)) where race=%d',
+            $this->getTableName(),
+            $this->getRace($race)->getKmDistance(),
+            $race);
+        //error_log($SQL);
+        $this->wpdb->query($SQL);
+    }
+
+    function updateRacePosInCat($race) {
+        $this->wpdb->query($this->wpdb->prepare('call updatePositionInAgeCategory(%d,"M")',$race));
+        $this->wpdb->query($this->wpdb->prepare('call updatePositionInAgeCategory(%d,"W")',$race));
+    }
+
+    function updateRacePosInStd($race) {
+        $this->wpdb->query($this->wpdb->prepare('call updatePositionInStandard(%d)',$race));
+    }
+
+    function updateLeague($race) {
+        $this->wpdb->query($this->wpdb->prepare('call updateRaceScoringSets(%d)',$race));
+        $this->wpdb->query($this->wpdb->prepare('call updateRaceLeaguePoints(%d)',$race));
+    }
+
+    function updatePostRaceStd($race) {
+        $SQL = $this->wpdb->prepare('select position, runner, standard, actualstandard from wp_bhaa_raceresult where race=%d order by position asc',$race);
+        //error_log($SQL);
+        $runners = $this->wpdb->get_results($SQL);
+
+        $postRaceStandard = 10;
+        foreach($runners as $runner) {
+            if($runner->standard != 0) {
+                if($runner->standard  < $runner->actualstandard) {
+                    update_user_meta( $runner->runner,'bhaa_runner_standard',$runner->standard+1,$runner->standard);
+                    $postRaceStandard = $runner->standard+1;
+                    //error_log($runner->position.' up standard '.$runner->runner.'->'.($runner->standard+1));
+                } elseif ($runner->standard > $runner->actualstandard) {
+                    update_user_meta( $runner->runner,'bhaa_runner_standard',$runner->standard-1,$runner->standard);
+                    $postRaceStandard = $runner->standard-1;
+                    //error_log($runner->position.' down standard '.$runner->runner.'->'.($runner->standard-1));
+                } elseif($runner->standard == $runner->actualstandard){
+                    $postRaceStandard = $runner->actualstandard;
+                    //error_log($runner->position.' same standard '.$runner->runner.'->'.$runner->standard);
+                }
+            } else {
+                update_user_meta( $runner->runner,'bhaa_runner_standard',$runner->actualstandard );
+                $postRaceStandard = $runner->actualstandard;
+                //error_log($runner->position.' new standard '.$runner->runner.'->'.$runner->actualstandard);
+            }
+
+            $UPDATE_POSTSTANDARD_SQL = $this->wpdb->prepare('update wp_bhaa_raceresult set poststandard=%d where race=%d and runner=%d',
+                $postRaceStandard,$race,$runner->runner);
+            //error_log($UPDATE_POSTSTANDARD_SQL);
+            $this->wpdb->query($UPDATE_POSTSTANDARD_SQL);
+        }
+    }
+    
+    private function getRace($race) {
+        return new Race($race);
     }
 }

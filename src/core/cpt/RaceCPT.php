@@ -26,8 +26,6 @@ class RaceCPT implements Loadable {
         $loader->add_action('add_meta_boxes',$this,'bhaa_race_meta_data');
         $loader->add_action('add_meta_boxes',$this,'bhaa_team_meta_data');
         $loader->add_action('save_post',$this,'bhaa_save_race_meta');
-        $loader->add_action('admin_action_bhaa_race_delete_results',$this,'bhaa_race_delete_results');
-        $loader->add_action('admin_action_bhaa_race_load_results',$this,'bhaa_race_load_results');
         $loader->add_action('admin_menu',$this,'bhaa_race_sub_menu');
         $loader->add_filter('single_template',$this,'bhaa_cpt_race_single_template');
         $loader->add_filter('post_row_actions',$this,'bhaa_race_post_row_actions',10,2);
@@ -92,154 +90,29 @@ class RaceCPT implements Loadable {
         include plugin_dir_path( __FILE__ ) . 'partials/race/edit_results.php';
     }
 
-    function bhaa_race_edit_result() {
-        //error_log('bhaa_race_edit_result');
-        $raceResult = RaceResult::get_instance()->getRaceResult($_GET['raceresult']);
-        $link = admin_url('admin.php'); // do we need the raceresult id?
-        $raceLink = $this->generate_edit_raceresult_link($raceResult->race);
-        include plugin_dir_path( __FILE__ ) . 'template/bhaa_race_edit_result.php';
-    }
+//    function bhaa_race_edit_result() {
+//        //error_log('bhaa_race_edit_result');
+//        $raceResult = RaceResult::get_instance()->getRaceResult($_GET['raceresult']);
+//        $link = admin_url('admin.php'); // do we need the raceresult id?
+//        $raceLink = $this->generate_edit_raceresult_link($raceResult->race);
+//        include plugin_dir_path( __FILE__ ) . 'template/bhaa_race_edit_result.php';
+//    }
 
-    public function bhaa_race_result_save() {
-        error_log("bhaa_race_result_save() ".$_POST['bhaa_race']);
-        //$raceResult = new RaceResult();
-        RaceResult::get_instance()->updateRunnersRaceResultStandard(
-            $_POST['bhaa_raceresult_id'],
-            $_POST['bhaa_race'],
-            $_POST['bhaa_runner'],
-            $_POST['bhaa_time'],
-            $_POST['bhaa_pre_standard'],
-            $_POST['bhaa_post_standard'],
-            $_POST['bhaa_number']
-        );
-        RaceResult::get_instance()->updatePositions($_POST['bhaa_race']);
-        wp_redirect(admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$_POST['bhaa_race']));
-    }
-
-    public function bhaa_race_result_delete() {
-        error_log("bhaa_race_result_delete() ".$_POST['bhaa_race']);
-        $raceResult = RaceResult::get_instance();
-        $raceResult->deleteRaceResult($_POST['bhaa_raceresult_id']);
-        $raceResult->updatePositions($_POST['bhaa_race']);
-        wp_redirect(admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$_POST['bhaa_race']));
-    }
-
-    function bhaa_race_delete_results() {
-        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_delete_results')) {
-            $raceResult = new RaceResult();
-            $raceResult->deleteRaceResults($_GET['post_id']);
-            //queue_flash_message("bhaa_race_delete_results ".$_GET['post_id']);
-            wp_redirect(wp_get_referer());
-            exit();
-        }
-    }
-
-    function bhaa_race_load_results() {
-        if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_load_results')) {
-            $race = get_post($_GET['post_id']);
-            $resultText = $race->post_content;
-            $raceResult = new RaceResult();
-            $raceResult->processRaceResults($race->ID, $race->post_content);
-            wp_redirect(wp_get_referer());
-            exit();
-        }
-    }
-
-    function bhaa_race_positions() {
-        $raceResult = new RaceResult();
-        $raceResult->updatePositions($_GET['post_id']);
-        queue_flash_message("bhaa_race_positions");
-        wp_redirect( $_SERVER['HTTP_REFERER'] );
-        exit();
-    }
-    function bhaa_race_pace() {
-        $raceResult = new RaceResult();
-        $raceResult->updateRacePace($_GET['post_id']);
-        queue_flash_message("bhaa_race_pace ".$_GET['post_id']);
-        wp_redirect( $_SERVER['HTTP_REFERER'] );
-        exit();
-    }
-    function bhaa_race_pos_in_cat() {
-        $raceResult = new RaceResult();
-        $raceResult->updateRacePosInCat($_GET['post_id']);
-        queue_flash_message("bhaa_race_pos_in_cat");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-    function bhaa_race_pos_in_std() {
-        $raceResult = new RaceResult();
-        $raceResult->updateRacePosInStd($_GET['post_id']);
-        queue_flash_message("bhaa_race_pos_in_std");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-    function bhaa_race_update_standards() {
-        $raceResult = new RaceResult();
-        $raceResult->updatePostRaceStd($_GET['post_id']);
-        queue_flash_message("bhaa_race_update_standards");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-    function bhaa_race_league() {
-        $raceResult = new RaceResult();
-        $raceResult->updateLeague($_GET['post_id']);
-        queue_flash_message("bhaa_race_league");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-    function bhaa_race_all() {
-        $raceResult = new RaceResult();
-        $raceResult->updateAll($_GET['post_id']);
-        queue_flash_message("bhaa_race_all");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-    function bhaa_race_delete_team_results(){
-        error_log('bhaa_race_delete_team_results');
-        $teamResult = new TeamResult($_GET['post_id']);
-        $teamResult->deleteResults();
-        queue_flash_message("bhaa_race_delete_team_results");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-    function bhaa_race_load_team_results() {
-        $teamResult = new TeamResult($_GET['post_id']);
-        $teamResultBlob = get_post_meta($_GET['post_id'],RaceCpt::BHAA_RACE_TEAM_RESULTS,true);
-        $teamResults = explode("\n",$teamResultBlob);
-        error_log('Number of team results '.sizeof($teamResults));
-        foreach($teamResults as $result){
-            $details = explode(',',$result);
-            $teamResult->addResult($details);
-        }
-        queue_flash_message("bhaa_race_load_team_results :: ".sizeof($teamResults));
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-
-    function bhaa_raceday_export() {
-        //Raceday::get_instance()->export();
-        exit();
-    }
-
-    /**
-     * Export the RaceMaster with data for this event.
-     */
-    function bhaa_race_export_racemaster() {
-        RaceMaster::get_instance()->bhaa_admin_racemaster_export();
-        queue_flash_message("bhaa_race_export_racemaster");
-        wp_redirect(wp_get_referer());
-        exit();
-    }
-
-    /**
-     * Used to add an empty race result for a specific race.
-     */
-    function bhaa_race_add_result() {
-        $newRaceResult = RaceResult::get_instance()->addDefaultResult($_POST['post_id']);
-        queue_flash_message("bhaa_race_add_result");
-        $url = admin_url('edit.php?post_type=race&page=bhaa_race_edit_result&raceresult='.$newRaceResult);
-        wp_redirect($url);
-    }
+//    public function bhaa_race_result_save() {
+//        error_log("bhaa_race_result_save() ".$_POST['bhaa_race']);
+//        //$raceResult = new RaceResult();
+//        RaceResult::get_instance()->updateRunnersRaceResultStandard(
+//            $_POST['bhaa_raceresult_id'],
+//            $_POST['bhaa_race'],
+//            $_POST['bhaa_runner'],
+//            $_POST['bhaa_time'],
+//            $_POST['bhaa_pre_standard'],
+//            $_POST['bhaa_post_standard'],
+//            $_POST['bhaa_number']
+//        );
+//        RaceResult::get_instance()->updatePositions($_POST['bhaa_race']);
+//        wp_redirect(admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$_POST['bhaa_race']));
+//    }
 
     function bhaa_race_post_row_actions($actions, $post) {
         if ($post->post_type =="race") {
@@ -404,17 +277,14 @@ class RaceCPT implements Loadable {
             'bhaa_race_delete_results' => $this->generate_race_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
             'bhaa_race_load_results' => $this->generate_race_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results'),
             'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
-            'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions')
-            //'bhaa_race_pace' => $this->generate_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
-            //'bhaa_race_pos_in_cat' => $this->generate_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
-            //'bhaa_race_pos_in_std' => $this->generate_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
-            //'bhaa_race_update_standards' => $this->generate_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
-            //'bhaa_race_league' => $this->generate_admin_url_link('bhaa_race_league',$post->ID,'League Points'),
-            //'bhaa_race_all' => $this->generate_admin_url_link('bhaa_race_all',$post->ID,'All'),
-            //'bhaa_race_delete_team_results' => $this->generate_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams'),
-            //'bhaa_race_load_team_results' => $this->generate_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
-            //'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
-            //'bhaa_race_export_racemaster' => $this->generate_admin_url_link('bhaa_race_export_racemaster',$post->ID,'Export RaceMaster')
+            'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
+            'bhaa_race_pace' => $this->generate_race_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
+            'bhaa_race_pos_in_cat' => $this->generate_race_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
+            'bhaa_race_pos_in_std' => $this->generate_race_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
+            'bhaa_race_update_standards' => $this->generate_race_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
+            'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points'),
+            'bhaa_race_load_team_results' => $this->generate_race_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
+            'bhaa_race_delete_team_results' => $this->generate_race_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams')
         );
     }
 
