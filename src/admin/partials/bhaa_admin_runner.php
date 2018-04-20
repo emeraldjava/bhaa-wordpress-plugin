@@ -58,12 +58,10 @@
 				</form></div>',$runner->getID());
 
     // company
-    if($runner->getCompany()!=null && $runner->getCompany()->ID != null) {
-        echo sprintf('<div>Company <a href="%s">%s</a></div>',
-            get_permalink($runner->getCompany()->ID),$runner->getCompany()->post_title);
-    } else {
-        echo "No Company";
-    }
+    echo sprintf('<div>Company %s</div>',$runner->displayHouseLink($runner->getCompanyTeam(),true));
+
+    // sector
+    echo sprintf('<div>Sector Team %s</div>',$runner->displayHouseLink($runner->getSectorTeam(),true));
 
     // matching runners
 //    if(true) {
@@ -95,6 +93,6 @@
                 <input type="hidden" name="id" value="%d"/>
                 <input type="submit" value="Renew Runner"/>
                 </form></div>',$runner->getID());
-    echo var_dump($runner->getMetaData());
+    //echo var_dump($runner->getMetaData());
     ?>
 </div>

@@ -126,16 +126,12 @@ class Runner {
         return $this->__get(Runner::BHAA_RUNNER_INSERTDATE);
     }
 
-    function getCompanyId() {
-        return $this->__get('company');
+    function getCompanyTeam() {
+        return get_post( $this->__get('company') );
     }
 
-    function getCompany() {
-        return get_post( $this->getCompanyId() );
-    }
-
-    function getSectorTeamId() {
-        return $this->__get('sectorteam');
+    function getSectorTeam() {
+        return get_post( $this->__get('sectorteam') );
     }
 
     function getMetaData() {
@@ -146,36 +142,19 @@ class Runner {
      * Return a url link the runners company.
      * @return string
      */
-    function getCompanyName($admin_url) {
-        $cid = $this->getCompanyId();
-        if(isset($cid)) {
-            if($admin_url=="false"){
-                return sprintf('<a href="%s">%s</a>',get_permalink($cid),get_the_title($cid));
+    function displayHouseLink($house,$admin_url=false) {
+        if($house!=null) {
+            if(!$admin_url){
+                return sprintf('<a href="%s">%s</a>',get_permalink($house->ID),get_the_title($house->ID));
             } else {
-                return sprintf('<a href="%s">Edit %s</a>',get_edit_post_link($cid),get_the_title($cid));
+                return sprintf('<a href="%s">%s</a>',get_edit_post_link($house->ID),get_the_title($house->ID));
             }
         } else {
-            // no company
-            return '';
-        }
-    }
-
-    /**
-     * Return a url link to the sector team
-     * @param unknown $admin_url
-     * @return string
-     */
-    function getSectorTeam($admin_url) {
-        $id = $this->getSectorTeamId();
-        if(isset($id)) {
-            if($admin_url=="false"){
-                return sprintf('<a href="%s">%s</a>',get_permalink($id),get_the_title($id));
+            if($admin_url) {
+                return sprintf('<a href="%s">%s</a>',admin_url('edit.php?post_type=house'),'No Team');
             } else {
-                return sprintf('<a href="%s">Edit %s</a>',get_edit_post_link($id),get_the_title($id));
+                return 'No Team';
             }
-        } else {
-            // no sector team
-            return '';
         }
     }
 
