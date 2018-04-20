@@ -17,6 +17,8 @@ use BHAA\utils\Loader;
  *  echo 'x'. do_shortcode('[p2p_connected type=house_to_runner mode=ol]');
     echo 'xy'. do_shortcode('[p2p_related type=house_to_runner mode=ol]');
 
+ * https://github.com/scribu/wp-posts-to-posts/issues/261
+ *
  * @package BHAA\core
  */
 class Connections implements Loadable {

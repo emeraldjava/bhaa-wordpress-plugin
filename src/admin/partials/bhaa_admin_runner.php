@@ -59,8 +59,8 @@
 
     // company
     if($runner->getCompany()!=null && $runner->getCompany()->ID != null) {
-        echo sprintf('<div>Company %d <a href="%s">%s</a></div>',
-            $runner->getCompany()->ID,get_permalink($runner->getCompany()->ID),$runner->getCompany()->post_title);
+        echo sprintf('<div>Company <a href="%s">%s</a></div>',
+            get_permalink($runner->getCompany()->ID),$runner->getCompany()->post_title);
     } else {
         echo "No Company";
     }
@@ -95,6 +95,6 @@
                 <input type="hidden" name="id" value="%d"/>
                 <input type="submit" value="Renew Runner"/>
                 </form></div>',$runner->getID());
-    //echo var_dump($runner->getMetaData());
+    echo var_dump($runner->getMetaData());
     ?>
 </div>

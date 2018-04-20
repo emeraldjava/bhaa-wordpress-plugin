@@ -79,7 +79,7 @@ class Runner {
     }
 
     function getID() {
-        return $this->__get('ID');
+        return $this->__get('id');
     }
 
     function getEmail() {
@@ -130,21 +130,8 @@ class Runner {
         return $this->__get('company');
     }
 
-    /**
-     * See https://github.com/scribu/wp-posts-to-posts/issues/261
-     */
     function getCompany() {
-        $args = array(
-            'connected_type' => 'house_to_runner',
-            'connected_items' => $this->user,
-            'suppress_filters' => false,
-            'nopaging' => true
-        );
-        $connected = get_posts( $args );
-        if(count($connected))
-            return $connected[0];
-        else
-            return null;
+        return get_post( $this->getCompanyId() );
     }
 
     function getSectorTeamId() {
