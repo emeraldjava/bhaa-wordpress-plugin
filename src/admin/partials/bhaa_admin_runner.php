@@ -5,7 +5,7 @@
     <h1>BHAA Runner Admin</h1>
 
     <?php //var_dump($runner);
-    echo sprintf('<div>ID : <a href="./runner&id=%d">%d</a></div>',$runner->getID(),$runner->getID());
+    echo sprintf('<div>ID : <a href="./runner/?id=%d">%d</a></div>',$runner->getID(),$runner->getID());
     echo sprintf('<div>Races : %s</div>',$runner->getRaceCount());
     echo sprintf('<div>NAME : %s %s</div>',$runner->getFirstName(),$runner->getLastName());
     echo sprintf('<div>Email : %s</div>',$runner->getEmail());

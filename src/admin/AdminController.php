@@ -147,6 +147,9 @@ class AdminController implements Loadable {
         wp_enqueue_style( $this->plugin_name.'_admin_css',
             plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css',
             array(), $this->version, 'all' );
+        // CSS
+        wp_register_style('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+        wp_enqueue_style('prefix_bootstrap');
     }
 
     /**
@@ -157,5 +160,8 @@ class AdminController implements Loadable {
         wp_enqueue_script( $this->plugin_name.'_admin_js',
             plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js',
             array( 'jquery' ), $this->version, false );
+        // JS
+        wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
+        wp_enqueue_script('prefix_bootstrap');
     }
 }
