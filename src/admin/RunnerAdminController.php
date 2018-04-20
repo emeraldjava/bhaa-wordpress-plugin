@@ -16,6 +16,12 @@ use BHAA\core\Connections;
 
 class RunnerAdminController implements Loadable {
 
+    var $runnerManager;
+
+    public function __construct() {
+        $this->runnerManager = new RunnerManager();
+    }
+
     public function registerHooks(Loader $loader) {
         $loader->add_action('admin_menu',$this,'bhaa_admin_sub_menu');
         $loader->add_action('admin_action_bhaa_runner',$this,'bhaa_admin_runner');
@@ -25,6 +31,8 @@ class RunnerAdminController implements Loadable {
         $loader->add_action('admin_action_bhaa_runner_gender_action',$this,'bhaa_runner_gender_action');
         $loader->add_action('admin_action_bhaa_runner_dob_action',$this,'bhaa_runner_dob_action');
         $loader->add_action('admin_action_bhaa_runner_standard_action',$this,'bhaa_runner_standard_action');
+        $loader->add_action('admin_action_bhaa_runner_merge_action',$this,'bhaa_runner_merge_action');
+        //add_action('admin_action_bhaa_runner_move_action',array($this,'bhaa_runner_move_action'));
 
         $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
         $loader->add_filter('manage_users_columns',$this,'bhaa_manage_users_columns',10,3);
@@ -43,8 +51,7 @@ class RunnerAdminController implements Loadable {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
-        $runnerManager = new RunnerManager();
-        $rows = $runnerManager->listEERegisteredRunners();
+        $rows = $this->runnerManager->listEERegisteredRunners();
         include_once( 'partials/bhaa_admin_runners.php' );
     }
 
@@ -53,8 +60,8 @@ class RunnerAdminController implements Loadable {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
         $runner = new Runner($_REQUEST['id']);
-        $runnerManager = new RunnerManager();
-        $matchedRunners = $runnerManager->findMatchingRunners($_REQUEST['id']);
+        //$runnerManager = new RunnerManager();
+        $matchedRunners = $this->runnerManager->findMatchingRunners($_REQUEST['id']);
 
         include_once( 'partials/bhaa_admin_runner.php' );
     }
@@ -120,6 +127,14 @@ class RunnerAdminController implements Loadable {
         if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_email_action')) {
             error_log('bhaa_runner_email_action '.$_POST['id'].' -> '.$_POST['email']);
             wp_update_user( array ( 'ID' => $_POST['id'], 'user_email' => trim($_POST['email']) ) ) ;
+        }
+        wp_redirect(wp_get_referer());
+        exit();
+    }
+
+    function bhaa_runner_merge_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_merge_action')) {
+            $this->runnerManager->mergeRunner($_POST['id'],$_POST['delete']);
         }
         wp_redirect(wp_get_referer());
         exit();
@@ -203,9 +218,5 @@ class RunnerAdminController implements Loadable {
             default:
         }
         return '';
-    }
-
-    function setRunnerManager(RunnerManager $runnerManager){
-        $this->runnerManager=$runnerManager;
     }
 }

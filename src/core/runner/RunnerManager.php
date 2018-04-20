@@ -331,5 +331,77 @@ class RunnerManager {
 
         // merge the three results
         $users = array_merge( $queryMatchAll->get_results(), $queryMatchName->get_results(), $queryMatchLastDob->get_results());
+        //error_log('matching runners for '.$runner.'='.count($users));
+        //var_dump($users);
+        return $users;
     }
+
+    function mergeRunner($runner,$deleteRunner,$update_wp_users=false) {
+        error_log('deleting runner '.$deleteRunner.' and merging to '.$runner);
+        global $wpdb;
+
+        // only used when changing a BHAA ID
+        if($update_wp_users) {
+            $wpdb->update(
+                'wp_usermeta',
+                array('user_id' => $runner),
+                array('user_id' => $deleteRunner)
+            );
+            $wpdb->update(
+                'wp_users',
+                array('ID' => $runner),
+                array('ID' => $deleteRunner)
+            );
+            $wpdb->update(
+                'wp_p2p',
+                array('p2p_to' => $runner),
+                array('p2p_to' => $deleteRunner)
+            );
+            error_log('merging user meta data');
+        }
+
+        // update existing race results
+        $wpdb->update(
+            'wp_bhaa_raceresult',
+            array('runner' => $runner),
+            array('runner' => $deleteRunner)
+        );
+        // update team results
+        $wpdb->update(
+            'wp_bhaa_teamresult',
+            array('runner' => $runner),
+            array('runner' => $deleteRunner)
+        );
+        // wp_bhaa_leaguerunnerdata
+        $wpdb->update(
+            'wp_bhaa_leaguerunnerdata',
+            array('runner' => $runner),
+            array('runner' => $deleteRunner)
+        );
+        // wp_bhaa_leaguesummary
+        $wpdb->update(
+            'wp_bhaa_leaguesummary',
+            array('leagueparticipant' => $runner),
+            array('leagueparticipant' => $deleteRunner,'leaguetype'=>'I')
+        );
+        // update any bookings
+//        $wpdb->update(
+//            'wp_em_bookings',
+//            array('person_id' => $runner),
+//            array('person_id' => $deleteRunner)
+//        );
+
+        // delete the user and metadata
+        $wpdb->delete(
+            'wp_usermeta',
+            array('user_id' => $deleteRunner)
+        );
+        $wpdb->delete(
+            'wp_users',
+            array('ID' => $deleteRunner)
+        );
+        error_log('merged runner '.$deleteRunner.' to '.$runner);
+    }
+
+
 }

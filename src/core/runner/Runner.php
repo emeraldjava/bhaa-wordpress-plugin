@@ -79,7 +79,7 @@ class Runner {
     }
 
     function getID() {
-        return $this->__get('id');
+        return $this->__get('ID');
     }
 
     function getEmail() {
