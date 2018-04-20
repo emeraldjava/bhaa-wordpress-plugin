@@ -217,7 +217,7 @@ class RaceCPT implements Loadable {
     }
 
     function bhaa_raceday_export() {
-        Raceday::get_instance()->export();
+        //Raceday::get_instance()->export();
         exit();
     }
 
@@ -243,7 +243,9 @@ class RaceCPT implements Loadable {
 
     function bhaa_race_post_row_actions($actions, $post) {
         if ($post->post_type =="race") {
-            $actions = array_merge($actions,$this->get_admin_url_links($post));
+            $actions = array_merge($actions,
+                array('bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID))
+            );
         }
         return $actions;
     }
@@ -401,8 +403,8 @@ class RaceCPT implements Loadable {
         return array(
             'bhaa_race_delete_results' => $this->generate_race_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
             'bhaa_race_load_results' => $this->generate_race_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results'),
-            'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID)
-            //'bhaa_race_positions' => $this->generate_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
+            'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
+            'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions')
             //'bhaa_race_pace' => $this->generate_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
             //'bhaa_race_pos_in_cat' => $this->generate_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
             //'bhaa_race_pos_in_std' => $this->generate_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
