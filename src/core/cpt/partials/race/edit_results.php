@@ -1,7 +1,8 @@
 <?php
 $link = admin_url('admin.php');
 $race = get_the_title($_GET['id']);
-echo '<h2>Edit Race Results : '.$race.'</h2>';
+$edit = get_edit_post_link($_GET['id']);
+echo '<h2>Edit Race Results : <a href="'.$edit.'">'.$race.'</a></h2>';
 echo '<div class="wrap">';
 //    <form method="post" action="'.$link.'">
 //	<input type="hidden" name="action" value="bhaa_race_add_result" />
