@@ -1,5 +1,3 @@
-<h2>Individual Results</h2>
-<h2>Team Results</h2>
 <div class="container-fluid">
  {{#runners}}
     <div class="row row-striped" id="{{id}}">

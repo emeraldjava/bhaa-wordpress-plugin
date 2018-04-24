@@ -10,6 +10,7 @@ namespace BHAA\core\cpt;
 
 use BHAA\core\Mustache;
 use BHAA\core\race\RaceResult;
+use BHAA\core\race\TeamResult;
 
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
@@ -50,6 +51,11 @@ class RaceCPT implements Loadable {
                     'unit'=>'unit',
                     'type'=>'type'));
             set_query_var( 'raceResultTable', $raceResultTable );
+
+            $teamResult = new TeamResult(get_the_ID());
+            $teamResultTable = $teamResult->getRaceTeamResultTable();
+            set_query_var( 'teamResultTable', $teamResultTable );
+
             $template = plugin_dir_path(__FILE__) . '/partials/race/race.php';
         }
         return $template;

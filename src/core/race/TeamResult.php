@@ -84,14 +84,14 @@ class TeamResult {
      */
     public function getRaceTeamResultTable() {
         $results = $this->getTeamResults();
-        $table = '<h2 race="'.$this->race.'">Team Results</h2>';
+        //$table = '<h2 race="'.$this->race.'">Team Results</h2>';
         //$table .= $this->teamSummary();
-        $table .= $this->displayClassTable($results,'A');
+        $table = $this->displayClassTable($results,'A');
         $table .= $this->displayClassTable($results,'B');
         $table .= $this->displayClassTable($results,'C');
         $table .= $this->displayClassTable($results,'D');
         $table .= $this->displayClassTable($results,'W');
-        $table .= '<br/>';
+        //$table .= '<br/>';
         return $table;
     }
 
@@ -114,7 +114,7 @@ class TeamResult {
                     $header = $row->class;
                     $position = $row->position;
                     //$table .= $this->generateRow('<h4><b>Class '.$row->class.'</b></h4>','','','','');
-                    $table .= '<h2><b>Class '.$row->class.'</b></h2>';
+                    $table .= '<h3><b>Class '.$row->class.'</b></h3>';
 
                 }
 
@@ -129,7 +129,7 @@ class TeamResult {
                     $table .= $this->generateHeaderRow('Athlete','Time','Company',$row->totalpos,$row->totalstd);
                 }
 
-                $runner_url = sprintf('<a href="/runner/?id=%s"><i>%s</i></a>',$row->runner,$row->display_name);
+                $runner_url = sprintf('<a href="./runner/?id=%s"><i>%s</i></a>',$row->runner,$row->display_name);
                 $table .= $this->generateRow($runner_url,$row->racetime,$row->companyname,$row->pos,$row->std);
                 $count++;
                 if($count==3) {
