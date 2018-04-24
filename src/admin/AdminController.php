@@ -161,7 +161,7 @@ class AdminController implements Loadable {
             plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js',
             array( 'jquery' ), $this->version, false );
         // JS
-        wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
-        wp_enqueue_script('prefix_bootstrap');
+        //wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
+        //wp_enqueue_script('prefix_bootstrap');
     }
 }

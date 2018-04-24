@@ -22,7 +22,6 @@ class RaceResult {
     const PRE_REG = 'PRE_REG';
 
     private $wpdb;
-    private $tablename = 'wp_bhaa_raceresult';
 
     public function __construct() {
         global $wpdb;

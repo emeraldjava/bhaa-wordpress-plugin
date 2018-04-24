@@ -11,6 +11,8 @@ namespace BHAA\admin;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 use BHAA\core\race\RaceResult;
+use BHAA\core\race\TeamResult;
+use BHAA\core\cpt\RaceCpt;
 
 class RaceAdminController implements Loadable {
 
@@ -129,24 +131,26 @@ class RaceAdminController implements Loadable {
         wp_redirect(wp_get_referer());
         exit();
     }
-    function bhaa_race_delete_team_results(){
-        error_log('bhaa_race_delete_team_results');
-//        $teamResult = new TeamResult($_GET['post_id']);
-//        $teamResult->deleteResults();
-        //queue_flash_message("bhaa_race_delete_team_results");
+
+    function bhaa_race_load_team_results() {
+        $teamResult = new TeamResult($_GET['post_id']);
+        $teamResultBlob = get_post_meta($_GET['post_id'],RaceCpt::BHAA_RACE_TEAM_RESULTS,true);
+        $teamResults = explode("\n",$teamResultBlob);
+        error_log('Number of team results '.sizeof($teamResults));
+        foreach($teamResults as $result){
+            $details = explode(',',$result);
+            error_log('team result '.print_r($details,true));
+            $teamResult->addResult($details);
+        }
+        //queue_flash_message("bhaa_race_load_team_results :: ".sizeof($teamResults));
         wp_redirect(wp_get_referer());
         exit();
     }
-    function bhaa_race_load_team_results() {
-//        $teamResult = new TeamResult($_GET['post_id']);
-//        $teamResultBlob = get_post_meta($_GET['post_id'],RaceCpt::BHAA_RACE_TEAM_RESULTS,true);
-//        $teamResults = explode("\n",$teamResultBlob);
-//        error_log('Number of team results '.sizeof($teamResults));
-//        foreach($teamResults as $result){
-//            $details = explode(',',$result);
-//            $teamResult->addResult($details);
-//        }
-        //queue_flash_message("bhaa_race_load_team_results :: ".sizeof($teamResults));
+    function bhaa_race_delete_team_results(){
+        error_log('bhaa_race_delete_team_results');
+        $teamResult = new TeamResult($_GET['post_id']);
+        $teamResult->deleteResults();
+        //queue_flash_message("bhaa_race_delete_team_results");
         wp_redirect(wp_get_referer());
         exit();
     }
