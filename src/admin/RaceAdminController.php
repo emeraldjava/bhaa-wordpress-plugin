@@ -101,6 +101,12 @@ class RaceAdminController implements Loadable {
             exit();
         }
     }
+    function bhaa_race_positions() {
+        $this->raceResult->updatePositions($_GET['post_id']);
+        //queue_flash_message("bhaa_race_positions");
+        wp_redirect( $_SERVER['HTTP_REFERER'] );
+        exit();
+    }
     function bhaa_race_pace() {
         $this->raceResult->updateRacePace($_GET['post_id']);
         //queue_flash_message("bhaa_race_pace ".$_GET['post_id']);

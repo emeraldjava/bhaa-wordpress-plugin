@@ -279,7 +279,6 @@ class RaceResult {
             $this->getTableName(),
             $this->getRace($race)->getKmDistance(),
             $race);
-        //error_log($SQL);
         $this->wpdb->query($SQL);
     }
 
