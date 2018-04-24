@@ -7,7 +7,7 @@
         {{^isMember}}
             <div class="col-sm-5">P{{position}} - {{firstname}} {{surname}}</div>
         {{/isMember}}
-        <div class="col-sm-4 company">Company: {{cname}}</div>
+        <div class="col-sm-4 company">Company: <a href="{{formUrl}}/house/{{cname}}">{{cname}}</a></div>
         <div class="col-sm-3">Time: {{racetime}}</div>
     </div>
     <div class="row row-striped row-minor">
