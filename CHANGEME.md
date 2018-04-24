@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.04.24 Display the team results.
 - 2018.04.20 Fix company url link on the runner admin page.
 - 2018.04.16 Update the bhaa_race_result shortcode to show event, races and league.
 - 2018.04.13 Add unit test framework.
