@@ -11,6 +11,8 @@ namespace BHAA\core\cpt;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
+use BHAA\core\house\House;
+
 class HouseCPT implements Loadable {
 
     const TEAM_TYPE = 'teamtype';
@@ -253,10 +255,12 @@ class HouseCPT implements Loadable {
     function bhaa_cpt_house_single_template($template) {
         global $wp_query, $post;
         if ($post->post_type == "house") {
+
         //if ('house' == get_post_type(get_queried_object_id())) {
             //error_log('bhaa_cpt_house_single_template '.get_post_type(get_queried_object_id()));
 
             global $post_id;
+            $house = new House($post_id);
             // load results
 //            $raceResult = new RaceResult();
 //            $res = $raceResult->getRaceResults(get_the_ID());
@@ -265,7 +269,7 @@ class HouseCPT implements Loadable {
 //            $raceResultTable = $mustache->renderRaceResults(
 //                Mustache::RACE_RESULTS_INDIVIDUAL, $res,
 //                false, './url', 'K-Club', '10', 'km', 'C');
-//            set_query_var( 'raceResultTable', $raceResultTable );
+            set_query_var( 'house', $house );
             $template = plugin_dir_path(__FILE__) . '/partials/house/house.php';
         }
         return $template;
