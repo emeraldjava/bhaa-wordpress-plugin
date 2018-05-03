@@ -78,7 +78,7 @@ class RaceResult {
 
         if($details[0]!=0) {
             $res = $this->wpdb->insert(
-                $this->tablename,
+                $this->getTableName(),
                 array(
                     'race' => $race,
                     'position' => $details[0],
@@ -172,7 +172,7 @@ class RaceResult {
 
     function deleteRaceResults($race) {
         $res = $this->wpdb->delete(
-            $this->tablename,
+            $this->getTableName(),
             array('race' => $race)
         );
     }
@@ -182,7 +182,7 @@ class RaceResult {
     }
 
     function deleteRaceResult($racerresult) {
-        return $this->wpdb->delete($this->tablename, array( 'id' => $racerresult ), array('%d'));
+        return $this->wpdb->delete($this->getTableName(), array( 'id' => $racerresult ), array('%d'));
     }
 
     function updateRaceResult($id,$race,$runner,$time,$standard,$poststandard,$number=0) {
