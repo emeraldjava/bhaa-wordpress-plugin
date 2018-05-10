@@ -31,6 +31,7 @@ class RunnerAdminController implements Loadable {
         $loader->add_action('admin_action_bhaa_runner_gender_action',$this,'bhaa_runner_gender_action');
         $loader->add_action('admin_action_bhaa_runner_dob_action',$this,'bhaa_runner_dob_action');
         $loader->add_action('admin_action_bhaa_runner_standard_action',$this,'bhaa_runner_standard_action');
+        $loader->add_action('admin_action_bhaa_runner_status_action',$this,'bhaa_runner_status_action');
         $loader->add_action('admin_action_bhaa_runner_merge_action',$this,'bhaa_runner_merge_action');
         //add_action('admin_action_bhaa_runner_move_action',array($this,'bhaa_runner_move_action'));
 
@@ -110,6 +111,14 @@ class RunnerAdminController implements Loadable {
     function bhaa_runner_standard_action() {
         if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_standard_action')) {
             update_user_meta($_POST['id'],'bhaa_runner_standard',trim($_POST['standard']));
+        }
+        wp_redirect(wp_get_referer());
+        exit();
+    }
+
+    function bhaa_runner_status_action() {
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_status_action')) {
+            update_user_meta($_POST['id'],'bhaa_runner_status',trim($_POST['status']));
         }
         wp_redirect(wp_get_referer());
         exit();

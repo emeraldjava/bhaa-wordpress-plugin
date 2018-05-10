@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.03.10 Allow admin can set the runners status.
 - 2018.03.05 Add the house page.
 - 2018.04.24 Display the team results.
 - 2018.04.20 Fix company url link on the runner admin page.
