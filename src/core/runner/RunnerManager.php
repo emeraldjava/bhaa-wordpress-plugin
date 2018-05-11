@@ -119,24 +119,23 @@ class RunnerManager {
             renewaldate.meta_value AS renewaldate,
             gender.meta_value AS gender,
             TRIM(house.post_title) AS companyname,
-            company.meta_value AS companyid,
+            r2c.p2p_from AS companyid,
             CASE WHEN r2s.p2p_from IS NOT NULL THEN TRIM(sectorteam.post_title) ELSE TRIM(house.post_title) END AS teamname,
             CASE WHEN r2s.p2p_from IS NOT NULL THEN r2s.p2p_from ELSE r2c.p2p_from END AS teamid,
             IFNULL(standard.meta_value,0) AS standard,
             dob.meta_value AS dob
             FROM wp_users
             JOIN wp_usermeta capabilities on (capabilities.user_id=wp_users.id and capabilities.meta_key="wp_capabilities")
-            LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
-            LEFT JOIN wp_p2p r2s ON (r2s.p2p_to=wp_users.id AND r2s.p2p_type = "sectorteam_to_runner")
             LEFT JOIN wp_usermeta first_name ON (first_name.user_id=wp_users.id AND first_name.meta_key="first_name")
             LEFT JOIN wp_usermeta last_name ON (last_name.user_id=wp_users.id AND last_name.meta_key="last_name")
             LEFT JOIN wp_usermeta dob ON (dob.user_id=wp_users.id AND dob.meta_key="bhaa_runner_dateofbirth")
             LEFT JOIN wp_usermeta status ON (status.user_id=wp_users.id AND status.meta_key="bhaa_runner_status")
             LEFT JOIN wp_usermeta gender ON (gender.user_id=wp_users.id AND gender.meta_key="bhaa_runner_gender")
-            LEFT JOIN wp_usermeta company ON (company.user_id=wp_users.id AND company.meta_key="bhaa_runner_company")
             LEFT JOIN wp_usermeta standard ON (standard.user_id=wp_users.id AND standard.meta_key="bhaa_runner_standard")
             LEFT JOIN wp_usermeta renewaldate ON (renewaldate.user_id=wp_users.id AND renewaldate.meta_key="bhaa_runner_dateofrenewal")
-            LEFT JOIN wp_posts house ON (house.id=company.meta_value AND house.post_type="house")
+            LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
+            LEFT JOIN wp_p2p r2s ON (r2s.p2p_to=wp_users.id AND r2s.p2p_type = "sectorteam_to_runner")
+            LEFT JOIN wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
             LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
             WHERE status.meta_value="%s" AND TRIM(IFNULL(wp_users.display_name,"")) <> ""
             ORDER BY lastname,firstname',$status);
@@ -155,9 +154,9 @@ class RunnerManager {
             "2018-03-30" AS renewaldate,
             COALESCE(gender.meta_value,"M") as gender,
             COALESCE(TRIM(house.post_title),"Day Runner") as companyname,
-            COALESCE(company.meta_value,1) as companyid,
-            COALESCE(TRIM(house.post_title),"Day Runner") as teamname,
-            COALESCE(company.meta_value,1) as teamid,
+            COALESCE(r2c.p2p_from,1) as companyid,
+            CASE WHEN r2s.p2p_from IS NOT NULL THEN TRIM(sectorteam.post_title) ELSE COALESCE(TRIM(house.post_title),"Day Runner") END AS teamname,
+            CASE WHEN r2s.p2p_from IS NOT NULL THEN r2s.p2p_from ELSE COALESCE(r2c.p2p_from,1) END AS teamid,
             COALESCE(standard.meta_value,10) as standard,
             COALESCE(dob.meta_value,"1980-01-01") as dob,
             reg.REG_paid as paid
@@ -169,9 +168,11 @@ class RunnerManager {
             left join wp_usermeta dob on (dob.user_id=wp_users.id and dob.meta_key="bhaa_runner_dateofbirth")
             left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key="bhaa_runner_status")
             left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key="bhaa_runner_gender")
-            left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
-            left join wp_posts house on (house.id=company.meta_value and house.post_type="house")
             left join wp_usermeta standard on (standard.user_id=wp_users.id and standard.meta_key="bhaa_runner_standard")
+            LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
+            LEFT JOIN wp_p2p r2s ON (r2s.p2p_to=wp_users.id AND r2s.p2p_type = "sectorteam_to_runner")
+            LEFT JOIN wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
+            LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
             WHERE reg.EVT_ID=6089
             AND reg.REG_paid!=0
             ORDER BY lastname ASC, firstname ASC';
@@ -189,9 +190,9 @@ class RunnerManager {
             "2018-03-30" AS renewaldate,
             COALESCE(gender.meta_value,"M") as gender,
             COALESCE(TRIM(house.post_title),"Day Runner") as companyname,
-            COALESCE(company.meta_value,1) as companyid,
+            COALESCE(r2c.p2p_from,1) as companyid,
             COALESCE(TRIM(house.post_title),"Day Runner") as teamname,
-            COALESCE(company.meta_value,1) as teamid,
+            COALESCE(r2c.p2p_from,1) as teamid,
             COALESCE(standard.meta_value,10) as standard,
             COALESCE(dob.meta_value,"1980-01-01") as dob
             FROM wp_esp_registration as reg
@@ -202,8 +203,8 @@ class RunnerManager {
             left join wp_usermeta dob on (dob.user_id=wp_users.id and dob.meta_key="bhaa_runner_dateofbirth")
             left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key="bhaa_runner_status")
             left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key="bhaa_runner_gender")
-            left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
-            left join wp_posts house on (house.id=company.meta_value and house.post_type="house")
+            LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
+            left join wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
             left join wp_usermeta standard on (standard.user_id=wp_users.id and standard.meta_key="bhaa_runner_standard")
             WHERE reg.EVT_ID=5651
             AND reg.REG_paid!=0
@@ -235,7 +236,6 @@ class RunnerManager {
             left join wp_usermeta capability on (capability.user_id=wp_users.id and capability.meta_key="wp_capabilities")
             left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key="bhaa_runner_gender")
             left join wp_esp_answer ee_gender on (ee_gender.REG_ID=reg.REG_ID and ee_gender.QST_ID=13)
-            left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key="bhaa_runner_company")
             left join wp_esp_answer ee_company on (ee_company.REG_ID=reg.REG_ID and ee_company.QST_ID=12)
             WHERE reg.EVT_ID IN (5651,6089)
             AND reg.REG_paid!=0
