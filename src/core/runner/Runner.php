@@ -14,7 +14,6 @@ use p2p_get_connections;
 class Runner {
 
     const BHAA_RUNNER_DATEOFBIRTH = 'bhaa_runner_dateofbirth';
-    const BHAA_RUNNER_COMPANY = 'bhaa_runner_company';
     const BHAA_RUNNER_MOBILEPHONE = 'bhaa_runner_mobilephone';
     const BHAA_RUNNER_INSERTDATE = 'bhaa_runner_insertdate';
     const BHAA_RUNNER_DATEOFRENEWAL = 'bhaa_runner_dateofrenewal';
