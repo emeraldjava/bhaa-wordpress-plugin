@@ -153,17 +153,17 @@ class RaceResult {
                 UPPER(last_name.meta_value) AS surname,
                 wp_users.user_nicename,
                 gender.meta_value as gender,
-                wp_posts.id as cid,
-                wp_posts.post_title as cname,
+                house.id as cid,
+                house.post_title as cname,
                 IF(status.meta_value='M',true,false) as isMember
                 FROM wp_bhaa_raceresult
                 left join wp_users on wp_users.id=wp_bhaa_raceresult.runner
                 left join wp_usermeta first_name on (first_name.user_id=wp_users.id and first_name.meta_key='first_name')
                 left join wp_usermeta last_name on (last_name.user_id=wp_users.id and last_name.meta_key='last_name')
                 left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key='bhaa_runner_gender')
-                left join wp_usermeta company on (company.user_id=wp_users.id and company.meta_key='bhaa_runner_company')
                 left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key='bhaa_runner_status')
-                left join wp_posts on (wp_posts.post_type='house' and company.meta_value=wp_posts.id)
+                LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = 'house_to_runner')
+                left join wp_posts house on (house.post_type='house' and house.id=r2c.p2p_from)
                 where race=%d and wp_bhaa_raceresult.class='RAN' and position<=500 ORDER BY position";
         $SQL = $this->wpdb->prepare($query,$race);
         //error_log($SQL);
