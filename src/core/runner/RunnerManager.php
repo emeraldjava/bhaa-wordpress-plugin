@@ -176,7 +176,7 @@ class RunnerManager {
             WHERE reg.EVT_ID=6089
             AND reg.REG_paid!=0
             ORDER BY lastname ASC, firstname ASC';
-        return $wpdb->get_results($SQL,ARRAY_A);
+        return $wpdb->get_results($SQL,ARRAY_A); // 6090 GS-2018
     }
     
     public function getNewOnlineBHAAMembers(){
@@ -231,7 +231,7 @@ class RunnerManager {
             COALESCE(ee_dob.ANS_value,"x") as ee_dob
             FROM wp_esp_registration as reg
             JOIN wp_usermeta eeAttendee on (eeAttendee.meta_value=reg.ATT_ID and eeAttendee.meta_key="wp_EE_Attendee_ID")
-            JOIN wp_users on (eeAttendee.user_id=wp_users.id)
+            left JOIN wp_users on (eeAttendee.user_id=wp_users.id)
             left join wp_usermeta dob on (dob.user_id=wp_users.id and dob.meta_key="bhaa_runner_dateofbirth")
             left join wp_esp_answer ee_dob on (ee_dob.REG_ID=reg.REG_ID and ee_dob.QST_ID=11)
             left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key="bhaa_runner_status")
@@ -245,7 +245,56 @@ class RunnerManager {
             WHERE reg.EVT_ID IN (5651,6089)
             AND reg.REG_paid!=0
             ORDER BY reg.EVT_ID,wp_users.display_name,reg.EVT_ID';
-        return $wpdb->get_results($SQL,OBJECT);
+        return $wpdb->get_results($SQL,OBJECT);// 6090 GS-2018
+    }
+
+    public function processEventExpressoRunners() {
+        error_log('processEventExpressoRunners');
+        $registeredRunners = $this->listEERegisteredRunners();
+        //global $wpdb;
+        foreach($registeredRunners as $runner) {
+
+            // if DOB
+            if($runner->m_dob==""){
+                update_user_meta($runner->id, Runner::BHAA_RUNNER_DATEOFBIRTH, $runner->ee_dob);
+                error_log("fix dob ".$runner->id);
+            }
+
+            // if gender
+            if($runner->m_gender=="") {
+                $gender = "M";
+                if( strpos($runner->ee_gender,'F') !== false )
+                    $gender = "W";
+
+                update_user_meta($runner->id, Runner::BHAA_RUNNER_GENDER, $gender);
+                error_log("fix gender ".$runner->id);
+            }
+
+            // if annual membership
+            if($runner->EVT_ID == 5651) {
+
+                $runnerObj = new Runner($runner->id);
+
+                if( current_user_can('edit_posts') ) {
+                    // true if user can edit posts
+                }
+
+                if(strpos($runner->capability,'bhaamember') !== false ) {
+                    update_user_meta($runner->id, Runner::BHAA_RUNNER_STATUS, 'M');
+                    //update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
+                    wp_update_user( array( 'ID' => $runner->id, 'role' => 'bhaamember' ) );
+                    //$runnerObj->renew();
+                    error_log("set role and status ".$runner->id);
+                }
+
+            } else {
+                // set the day membership
+                if($runner->m_status=='' && $runner->paid=='15.00') {
+                    update_user_meta($runner->id, Runner::BHAA_RUNNER_STATUS, 'D');
+                    error_log("set day status ".$runner->id);
+                }
+            }
+        }
     }
 
     /**

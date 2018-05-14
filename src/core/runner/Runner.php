@@ -71,7 +71,7 @@ class Runner {
         global $wpdb;
 
         $SQL = $wpdb->prepare('SELECT COUNT(race) as races FROM wp_bhaa_raceresult WHERE runner=%s',$user_id);
-        error_log($SQL);
+        //error_log($SQL);
         $this->racecount = $wpdb->get_var($SQL);
         //error_log('user_data:'.print_r($this->user_data,true));
     }
@@ -165,6 +165,10 @@ class Runner {
                 return 'No Team';
             }
         }
+    }
+
+    function isBhaaMember() {
+        return in_array('bhaamember',$this->user->role);
     }
 
     function renew() {

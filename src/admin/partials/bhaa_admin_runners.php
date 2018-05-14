@@ -12,6 +12,14 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
     <h1>BHAA EE Registered Admin</h1>
+<?php
+//    echo sprintf('<div><form action="%s" method="POST">
+//            %s
+//            <input type="hidden" name="action" value="bhaa_process_expresso_runners" />
+//            <input type="submit" value="Process Event Expresso Runners"/>
+//        </form></div>',admin_url( 'admin.php' ),wp_nonce_field('bhaa_process_expresso_runners'));
+?>
+    <hr/>
     <table border="1">
         <tbody>
         <tr>

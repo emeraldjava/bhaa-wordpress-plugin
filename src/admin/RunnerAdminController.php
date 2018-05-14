@@ -35,6 +35,8 @@ class RunnerAdminController implements Loadable {
         $loader->add_action('admin_action_bhaa_runner_merge_action',$this,'bhaa_runner_merge_action');
         //add_action('admin_action_bhaa_runner_move_action',array($this,'bhaa_runner_move_action'));
 
+        $loader->add_action('admin_action_bhaa_process_expresso_runners',$this,'bhaa_process_expresso_runners');
+
         $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
         $loader->add_filter('manage_users_columns',$this,'bhaa_manage_users_columns',10,3);
         $loader->add_filter('manage_users_custom_column',$this,'bhaa_manage_users_custom_column',10,3);
@@ -43,17 +45,27 @@ class RunnerAdminController implements Loadable {
 
     public function bhaa_admin_sub_menu() {
         add_submenu_page('bhaa', 'BHAA Expresso Runners Admin', 'ExpressoRunners',
-            'manage_options', 'bhaa_admin_runners', array($this, 'bhaa_admin_runners'));
+            'manage_options', 'bhaa_admin_runners', array($this, 'bhaa_admin_expresso_runners'));
         add_submenu_page(null, 'BHAA Runner Admin', 'Runner',
             'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
     }
 
-    public function bhaa_admin_runners() {
+    public function bhaa_admin_expresso_runners() {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
         $rows = $this->runnerManager->listEERegisteredRunners();
         include_once( 'partials/bhaa_admin_runners.php' );
+    }
+
+    function bhaa_process_expresso_runners() {
+        //current_user_can('edit_users') &&
+        error_log('bhaa_process_expresso_runners');
+        if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_process_expresso_runners')) {
+            $rows = $this->runnerManager->processEventExpressoRunners();
+        }
+        wp_redirect(wp_get_referer());
+        exit();
     }
 
     public function bhaa_admin_runner() {
@@ -63,7 +75,6 @@ class RunnerAdminController implements Loadable {
         $runner = new Runner($_REQUEST['id']);
         if($runner->getID()!=null)
             $matchedRunners = $this->runnerManager->findMatchingRunners($_REQUEST['id']);
-
         include_once( 'partials/bhaa_admin_runner.php' );
     }
 
