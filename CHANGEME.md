@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.03.14 Use p2p details to derive a runner's company for all reports.
 - 2018.03.10 Allow admin can set the runners status.
 - 2018.03.05 Add the house page.
 - 2018.04.24 Display the team results.
