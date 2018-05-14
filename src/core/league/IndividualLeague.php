@@ -29,7 +29,7 @@ class IndividualLeague extends AbstractLeague {
 			FROM wp_bhaa_leaguesummary ls
 			LEFT join wp_users on wp_users.id=ls.leagueparticipant
 			LEFT join wp_posts on wp_posts.post_type="house" and wp_posts.id=
-				(select meta_value from wp_usermeta where user_id=ls.leagueparticipant and meta_key="bhaa_runner_company")
+				(select p2p_from from wp_p2p where p2p_to=ls.leagueparticipant and p2p_type="house_to_runner")
 			WHERE ls.league = %d
 			AND ls.leaguedivision = %s
 			AND ls.leagueposition <= %d
