@@ -30,6 +30,10 @@
         </tr>
         <?php
         foreach ( $rows as $row ) {
+            $ee_company=$row->ee_company;
+            if($row->ee_company_id!=0)
+                $ee_company = sprintf('<a href="%s">%s %d</a>',get_edit_post_link($row->ee_company_id),$row->ee_company,$row->ee_company_id);
+
             echo sprintf('<tr><td><a href="./admin.php?page=bhaa_admin_runner&id=%d">%d %s</a></td><td>%d</td>
                 <td>%d</td><td>%d</td>
                 <td>%s</td><td>%s</td>
@@ -41,7 +45,7 @@
                 $row->reg_id,$row->paid,
                 $row->m_status,$row->capability,
                 $row->m_gender,$row->ee_gender,
-                $row->m_company,$row->ee_company,
+                $row->m_company,$ee_company,
                 $row->m_dob,$row->ee_dob);
         }
         ?>

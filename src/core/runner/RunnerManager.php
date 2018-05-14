@@ -224,7 +224,9 @@ class RunnerManager {
             COALESCE(gender.meta_value,"x") as m_gender,
             COALESCE(ee_gender.ANS_value,"x") as ee_gender,
             COALESCE(house.post_title,1) as m_company,
+            COALESCE(house.id,1) as m_company_id,
             COALESCE(TRIM(ee_company.ANS_value),"x") as ee_company,
+            COALESCE(TRIM(eehouse.ID),0) as ee_company_id,
             COALESCE(dob.meta_value,"x") as m_dob,
             COALESCE(ee_dob.ANS_value,"x") as ee_dob
             FROM wp_esp_registration as reg
@@ -239,6 +241,7 @@ class RunnerManager {
             left join wp_esp_answer ee_company on (ee_company.REG_ID=reg.REG_ID and ee_company.QST_ID=12)
             LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
             left join wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
+            left join wp_posts eehouse on (eehouse.post_title=ee_company.ANS_value and eehouse.post_type="house")
             WHERE reg.EVT_ID IN (5651,6089)
             AND reg.REG_paid!=0
             ORDER BY reg.EVT_ID,wp_users.display_name,reg.EVT_ID';
