@@ -14,11 +14,12 @@ use BHAA\utils\Loader;
 use BHAA\core\runner\Runner;
 use BHAA\core\Connections;
 
-class RunnerAdminController implements Loadable {
+class RunnerAdminController extends AbstractAdminController implements Loadable {
 
     var $runnerManager;
 
     public function __construct() {
+        parent::__construct();
         $this->runnerManager = new RunnerManager();
     }
 

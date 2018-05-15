@@ -18,10 +18,12 @@ curl --ftp-create-dirs -u "$1:$2" -T src/admin/partials/bhaa_admin_main.php     
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/partials/bhaa_admin_raceresult.php               ftp://$3/$4/src/admin/partials/bhaa_admin_raceresult.php
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/partials/bhaa_admin_runner.php                   ftp://$3/$4/src/admin/partials/bhaa_admin_runner.php
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/partials/bhaa_admin_runners.php                  ftp://$3/$4/src/admin/partials/bhaa_admin_runners.php
+curl --ftp-create-dirs -u "$1:$2" -T src/admin/AbstractAdminController.php                      ftp://$3/$4/src/admin/AbstractAdminController.php
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/AdminController.php                              ftp://$3/$4/src/admin/AdminController.php
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/LeagueAdminController.php                        ftp://$3/$4/src/admin/LeagueAdminController.php
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/RaceAdminController.php                          ftp://$3/$4/src/admin/RaceAdminController.php
 curl --ftp-create-dirs -u "$1:$2" -T src/admin/RunnerAdminController.php                        ftp://$3/$4/src/admin/RunnerAdminController.php
+curl --ftp-create-dirs -u "$1:$2" -T src/admin/WPFlashMessages.php                              ftp://$3/$4/src/admin/WPFlashMessages.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/cpt/partials/house/house.php                      ftp://$3/$4/src/core/cpt/partials/house/house.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/cpt/partials/league/single-league-division.php    ftp://$3/$4/src/core/cpt/partials/league/single-league-division.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/cpt/partials/league/single-league-individual.php  ftp://$3/$4/src/core/cpt/partials/league/single-league-individual.php

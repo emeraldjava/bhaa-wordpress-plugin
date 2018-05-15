@@ -14,7 +14,7 @@ use BHAA\utils\Loader;
 use League\Csv\Writer;
 use SplTempFileObject;
 
-class AdminController implements Loadable {
+class AdminController extends AbstractAdminController implements Loadable {
 
     /**
      * The ID of this plugin.
@@ -30,6 +30,7 @@ class AdminController implements Loadable {
      * Initialize the class and set its properties.
      */
     public function __construct( $plugin_name, $version ) {
+        parent::__construct();
         $this->plugin_name = $plugin_name;
         $this->version = $version;
     }
@@ -44,6 +45,8 @@ class AdminController implements Loadable {
         $loader->add_action('admin_action_bhaa_registrar_export_day_members',$this,'bhaa_registrar_export_day_members');
         $loader->add_action('admin_action_bhaa_registrar_export_online',$this,'bhaa_registrar_export_online');
         $loader->add_action('admin_action_bhaa_registrar_export_new_online_members',$this,'bhaa_registrar_export_new_online_members');
+
+        $loader->add_action('admin_notices', $this->wpFlashMessages, 'show_flash_messages');
     }
 
     function bhaa_export_members() {

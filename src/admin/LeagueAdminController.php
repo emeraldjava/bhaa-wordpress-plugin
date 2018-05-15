@@ -14,9 +14,10 @@ use BHAA\core\league\IndividualLeague;
 use BHAA\core\league\TeamLeague;
 use BHAA\core\cpt\LeagueCPT;
 
-class LeagueAdminController implements Loadable {
+class LeagueAdminController extends AbstractAdminController implements Loadable {
 
     function __construct() {
+        parent::__construct();
     }
 
     public function registerHooks(Loader $loader) {
@@ -31,11 +32,11 @@ class LeagueAdminController implements Loadable {
      */
     function bhaa_league_delete() {
         if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_delete')) {
-            error_log('bhaa_league_delete');
             $leagueId = $_GET['post_id'];
-            //$leagueHandler = $this->getLeagueHandler($leagueId);
-            //$leagueHandler->deleteLeague();
-            //queue_flash_message("bhaa_league_delete");
+            $leagueHandler = $this->getLeagueHandler($leagueId);
+            $leagueHandler->deleteLeague();
+            $this->wpFlashMessages->queue_flash_message("bhaa_league_delete ".$leagueId);
+            error_log('bhaa_league_delete');
             wp_redirect($_SERVER['HTTP_REFERER']);
             exit();
         }
@@ -47,11 +48,12 @@ class LeagueAdminController implements Loadable {
      */
     function bhaa_league_populate() {
         if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_populate')) {
-            error_log('bhaa_league_populate');
+
             $leagueId = $_GET['post_id'];
             //$leagueHandler = $this->getLeagueHandler($leagueId);
             //$leagueHandler->loadLeague();
-            //queue_flash_message("bhaa_league_populate");
+            $this->wpFlashMessages->queue_flash_message("bhaa_league_populate ".$leagueId);
+            error_log('bhaa_league_populate');
             wp_redirect($_SERVER['HTTP_REFERER']);
             exit();
         }

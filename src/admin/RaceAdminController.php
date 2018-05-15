@@ -14,11 +14,12 @@ use BHAA\core\race\RaceResult;
 use BHAA\core\race\TeamResult;
 use BHAA\core\cpt\RaceCpt;
 
-class RaceAdminController implements Loadable {
+class RaceAdminController extends AbstractAdminController implements Loadable {
 
     private $raceResult;
 
     function __construct() {
+        parent::__construct();
         $this->raceResult = new RaceResult();
     }
 
