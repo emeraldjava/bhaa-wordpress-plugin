@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.03.15 Add flash message support for the admin controller. Add login form image.
 - 2018.03.14 Use p2p details to derive a runner's company for all reports.
 - 2018.03.10 Allow admin can set the runners status.
 - 2018.03.05 Add the house page.

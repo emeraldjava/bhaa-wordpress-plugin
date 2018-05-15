@@ -27,6 +27,28 @@ class Controller implements Loadable {
     public function registerHooks(Loader $loader) {
         $loader->add_action('wp_enqueue_scripts',$this,'bhaa_enqueue_styles');
         $loader->add_action('wp_enqueue_scripts',$this,'bhaa_enqueue_scripts');
+        $loader->add_action('login_head', $this,'bhaa_login_head');
+
+        $loader->add_filter('login_headerurl',$this,'bhaa_login_headerurl');
+        $loader->add_filter('login_headertitle',$this,'bhaa_login_headertitle');
+    }
+
+    function bhaa_login_head() {
+        error_log(plugin_dir_url(__FILE__));
+        echo '<style>
+            body.login #login h1 a {
+            background: url('.plugin_dir_url(__FILE__).'/img/bhaa_logo_transparent.png) no-repeat center top transparent;
+            height: 120px;
+            width: 200px;
+        }</style>';
+    }
+
+    function bhaa_login_headerurl( $url ) {
+        return get_bloginfo( 'url' );
+    }
+
+    function bhaa_login_headertitle() {
+        return 'BHAA - For runners, by runners!';
     }
 
     /**

@@ -78,6 +78,8 @@ class Main {
         $plugin_i18n->registerHooks($this->loader);
     }
 
+
+
     /**
      * Run the loader to execute all of the hooks with WordPress.
      */

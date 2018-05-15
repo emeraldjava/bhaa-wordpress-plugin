@@ -59,6 +59,7 @@ curl --ftp-create-dirs -u "$1:$2" -T src/core/Connections.php                   
 curl --ftp-create-dirs -u "$1:$2" -T src/core/Mustache.php                                      ftp://$3/$4/src/core/Mustache.php
 curl --ftp-create-dirs -u "$1:$2" -T src/front/css/bhaa_wordpress_plugin-public.css             ftp://$3/$4/src/front/css/bhaa_wordpress_plugin-public.css
 curl --ftp-create-dirs -u "$1:$2" -T src/front/js/bhaa_wordpress_plugin-public.js               ftp://$3/$4/src/front/js/bhaa_wordpress_plugin-public.js
+curl --ftp-create-dirs -u "$1:$2" -T src/front/img/bhaa_logo_transparent.png                    ftp://$3/$4/src/front/img/bhaa_logo_transparent.png
 curl --ftp-create-dirs -u "$1:$2" -T src/front/partials/bhaa_wordpress_plugin-display.php       ftp://$3/$4/src/front/partials/bhaa_wordpress_plugin-display.php
 curl --ftp-create-dirs -u "$1:$2" -T src/front/Controller.php                                   ftp://$3/$4/src/front/Controller.php
 curl --ftp-create-dirs -u "$1:$2" -T src/utils/Activator.php                                    ftp://$3/$4/src/utils/Activator.php
