@@ -55,6 +55,9 @@ curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/mustache/runner.race.result
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/Runner.php                                 ftp://$3/$4/src/core/runner/Runner.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/RunnerManager.php                          ftp://$3/$4/src/core/runner/RunnerManager.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/RunnerShortcode.php                        ftp://$3/$4/src/core/runner/RunnerShortcode.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/standard/Standard.php                             ftp://$3/$4/src/core/standard/Standard.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/standard/StandardCalculator.php                   ftp://$3/$4/src/core/standard/StandardCalculator.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/standard/StandardShortcode.php                    ftp://$3/$4/src/core/standard/StandardShortcode.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/Connections.php                                   ftp://$3/$4/src/core/Connections.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/Mustache.php                                      ftp://$3/$4/src/core/Mustache.php
 curl --ftp-create-dirs -u "$1:$2" -T src/front/css/bhaa_wordpress_plugin-public.css             ftp://$3/$4/src/front/css/bhaa_wordpress_plugin-public.css

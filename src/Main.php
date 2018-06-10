@@ -64,6 +64,7 @@ class Main {
         $connections = new core\Connections();
         $connections->registerHooks($this->loader);
 
+        new core\standard\StandardShortcode();
         new core\race\RaceResultShortcode();
         new core\league\LeagueShortcode();
         new core\runner\RunnerShortcode();
