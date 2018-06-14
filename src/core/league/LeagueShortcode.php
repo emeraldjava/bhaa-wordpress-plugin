@@ -9,6 +9,7 @@
 namespace BHAA\core\league;
 
 use BHAA\core\Mustache;
+use Mustache_LambdaHelper;
 
 class LeagueShortcode {
 
@@ -26,47 +27,50 @@ class LeagueShortcode {
         extract( shortcode_atts(
             array(
                 'division' => 'A',
-                'top' => '100'
+                'top' => '10'
             ), $atts ) );
 
         $id = get_the_ID();
         $post = get_post( $id );
 
-        $leagueSummary = new LeagueSummary($id);
-        $summary = $leagueSummary->getDivisionSummary($atts['division'],$atts['top']);
+        $leagueFactory = new LeagueFactory();
+        $league = $leagueFactory->getLeague($id);
+
+        //error_log('league '.$id.'. division '.$atts['division'].'. top '.$atts['top']);
+        $division = $league->getDivisionDetails($atts['division']);
+        $summary = $league->getDivisionSummary($atts['division'],$atts['top']);
 
         $mustache = new Mustache();
         // division summary
         if($atts['top']!=1000) {
             return $mustache->renderTemplate('division-summary',
                 array(
-                    'division' => $atts['division'],
+                    'division' => $division,
                     'id'=>$id,
                     'top'=> $atts['top'],
                     'url'=> get_permalink( $id ),
-                    'linktype' => $leagueSummary->getLinkType(),
+                    'linktype' => $league->getLinkType(),
                     'summary' => $summary
                 ));
         } else {
 
             //error_log('bhaa_league_shortcode detailed');
             if(strpos($atts['division'],'L'))
-                $events = $leagueSummary->getLeagueRaces('W');
+                $events = $league->getLeagueRaces('W');
             else
-                $events = $leagueSummary->getLeagueRaces('M');
+                $events = $league->getLeagueRaces('M');
 
             return $mustache->renderTemplate('division-detailed',
                 array(
-                    'division' => $atts['division'],
+                    'division' => $division,
                     'id'=>$id,
                     'top'=> $atts['top'],
                     'url'=> get_permalink( $id ),
                     'summary' => $summary,
-                    'linktype' => $leagueSummary->getLinkType(),
+                    'linktype' => $league->getLinkType(),
                     'events' => $events,
                     'matchEventResult' => function($text, Mustache_LambdaHelper $helper) {
                         $results = explode(',',$helper->render($text));
-                        //error_log($helper->render($text).' '.$results);
                         $row = '';
                         foreach($results as $result) {
                             if($result==0)

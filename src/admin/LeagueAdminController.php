@@ -50,8 +50,8 @@ class LeagueAdminController extends AbstractAdminController implements Loadable 
         if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_league_populate')) {
 
             $leagueId = $_GET['post_id'];
-            //$leagueHandler = $this->getLeagueHandler($leagueId);
-            //$leagueHandler->loadLeague();
+            $leagueHandler = $this->getLeagueHandler($leagueId);
+            $leagueHandler->loadLeague();
             $this->wpFlashMessages->queue_flash_message("bhaa_league_populate ".$leagueId);
             error_log('bhaa_league_populate');
             wp_redirect($_SERVER['HTTP_REFERER']);

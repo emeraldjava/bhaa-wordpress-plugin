@@ -211,4 +211,26 @@ class TeamLeague extends AbstractLeague {
         wp_redirect( $_SERVER['HTTP_REFERER'] );
         exit();
     }
+
+    function getDivisionSummary($division,$limit=100) {
+        $SQL = $this->wpdb->prepare('select wp_bhaa_leaguesummary.*,wp_posts.post_title as display_name,wp_posts.ID,wp_posts.post_title from wp_bhaa_leaguesummary
+            left join wp_posts on (wp_posts.post_type="house" and wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant)
+            where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
+        //error_log($division.' '.$SQL);
+        return $this->wpdb->get_results($SQL);
+    }
+
+    function getLeagueSummaryByDivision($limit=10) {
+        global $wpdb;
+
+        $query = $wpdb->prepare('SELECT *,wp_posts.post_title as display_name
+            FROM wp_bhaa_leaguesummary
+            left join wp_posts on (wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant and wp_posts.post_type="house")
+            WHERE league = %d
+            AND leagueposition <= %d
+            AND leaguetype = %s
+            order by league, leaguedivision, leagueposition',$this->leagueid,$limit,$this->getType());
+        //error_log($this->type.' '.$this->leagueid.' '.$query);
+        return $wpdb->get_results($query);
+    }
 }

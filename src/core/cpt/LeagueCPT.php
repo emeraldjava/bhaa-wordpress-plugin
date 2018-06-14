@@ -23,6 +23,7 @@ class LeagueCPT implements Loadable {
         $loader->add_action('admin_menu',$this,'bhaa_league_populate_metabox');
         $loader->add_filter('post_row_actions',$this,'bhaa_league_post_row_actions',10,2);
         $loader->add_filter('single_template',$this,'bhaa_cpt_league_single_template');
+        $loader->add_filter('query_vars', $this,'bhaa_add_query_vars');
     }
 
     function bhaa_league_populate_metabox() {
@@ -35,6 +36,15 @@ class LeagueCPT implements Loadable {
             'high'
         );
     }
+
+
+    function bhaa_add_query_vars($qvars) {
+        //$qvars[] = "id";
+        $qvars[] = "division";
+        //$qvars[] = "bhaa_race";
+        return $qvars;
+    }
+
 
     function bhaa_league_populate_fields() {
         global $post;
@@ -52,12 +62,12 @@ class LeagueCPT implements Loadable {
             $type = get_post_meta($post->ID,'bhaa_league_type',true);
             // check if this is a division sub-query
             if(isset($wp_query->query_vars['division'])) {
-                $division = urldecode($wp_query->query_vars['division']);
+                //$division = urldecode($wp_query->query_vars['division']);
                 return  plugin_dir_path(__FILE__) . '/partials/league/single-league-division.php';
             } else {
-                //if($type=='T')
-                //    return plugin_dir_path(__FILE__) . '/partials/league/single-league-team.php';
-                //else
+                if($type=='T')
+                    return plugin_dir_path(__FILE__) . '/partials/league/single-league-team.php';
+                else
                     return plugin_dir_path(__FILE__) . '/partials/league/single-league-individual.php';
             }
         }

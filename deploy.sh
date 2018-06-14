@@ -39,9 +39,10 @@ curl --ftp-create-dirs -u "$1:$2" -T src/core/league/mustache/partials/summary_r
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/mustache/division-detailed.tpl             ftp://$3/$4/src/core/league/mustache/division-detailed.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/mustache/division-summary.tpl              ftp://$3/$4/src/core/league/mustache/division-summary.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/AbstractLeague.php                         ftp://$3/$4/src/core/league/AbstractLeague.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/league/League.php                                 ftp://$3/$4/src/core/league/League.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/league/LeagueFactory.php                          ftp://$3/$4/src/core/league/LeagueFactory.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/IndividualLeague.php                       ftp://$3/$4/src/core/league/IndividualLeague.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/LeagueShortcode.php                        ftp://$3/$4/src/core/league/LeagueShortcode.php
-curl --ftp-create-dirs -u "$1:$2" -T src/core/league/LeagueSummary.php                          ftp://$3/$4/src/core/league/LeagueSummary.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/TeamLeague.php                             ftp://$3/$4/src/core/league/TeamLeague.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/house/House.php                                   ftp://$3/$4/src/core/house/House.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/mustache/edit.race.results.individual.tpl    ftp://$3/$4/src/core/race/mustache/edit.race.results.individual.tpl

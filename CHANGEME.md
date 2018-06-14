@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.06.14 Remembering the implementation of the leagues! Still should be simpler!. 
 - 2018.06.14 Add login redirect logic to send non-admins to the frontpage. Update next event ID to 6092.
 - 2018.03.15 Add flash message support for the admin controller. Add login form image.
 - 2018.03.14 Use p2p details to derive a runner's company for all reports.

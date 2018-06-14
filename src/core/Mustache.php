@@ -18,6 +18,7 @@ class Mustache {
 
     /**
      * See the Cascading loader : https://stackoverflow.com/questions/20499019/how-to-override-partials-with-mustache?rq=1
+     * https://stackoverflow.com/questions/31093118/trying-to-call-partials-in-mustache-php
      */
     public function __construct() {
         $options =  array('extension' => '.tpl');
@@ -37,12 +38,12 @@ class Mustache {
             array(
                 'loader' => $mustache_loader,
                 'partials_loader' => $mustache_partial_loader
-                //'cache' => $mustache_cache
             )
         );
     }
 
     public function renderTemplate(string $template,array $parameters) {
+        //error_log('renderTemplate '.$template);
         return $this->mustache->loadTemplate($template)->render($parameters);
     }
 }

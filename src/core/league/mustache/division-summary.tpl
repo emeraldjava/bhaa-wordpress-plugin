@@ -2,7 +2,7 @@
 {{# division}}
 <div id="division{{code}}" class="division">
 <div id="title"><label><a href="{{url}}?division={{code}}"/>{{name}}</a></label></div>
-<div>{{summary[0].leaguedivision}} <i>Standards:{{summary.min}}-{{summary.max}}. Runners:{{count}}</i></div>
+<div>{{code}} <i>Standards:{{min}}-{{max}}. Runners:{{count}}</i></div>
 </div>
 {{/ division}}
 <table width="100%" class="table-1">

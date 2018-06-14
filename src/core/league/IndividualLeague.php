@@ -8,9 +8,9 @@
 
 namespace BHAA\core\league;
 
-use BHAA\core\league\AbstractLeague;
+use BHAA\core\Mustache;
 
-class IndividualLeague extends AbstractLeague {
+class IndividualLeague extends AbstractLeague implements League {
 
     function __construct($leagueid) {
         parent::__construct($leagueid);
@@ -25,6 +25,7 @@ class IndividualLeague extends AbstractLeague {
     }
 
     function getTopParticipantsInDivision($division,$limit) {
+        //error_log('getTopParticipantsInDivision '.$division.'-'.$limit);
         $query = $this->wpdb->prepare('SELECT ls.*,wp_users.display_name as display_name
 			FROM wp_bhaa_leaguesummary ls
 			LEFT join wp_users on wp_users.id=ls.leagueparticipant
@@ -39,9 +40,10 @@ class IndividualLeague extends AbstractLeague {
         $summary = $this->wpdb->get_results($query);
 
         $divisionDetails = $this->getDivisionDetails($division);
+        $mustache = new Mustache();
 
         if($limit!=1000) {
-            return Bhaa_Mustache::get_instance()->loadTemplate('division-summary')->render(
+            return $mustache->renderTemplate(division-summary,
                 array(
                     'division' => $divisionDetails,
                     'id'=> $this->getLeagueId(),
@@ -57,7 +59,7 @@ class IndividualLeague extends AbstractLeague {
             else
                 $events = $this->getLeagueRaces('M');
 
-            return Bhaa_Mustache::get_instance()->loadTemplate('division-detailed')->render(
+            return $mustache->renderTemplate('division-detailed',
                 array(
                     'division' => $divisionDetails,
                     'id'=> $this->getLeagueId(),
@@ -221,6 +223,36 @@ class IndividualLeague extends AbstractLeague {
         $res = $this->wpdb->query($SQL);
 
         //queue_flash_message('Updated league content '.$this->leagueid);
+    }
+
+    function getDivisions() {
+        $SQL = $this->wpdb->prepare("select * from wp_bhaa_division where type=%s",$this->getType());
+        //error_log($SQL);
+        return $this->wpdb->get_results($SQL,OBJECT);
+    }
+
+    function getDivisionSummary($division,$limit=100) {
+        $SQL = $this->wpdb->prepare('select wp_bhaa_leaguesummary.*,wp_users.display_name,wp_posts.ID,wp_posts.post_title from wp_bhaa_leaguesummary
+            left join wp_users on wp_users.id=wp_bhaa_leaguesummary.leagueparticipant
+            left join wp_posts on wp_posts.post_type="house" and wp_posts.id=
+                (select meta_value from wp_usermeta where user_id=wp_bhaa_leaguesummary.leagueparticipant and meta_key="bhaa_runner_company")
+            where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
+        return $this->wpdb->get_results($SQL);
+    }
+
+
+    function getLeagueSummaryByDivision($limit=10) {
+        global $wpdb;
+        //error_log('getLeagueSummaryByDivision '.$this->type.' '.$this->leagueid);
+        $query = $wpdb->prepare("SELECT *,wp_users.display_name as display_name
+            FROM wp_bhaa_leaguesummary
+            join wp_users on wp_users.id=wp_bhaa_leaguesummary.leagueparticipant
+            WHERE league = %d
+            AND leagueposition <= %d
+            AND leaguetype = %s
+            order by league, leaguedivision, leagueposition",$this->leagueid,$limit,$this->getType());
+        //error_log($this->type.' '.$this->leagueid.' '.$query);
+        return $wpdb->get_results($query);
     }
 
     function exportLeagueTopTen() {
