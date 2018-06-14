@@ -31,6 +31,16 @@ class Controller implements Loadable {
 
         $loader->add_filter('login_headerurl',$this,'bhaa_login_headerurl');
         $loader->add_filter('login_headertitle',$this,'bhaa_login_headertitle');
+        $loader->add_filter('login_redirect', $this,'bhaa_login_redirect', 10, 3 );
+    }
+
+    /**
+     * Redirect non-admins to the homepage after logging into the site
+     * See https://tommcfarlin.com/redirect-non-admin/
+     * @since 	1.0
+     */
+    function bhaa_login_redirect( $redirect_to, $request, $user  ) {
+        return (isset($user->roles) && is_array($user->roles) && in_array('administrator', $user->roles)) ? admin_url() : site_url();
     }
 
     function bhaa_login_head() {
