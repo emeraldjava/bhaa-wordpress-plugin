@@ -63,4 +63,12 @@ class AbstractLeague {
         $SQL .= ' order by e.ID ASC';
         return $this->wpdb->get_results($SQL,OBJECT);
     }
+
+    function listLeaguesByYear($year = 2018) {
+        $query = $this->wpdb->prepare("SELECT league.* FROM wp_posts league
+            WHERE league.post_type='league'
+            AND YEAR(league.post_date)=%d
+            ORDER BY post_date DESC",$year);
+        return $this->wpdb->get_results($query,OBJECT);
+    }
 }

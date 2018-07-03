@@ -15,6 +15,7 @@ class LeagueShortcode {
 
     function __construct() {
         add_shortcode('bhaa_league',array($this,'bhaa_league_shortcode'));
+        add_shortcode('bhaa_leagues_by_year',array($this,'bhaa_leagues_by_year_shortcode'));
     }
 
     /**
@@ -82,5 +83,12 @@ class LeagueShortcode {
                     }
                 ));
         }
+    }
+
+    function bhaa_leagues_by_year_shortcode() {
+        $league = new IndividualLeague(1);
+        $leagues = $league->listLeaguesByYear();
+        include_once( 'partials/list.leagues.php' );
+        //return 'bhaa_leagues_by_year_shortcode';
     }
 }
