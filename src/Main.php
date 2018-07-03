@@ -65,9 +65,10 @@ class Main {
         $connections->registerHooks($this->loader);
 
         new core\standard\StandardShortcode();
-        new core\race\RaceResultShortcode();
+        new core\race\RaceShortcode();
         new core\league\LeagueShortcode();
         new core\runner\RunnerShortcode();
+        new core\results\ResultsShortcode();
     }
     /**
      * Define the locale for this plugin for internationalization.

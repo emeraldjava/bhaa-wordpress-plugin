@@ -44,14 +44,16 @@ curl --ftp-create-dirs -u "$1:$2" -T src/core/league/LeagueFactory.php          
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/IndividualLeague.php                       ftp://$3/$4/src/core/league/IndividualLeague.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/LeagueShortcode.php                        ftp://$3/$4/src/core/league/LeagueShortcode.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/league/TeamLeague.php                             ftp://$3/$4/src/core/league/TeamLeague.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/league/partials/list.leagues.php                  ftp://$3/$4/src/core/league/partials/list.leagues.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/house/House.php                                   ftp://$3/$4/src/core/house/House.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/mustache/edit.race.results.individual.tpl    ftp://$3/$4/src/core/race/mustache/edit.race.results.individual.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/mustache/race.results.individual.tpl         ftp://$3/$4/src/core/race/mustache/race.results.individual.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/partials/list.race.results.php               ftp://$3/$4/src/core/race/partials/list.race.results.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/race/partials/list.races.php                      ftp://$3/$4/src/core/race/partials/list.races.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/Race.php                                     ftp://$3/$4/src/core/race/Race.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/RaceResult.php                               ftp://$3/$4/src/core/race/RaceResult.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/race/TeamResult.php                               ftp://$3/$4/src/core/race/TeamResult.php
-curl --ftp-create-dirs -u "$1:$2" -T src/core/race/RaceResultShortcode.php                      ftp://$3/$4/src/core/race/RaceResultShortcode.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/race/RaceShortcode.php                            ftp://$3/$4/src/core/race/RaceShortcode.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/mustache/runner.race.results.tpl           ftp://$3/$4/src/core/runner/mustache/runner.race.results.tpl
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/Runner.php                                 ftp://$3/$4/src/core/runner/Runner.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/RunnerManager.php                          ftp://$3/$4/src/core/runner/RunnerManager.php
@@ -59,6 +61,8 @@ curl --ftp-create-dirs -u "$1:$2" -T src/core/runner/RunnerShortcode.php        
 curl --ftp-create-dirs -u "$1:$2" -T src/core/standard/Standard.php                             ftp://$3/$4/src/core/standard/Standard.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/standard/StandardCalculator.php                   ftp://$3/$4/src/core/standard/StandardCalculator.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/standard/StandardShortcode.php                    ftp://$3/$4/src/core/standard/StandardShortcode.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/results/partials/results.by.year.php              ftp://$3/$4/src/core/results/partials/results.by.year.php
+curl --ftp-create-dirs -u "$1:$2" -T src/core/results/ResultsShortcode.php                      ftp://$3/$4/src/core/results/ResultsShortcode.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/Connections.php                                   ftp://$3/$4/src/core/Connections.php
 curl --ftp-create-dirs -u "$1:$2" -T src/core/Mustache.php                                      ftp://$3/$4/src/core/Mustache.php
 curl --ftp-create-dirs -u "$1:$2" -T src/front/css/bhaa_wordpress_plugin-public.css             ftp://$3/$4/src/front/css/bhaa_wordpress_plugin-public.css
