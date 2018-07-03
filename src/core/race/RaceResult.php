@@ -245,6 +245,14 @@ class RaceResult {
         return $this->wpdb->get_results($query,OBJECT);
     }
 
+    function listRacesByYear($year = 2018) {
+        $query = $this->wpdb->prepare("SELECT race.* FROM wp_posts race
+            WHERE race.post_type='race'
+            AND YEAR(race.post_date)=%d
+            ORDER BY post_date DESC",$year);
+        return $this->wpdb->get_results($query,OBJECT);
+    }
+
     function getRunnerResults($runner) {
         $query = $this->wpdb->prepare("SELECT
               rr.racetime,

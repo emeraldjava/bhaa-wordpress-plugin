@@ -8,17 +8,24 @@
 
 namespace BHAA\core\race;
 
-class RaceResultShortcode {
+class RaceShortcode {
 
     function __construct() {
+        add_shortcode('bhaa_races_by_year',array($this,'bhaa_races_by_year_shortcode'));
         add_shortcode('bhaa_race_results',array($this,'bhaa_race_results_shortcode'));
         add_shortcode('bhaa_race_title',array($this,'bhaa_race_title_shortcode'));
     }
 
+    function bhaa_races_by_year_shortcode() {
+        $raceResult = new RaceResult();
+        $races = $raceResult->listRacesByYear();
+        include_once( 'partials/list.races.php' );
+    }
+
     function bhaa_race_results_shortcode() {
         $raceResult = new RaceResult();
-        $events = $raceResult->listEventsAndRaces();
-        include_once( 'partials/list.race.results.php' );
+        $races = $raceResult->listRacesByYear();
+        include_once( 'partials/list.races.php' );
     }
 
     function bhaa_race_title_shortcode() {
