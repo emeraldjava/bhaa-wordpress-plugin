@@ -1,4 +1,5 @@
 <div class="container-fluid">
+    <h3>Runner: {{fullname}}</h3>
     <div class="row">
         <div class="col-6">Event</div>
         <!--<th>Date</th>-->
@@ -9,7 +10,7 @@
     </div>
     {{# races}}
     <div class="row" id="{{id}}">
-        <div class="col-6"><a class='bhaa-url-link' href='{{url}}/race/{{race_name}}'><b>{{event_name}}</b></a></div>
+        <div class="col-6"><a class='bhaa-url-link' href='{{url}}/race/{{race_name}}'><b>{{race_name}}</b></a></div>
         <!--<div>{{race_date}}</div>-->
         <div class="col-2">{{race_distance}} {{race_unit}}</div>
         <div class="col-1">{{position}}</div>
