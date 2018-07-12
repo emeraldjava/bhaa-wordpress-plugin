@@ -261,6 +261,7 @@ class RaceResult {
               rr.poststandard,
               rr.runner,
               rr.id,
+              rr.leaguepoints,
               race.id as race_id,
               race.post_name as race_name,
               race.post_date as race_date,
