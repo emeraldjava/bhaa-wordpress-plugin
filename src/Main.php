@@ -53,8 +53,6 @@ class Main {
         $leagueAdminController->registerHooks($this->loader);
 
         // register the core objects
-        $eventCpt = new core\cpt\EventCPT();
-        $eventCpt->registerHooks($this->loader);
         $raceCpt = new core\cpt\RaceCPT();
         $raceCpt->registerHooks($this->loader);
         $houseCpt = new core\cpt\HouseCPT();
@@ -79,8 +77,6 @@ class Main {
         $plugin_i18n->set_domain( $this->get_plugin_name() );
         $plugin_i18n->registerHooks($this->loader);
     }
-
-
 
     /**
      * Run the loader to execute all of the hooks with WordPress.
