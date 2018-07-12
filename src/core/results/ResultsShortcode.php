@@ -8,6 +8,7 @@
 
 namespace BHAA\core\results;
 
+use WP_Query;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
@@ -32,13 +33,45 @@ class ResultsShortcode implements Loadable {
         }else {
             $year = "2018";
         }
+
+        $racesByYearQuery = new WP_Query(
+            array(
+                'post_type' => 'race',
+                'order'		=> 'DESC',
+                'post_status' => 'publish',
+                'orderby' 	=> 'date',
+                'date_query' => array(
+                        array('year'=>$year)
+                    ),
+                'nopaging' => true
+                )
+            );
+
+        $races = '';
+        if ( $racesByYearQuery->have_posts() ) {
+            //echo '<ul>';
+            while ( $racesByYearQuery->have_posts() ) {
+                $racesByYearQuery->the_post();
+                $races .= sprintf('<a href="%s">%s</a><br/>',get_post_permalink(),get_the_title());
+            }
+            wp_reset_postdata();
+        }
+
+
+//        while($racesByYearQuery->have_posts()): $racesByYearQuery->the_post();
+//            //$races += get_post_permalink();
+//            $races += sprintf('<a href="%s">xx%sxx</a><br/>',the_permalink(),the_title());
+//        endwhile;
+
+
+
         $years = wp_get_archives(array('type'=>'yearly','format'=>'bhaaresults','post_type'=>'race','echo'=>0));
         include_once( 'partials/results.by.year.php' );
     }
 
     function bhaa_get_archives_link($link_html, $url, $text, $format, $before, $after) {
         if ('bhaaresults' == $format) {
-            $link_html = sprintf("<li><a href='%s/results?y=%s'>%s</a></li>",get_site_url(),$text,$text);
+            $link_html = sprintf("<a href='%s/results?y=%s'>%s</a><br/>",get_site_url(),$text,$text);
         }
         return $link_html;
     }
