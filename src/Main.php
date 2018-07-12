@@ -66,7 +66,8 @@ class Main {
         new core\race\RaceShortcode();
         new core\league\LeagueShortcode();
         new core\runner\RunnerShortcode();
-        new core\results\ResultsShortcode();
+        $resultsShortcode = new core\results\ResultsShortcode();
+        $resultsShortcode->registerHooks($this->loader);
     }
     /**
      * Define the locale for this plugin for internationalization.
