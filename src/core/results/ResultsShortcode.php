@@ -47,23 +47,38 @@ class ResultsShortcode implements Loadable {
                 )
             );
 
-        $races = '';
+        $racesByYearList = '';
         if ( $racesByYearQuery->have_posts() ) {
             //echo '<ul>';
             while ( $racesByYearQuery->have_posts() ) {
                 $racesByYearQuery->the_post();
-                $races .= sprintf('<a href="%s">%s</a><br/>',get_post_permalink(),get_the_title());
+                $racesByYearList .= sprintf('<a href="%s">%s</a><br/>',get_post_permalink(),get_the_title());
             }
             wp_reset_postdata();
         }
 
+        $leaguesByYearQuery = new WP_Query(
+            array(
+                'post_type' => 'league',
+                'order'		=> 'DESC',
+                'post_status' => 'publish',
+                'orderby' 	=> 'date',
+                'date_query' => array(
+                    array('year'=>$year)
+                ),
+                'nopaging' => true
+            )
+        );
 
-//        while($racesByYearQuery->have_posts()): $racesByYearQuery->the_post();
-//            //$races += get_post_permalink();
-//            $races += sprintf('<a href="%s">xx%sxx</a><br/>',the_permalink(),the_title());
-//        endwhile;
-
-
+        $leaguesByYearList = '';
+        if ( $leaguesByYearQuery->have_posts() ) {
+            //echo '<ul>';
+            while ( $leaguesByYearQuery->have_posts() ) {
+                $leaguesByYearQuery->the_post();
+                $leaguesByYearList .= sprintf('<a href="%s">%s</a><br/>',get_post_permalink(),get_the_title());
+            }
+            wp_reset_postdata();
+        }
 
         $years = wp_get_archives(array('type'=>'yearly','format'=>'bhaaresults','post_type'=>'race','echo'=>0));
         include_once( 'partials/results.by.year.php' );
