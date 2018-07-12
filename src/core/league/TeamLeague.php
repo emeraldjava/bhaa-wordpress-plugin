@@ -30,7 +30,7 @@ class TeamLeague extends AbstractLeague {
 			WHERE ls.league = %d
 			AND ls.leaguedivision = %s
 			order by leaguepoints desc limit %d',$this->getLeagueId(),$division,$limit);
-        //error_log($query);
+        error_log($query);
         $summary = $this->wpdb->get_results($query);
         $divisionDetails = $this->getDivisionDetails($division);
 
@@ -213,10 +213,11 @@ class TeamLeague extends AbstractLeague {
     }
 
     function getDivisionSummary($division,$limit=100) {
-        $SQL = $this->wpdb->prepare('select wp_bhaa_leaguesummary.*,wp_posts.post_title as display_name,wp_posts.ID,wp_posts.post_title from wp_bhaa_leaguesummary
+        $SQL = $this->wpdb->prepare('select wp_bhaa_leaguesummary.*,wp_posts.post_title as display_name,wp_posts.ID,wp_posts.post_title 
+            from wp_bhaa_leaguesummary
             left join wp_posts on (wp_posts.post_type="house" and wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant)
             where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
-        //error_log($division.' '.$SQL);
+        error_log($division.' '.$SQL);
         return $this->wpdb->get_results($SQL);
     }
 

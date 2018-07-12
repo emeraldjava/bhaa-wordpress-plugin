@@ -36,7 +36,7 @@ class LeagueAdminController extends AbstractAdminController implements Loadable 
             $leagueHandler = $this->getLeagueHandler($leagueId);
             $leagueHandler->deleteLeague();
             $this->wpFlashMessages->queue_flash_message("bhaa_league_delete ".$leagueId);
-            error_log('bhaa_league_delete');
+            //error_log('bhaa_league_delete');
             wp_redirect($_SERVER['HTTP_REFERER']);
             exit();
         }
@@ -53,7 +53,7 @@ class LeagueAdminController extends AbstractAdminController implements Loadable 
             $leagueHandler = $this->getLeagueHandler($leagueId);
             $leagueHandler->loadLeague();
             $this->wpFlashMessages->queue_flash_message("bhaa_league_populate ".$leagueId);
-            error_log('bhaa_league_populate');
+            //error_log('bhaa_league_populate');
             wp_redirect($_SERVER['HTTP_REFERER']);
             exit();
         }

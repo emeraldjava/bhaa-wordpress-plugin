@@ -2,7 +2,7 @@
 get_header();
 
 echo '<div class="container">';
-
+echo the_title('<h2 class="main-title entry-title">','</h2>');
 echo '<div class="row">';
 echo '<div class="col-sm">'.do_shortcode('[bhaa_league division=A top=10]').'</div>';
 echo '<div class="col-sm">'.do_shortcode('[bhaa_league division=B top=10]').'</div>';

@@ -34,7 +34,7 @@ class IndividualLeague extends AbstractLeague implements League {
 			WHERE ls.league = %d
 			AND ls.leaguedivision = %s
 			AND ls.leagueposition <= %d
-			AND ls.leaguescorecount>=1
+			AND ls.leaguescorecount>=2
 			order by league, leaguedivision, leagueposition',$this->getLeagueId(),$division,$limit);
         //error_log($this->getLeagueId().' '.$query);
         $summary = $this->wpdb->get_results($query);
@@ -264,7 +264,7 @@ class IndividualLeague extends AbstractLeague implements League {
 			left JOIN wp_usermeta ln ON (ln.user_id=u.id AND ln.meta_key="last_name")
 			where league=%d
 			and leagueposition<=10
-			and leaguescorecount>=3
+			and leaguescorecount>=2
 			order by leaguedivision,leagueposition',$this->leagueid);
         $queryResult = $this->wpdb->get_results($SQL,ARRAY_A);
 
