@@ -7,6 +7,10 @@
  */
 
 namespace BHAA\core;
+
+use BHAA\core\race\RaceResult;
+use BHAA\core\race\TeamResult;
+
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
@@ -36,7 +40,7 @@ class Connections implements Loadable {
     public function registerHooks(Loader $loader) {
         $loader->add_action('p2p_init',$this,'bhaa_connection_types');
         $loader->add_action('p2p_created_connection',$this,'bhaa_p2p_created_connection');
-        $loader->add_action('p2p_created_connection',$this,'bhaa_p2p_delete_connections');
+        $loader->add_action('p2p_delete_connections',$this,'bhaa_p2p_delete_connections');
         $loader->add_filter('p2p_user_admin_column_link',$this,'bhaa_change_user_to_house_column_url',10,2);
         $loader->add_filter('p2p_user_admin_column_link',$this,'bhaa_change_house_to_user_column_url',10,2);
     }
@@ -121,7 +125,8 @@ class Connections implements Loadable {
         $connection = p2p_get_connection( $p2p_id );
         if($connection->p2p_type == Connections::RACE_ORGANISER) {
             $raceResult = new RaceResult();
-            $raceResult->addRaceOrganiser($connection->p2p_from,$connection->p2p_to);
+            $res = $raceResult->addRaceOrganiser($connection->p2p_from,$connection->p2p_to);
+            //error_log("bhaa_p2p_created_connection".$res);
         } elseif($connection->p2p_type == Connections::TEAM_POINTS) {
             $teamResult = new TeamResult($connection->p2p_from);
             $res = $teamResult->addTeamOrganiserPoints($connection->p2p_to);
@@ -132,7 +137,8 @@ class Connections implements Loadable {
         $connection = p2p_get_connection( $p2p_id );
         if($connection->p2p_type == Connections::RACE_ORGANISER) {
             $raceResult = new RaceResult();
-            $raceResult->deleteRaceOrganiser($connection->p2p_from,$connection->p2p_to);
+            $res = $raceResult->deleteRaceOrganiser($connection->p2p_from,$connection->p2p_to);
+            //error_log("bhaa_p2p_delete_connections".$res);
         } elseif($connection->p2p_type == Connections::TEAM_POINTS) {
             $teamResult = new TeamResult($connection->p2p_from);
             $res = $teamResult->deleteTeamOrganiserPoints($connection->p2p_to);

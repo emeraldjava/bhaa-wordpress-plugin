@@ -341,4 +341,29 @@ class RaceResult {
     private function getRace($race) {
         return new Race($race);
     }
+
+    /**
+     * Add 10 league points to a user for a race
+     */
+    public function addRaceOrganiser($race,$runner) {
+        return $this->wpdb->insert(
+            $this->getTableName(),
+            array('race' => $race,
+                'runner' => $runner,
+                'leaguepoints' => 10,
+                'category' => 'S',
+                'class' => RaceResult::RACE_ORG));
+    }
+
+    /**
+     * Delete assigned league points
+     */
+    public function deleteRaceOrganiser($race,$organiser) {
+        return $this->wpdb->delete(
+            $this->getTableName(),
+            array('race' => $race,
+                'runner' => $organiser,
+                'leaguepoints' => 10,
+                'class' => RaceResult::RACE_ORG));
+    }
 }
