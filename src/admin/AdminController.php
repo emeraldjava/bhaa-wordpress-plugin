@@ -116,12 +116,14 @@ class AdminController extends AbstractAdminController implements Loadable {
 
     function bhaa_registrar_export_online() {
         $runnerManager = new RunnerManager();
-        $registeredOnline = $runnerManager->getEventOnlineMembers();
+        $nextEvent = $runnerManager->getNextEventId();
+        $eventPost = get_post( $nextEvent[0] );
+        $registeredOnline = $runnerManager->getEventOnlineMembers($nextEvent[0]);
         $csv = Writer::createFromFileObject(new SplTempFileObject());
         foreach ($registeredOnline as $runner) {
             $csv->insertOne($runner);
         }
-        $csv->output('bhaa.online.members.'.date("y.m.d-H.m.s").'.csv');
+        $csv->output('bhaa.online.'.$eventPost->post_name.'.'.date("y.m.d-H.m.s").'.csv');
         die;
     }
 

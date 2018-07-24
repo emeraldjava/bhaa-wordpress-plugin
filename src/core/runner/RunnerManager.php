@@ -143,9 +143,9 @@ class RunnerManager {
         return $wpdb->get_results($SQL,ARRAY_A);
     }
 
-    public function getEventOnlineMembers() {
+    public function getEventOnlineMembers($nextEventId) {
         global $wpdb;
-        $SQL = 'SELECT wp_users.id as id,
+        $SQL = $wpdb->prepare('SELECT wp_users.id as id,
             TRIM(LOWER(REPLACE(wp_users.display_name," ","."))) as label,
             TRIM(first_name.meta_value) as firstname,
             TRIM(last_name.meta_value) as lastname,
@@ -173,10 +173,18 @@ class RunnerManager {
             LEFT JOIN wp_p2p r2s ON (r2s.p2p_to=wp_users.id AND r2s.p2p_type = "sectorteam_to_runner")
             LEFT JOIN wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
             LEFT JOIN wp_posts sectorteam ON (sectorteam.id=r2s.p2p_from AND sectorteam.post_type="house")
-            WHERE reg.EVT_ID=6093
+            WHERE reg.EVT_ID=%d
             AND reg.REG_paid!=0
-            ORDER BY lastname ASC, firstname ASC';
-        return $wpdb->get_results($SQL,ARRAY_A); // 6090 GS-2018
+            ORDER BY lastname ASC, firstname ASC',$nextEventId);
+        return $wpdb->get_results($SQL,ARRAY_A);
+    }
+
+    public function getNextEventId() {
+        global $wpdb;
+        return $wpdb->get_col('SELECT EVT_ID as nextEventId FROM wp_esp_datetime d
+                WHERE d.DTT_EVT_start >= CURRENT_DATE
+                ORDER BY d.DTT_EVT_start ASC
+                LIMIT 1');
     }
     
     public function getNewOnlineBHAAMembers(){
