@@ -110,7 +110,7 @@ class IndividualLeague extends AbstractLeague implements League {
 			leaguetype.meta_value as leaguetype,
 			event.ID as event,
 			event.post_title as eventname,
-			NULL as eventdate,
+			event.post_date as eventdate,
 			race.ID as race,
 			racetype.meta_value as racetype,
 			racedistance.meta_value as distance,

@@ -46,10 +46,9 @@ class AbstractLeague {
     function getLeagueRaces($type='') {
         $SQL = $this->wpdb->prepare("select l.ID as lid,
             l.post_title,
-			e.ID as eid,e.post_title as etitle,LEFT(e.post_title,8) as etag,
-			NULL as edate,
-			e.guid as eurl,
-			r.ID as rid,r.post_title as rtitle,r_type.meta_value as rtype
+			e.ID as eid,e.post_title as etitle,LEFT(e.post_title,8) as etag,e.post_date as edate, e.guid as eurl,
+			r.ID as rid,r.post_title as rtitle,r.post_name as rname,
+			r_type.meta_value as rtype
 			from wp_posts l
 			inner join wp_p2p l2e on (l2e.p2p_type='league_to_event' and l2e.p2p_from=l.ID)
 			inner join wp_posts e on (e.id=l2e.p2p_to)

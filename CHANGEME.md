@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.07.28 Fix league displays to use the event date and link to specific races.
 - 2018.07.24 Update the registrar export tool to dynamically determine the next race id and name, which is included in the filename now.
 - 2018.07.12 Add results by year logic for races and leagues. Display team leagues.
 - 2018.06.14 Remembering the implementation of the leagues! Still should be simpler!.

@@ -4,7 +4,7 @@
 <th>Pos</th>
 <th>Athlete</th>
 {{# events }}
-<td><a href="/?post_type=event&p={{eid}}">{{etag}}</a></td>
+<td><a href="https://bhaa.ie/race/{{rname}}">{{etag}}</a></td>
 {{/ events }}
 <th>Total</th>
 </tr>
