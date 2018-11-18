@@ -14,6 +14,7 @@ class StandardShortcode {
 
     function __construct() {
         add_shortcode('bhaa_standard_table', array($this,'bhaa_standard_table'));
+        add_shortcode('pdf',array($this,'bhaa_pdf_shortcode'));
     }
 
     function bhaa_standard_table() {
@@ -61,5 +62,15 @@ class StandardShortcode {
 
         $standardCalculator = new StandardCalculator();
         return $standardCalculator->generateTableForDistances($distances);
+    }
+
+    function bhaa_pdf_shortcode( $atts ) {
+        extract( shortcode_atts( array(
+            'href' => ''
+        ), $atts ) );
+        // http://stackoverflow.com/questions/1244788/embed-vs-object
+        return '<object data="'.$atts['href'].'" width="95%" height="675" type="application/pdf">
+					<embed src="'.$atts['href'].'" width="95%" height="675" type="application/pdf" />
+				</object>';
     }
 }
