@@ -154,7 +154,8 @@ class RaceResult {
                 wp_users.user_nicename,
                 gender.meta_value as gender,
                 house.id as cid,
-                house.post_title as cname,
+                house.post_name as cname,
+                house.post_title as ctitle,
                 IF(status.meta_value='M',true,false) as isMember
                 FROM wp_bhaa_raceresult
                 left join wp_users on wp_users.id=wp_bhaa_raceresult.runner
