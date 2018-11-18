@@ -89,9 +89,10 @@ class TeamLeague extends AbstractLeague {
         //error_log($SQL);
         $this->wpdb->query($SQL);
         //$SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_teamsummary');
-        $SQL = 'DELETE FROM wp_bhaa_teamsummary WHERE race!=3147 AND race!=3148';
+        //$SQL = 'DELETE FROM wp_bhaa_teamsummary WHERE race!=3147 AND race!=3148';
         //error_log($SQL);
-        $this->wpdb->query($SQL);
+        //$this->wpdb->query($SQL);
+
         $SQL = $this->wpdb->prepare('DELETE FROM wp_bhaa_leaguesummary WHERE league=%d',$this->leagueid);// leaguedivision="M" AND leaguedivision="W" AND
         //error_log($SQL);
         $this->wpdb->query($SQL);
@@ -127,23 +128,23 @@ class TeamLeague extends AbstractLeague {
         //error_log($SQL);
         $this->wpdb->query($SQL);
 
-        //$SQL = $this->wpdb->prepare(
-        $SQL = 'INSERT INTO wp_bhaa_teamsummary
-			SELECT
-			race,
-			team,
-			teamname,
-			min(totalstd) as totalstd,
-			min(totalpos) as totalpos,
-			class,
-			min(position)as position,
-			max(leaguepoints) as leaguepoints
-			FROM wp_bhaa_teamresult
-			WHERE position!=0
-			GROUP BY race,team
-			ORDER BY class,position';
-        //error_log($SQL);
-        $this->wpdb->query($SQL);
+//        //$SQL = $this->wpdb->prepare(
+//        $SQL = 'INSERT INTO wp_bhaa_teamsummary
+//			SELECT
+//			race,
+//			team,
+//			teamname,
+//			min(totalstd) as totalstd,
+//			min(totalpos) as totalpos,
+//			class,
+//			min(position)as position,
+//			max(leaguepoints) as leaguepoints
+//			FROM wp_bhaa_teamresult
+//			WHERE position!=0
+//			GROUP BY race,team
+//			ORDER BY class,position';
+//        //error_log($SQL);
+//        $this->wpdb->query($SQL);
 
         // GROUP_CONCAT(CAST(CONCAT(IFNULL(ts.leaguepoints,0)) AS CHAR) ORDER BY l.eventdate SEPARATOR ',') AS leaguesummary
         $SQL = $this->wpdb->prepare(
@@ -193,6 +194,23 @@ class TeamLeague extends AbstractLeague {
         $this->wpdb->query($SQL);
 
         // update the mens team league summary
+        //DROP FUNCTION IF EXISTS getLeagueMTeamSummary$$
+        //CREATE FUNCTION getLeagueMTeamSummary(_team INT,_leagueId INT) RETURNS varchar(200)
+        //BEGIN
+        //DECLARE _result varchar(200);
+        //SET _result = (
+        //        select GROUP_CONCAT(CAST(CONCAT(IFNULL(subselect.leaguepoints,0)) AS CHAR) SEPARATOR ',') from (
+        //            select ts.leaguepoints as leaguepoints
+        //from wp_bhaa_race_detail rd
+        //left join wp_bhaa_teamsummary ts on (rd.race=ts.race AND ts.team=_team AND ts.class!='W')
+        //where rd.league=_leagueId
+        //        and rd.racetype in ('C','S','M')
+        //        and rd.racetype!='TRACK'
+        //order by rd.eventdate asc
+        //) as subselect
+        //);
+        //RETURN _result;
+        //END $$
         $SQL = $this->wpdb->prepare("update wp_bhaa_leaguesummary set leaguesummary=
 			getLeagueMTeamSummary(leagueparticipant,%d) where
 			league=%d and leaguedivision in ('M')",$this->leagueid,$this->leagueid);
@@ -200,9 +218,37 @@ class TeamLeague extends AbstractLeague {
         $res = $this->wpdb->query($SQL);
 
         // update the womens team league summary
+        //        DROP FUNCTION IF EXISTS getLeagueWTeamSummary$$
+        //        CREATE FUNCTION getLeagueWTeamSummary(_team INT,_leagueId INT) RETURNS varchar(200)
+        //        BEGIN
+        //        DECLARE _result varchar(200);
+        //        SET _result = (
+        //                select GROUP_CONCAT(CAST(CONCAT(IFNULL(subselect.leaguepoints,0)) AS CHAR) SEPARATOR ',') from (
+        //                    select ts.leaguepoints as leaguepoints
+        //        from wp_bhaa_race_detail rd
+        //        left join wp_bhaa_teamsummary ts on (rd.race=ts.race AND ts.team=_team AND ts.class='W')
+        //        where rd.league=_leagueId
+        //                and rd.racetype in ('C','S','W')
+        //                and rd.racetype!='TRACK'
+        //        order by rd.eventdate asc
+        //        ) as subselect
+        //        );
+        //        RETURN _result;
+        //        END $$
         $SQL = $this->wpdb->prepare("update wp_bhaa_leaguesummary set leaguesummary=
 			getLeagueWTeamSummary(leagueparticipant,%d) where
 			league=%d and leaguedivision in ('W')",$this->leagueid,$this->leagueid);
+        //error_log($SQL);
+        $res = $this->wpdb->query($SQL);
+
+        $this->wpdb->query("SET @g=0");
+        $SQL = $this->wpdb->prepare("UPDATE wp_bhaa_leaguesummary SET leagueposition=(@g:=(@g+1))
+			where leaguedivision='M' and league=%d ORDER BY leaguepoints DESC",$this->leagueid);
+        //error_log($SQL);
+        $res = $this->wpdb->query($SQL);
+        $this->wpdb->query("SET @h=0");
+        $SQL = $this->wpdb->prepare("UPDATE wp_bhaa_leaguesummary SET leagueposition=(@h:=(@h+1))
+			where leaguedivision='W' and league=%d ORDER BY leaguepoints DESC",$this->leagueid);
         //error_log($SQL);
         $res = $this->wpdb->query($SQL);
     }
@@ -216,7 +262,7 @@ class TeamLeague extends AbstractLeague {
         $SQL = $this->wpdb->prepare('select wp_bhaa_leaguesummary.*,wp_posts.post_title as display_name,wp_posts.ID,wp_posts.post_title 
             from wp_bhaa_leaguesummary
             left join wp_posts on (wp_posts.post_type="house" and wp_posts.id=wp_bhaa_leaguesummary.leagueparticipant)
-            where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=2 order by leaguepoints desc',$this->leagueid,$division,$limit);
+            where league=%d and leaguedivision=%s and leagueposition<=%d and leaguescorecount>=1 order by leaguepoints desc',$this->leagueid,$division,$limit);
         error_log($division.' '.$SQL);
         return $this->wpdb->get_results($SQL);
     }
