@@ -250,7 +250,7 @@ class RunnerManager {
             LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
             left join wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
             left join wp_posts eehouse on (eehouse.post_title=ee_company.ANS_value and eehouse.post_type="house")
-            WHERE reg.EVT_ID IN (5651,6093)
+            WHERE reg.EVT_ID IN (5651,6742)
             AND reg.REG_paid!=0
             ORDER BY reg.EVT_ID,wp_users.display_name,reg.EVT_ID';
         return $wpdb->get_results($SQL,OBJECT);// 6090 GS-2018
