@@ -13,6 +13,7 @@ use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 use League\Csv\Writer;
 use SplTempFileObject;
+use Michelf\Markdown;
 
 class AdminController extends AbstractAdminController implements Loadable {
 
@@ -61,6 +62,8 @@ class AdminController extends AbstractAdminController implements Loadable {
     function bhaa_admin_menu() {
         add_menu_page('BHAA Admin Page', 'BHAA',
             'manage_options', 'bhaa', array($this, 'bhaa_admin_main'));
+        add_submenu_page('bhaa', 'BHAA Help', 'Help',
+            'manage_options', 'bhaa_admin_help', array($this, 'bhaa_admin_help'));
     }
 
     function bhaa_admin_main() {
@@ -168,5 +171,13 @@ class AdminController extends AbstractAdminController implements Loadable {
         // JS
         //wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
         //wp_enqueue_script('prefix_bootstrap');
+    }
+
+    public function bhaa_admin_help() {
+
+        $base = dirname(__FILE__);
+        $my_text = file_get_contents( $base.'/./../../docs/index.md',false);
+        $my_html = Markdown::defaultTransform($my_text);
+        echo $my_html;
     }
 }

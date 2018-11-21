@@ -1,5 +1,8 @@
 Change Log
 ==========
+- 2018.11.19 Add BHAA help guide with links to the markup pages.
+- 2018.11.18 Update team league summary stored procedures to calculate the leaguesummary correctly.
+- 2018.11.18 Update the House page to display the list of team runners.
 - 2018.07.28 Fix league displays to use the event date and link to specific races.
 - 2018.07.24 Update the registrar export tool to dynamically determine the next race id and name, which is included in the filename now.
 - 2018.07.12 Add results by year logic for races and leagues. Display team leagues.
