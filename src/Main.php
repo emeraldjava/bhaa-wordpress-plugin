@@ -61,6 +61,8 @@ class Main {
         $leagueCpt->registerHooks($this->loader);
         $connections = new core\Connections();
         $connections->registerHooks($this->loader);
+        $eventExpresso = new core\eventexpresso\EventExpresso();
+        $eventExpresso->registerHooks($this->loader);
 
         new core\standard\StandardShortcode();
         new core\race\RaceShortcode();
