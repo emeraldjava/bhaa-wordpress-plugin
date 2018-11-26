@@ -165,7 +165,7 @@ class RaceResult {
                 left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key='bhaa_runner_status')
                 LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = 'house_to_runner')
                 left join wp_posts house on (house.post_type='house' and house.id=r2c.p2p_from)
-                where race=%d and wp_bhaa_raceresult.class='RAN' and position<=500 ORDER BY position";
+                where race=%d and wp_bhaa_raceresult.class='RAN' ORDER BY position";
         $SQL = $this->wpdb->prepare($query,$race);
         //error_log($SQL);
         return $this->wpdb->get_results($SQL,OBJECT);
