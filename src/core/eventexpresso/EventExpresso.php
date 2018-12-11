@@ -8,33 +8,67 @@ use BHAA\utils\Loader;
 class EventExpresso implements Loadable {
 
     public function registerHooks(Loader $loader) {
-        //$loader->add_action('init',$this,'bhaa_register_race_cpt');
 
-        $loader->add_filter('admin_footer_text', array($this, 'bhaa_ee_remove_footer_text'), 11);
+        $loader->add_filter('admin_footer_text', $this, 'bhaa_ee_remove_footer_text', 11, 4);
         $loader->add_filter(
             'FHEE__EED_WP_Users_Ticket_Selector__maybe_restrict_ticket_option_by_cap__no_access_msg',
-            array($this, 'bhaa_ee_member_no_access_message'), 10, 4
+            $this, 'bhaa_ee_member_no_access_message', 10, 4
         );
 
-        // add_action( 'AHEE__SPCO__reg_form_footer', array($this,'bhaa_jf_change_ee_reg_form_datepicker_format'), 10 );
+        $loader->add_action( 'AHEE__SPCO__reg_form_footer', $this,'bhaa_jf_change_ee_reg_form_datepicker_format', 10 );
 
         //add_filter('FHEE__EEM_Question__construct__allowed_question_types',
-        //    array($this,'bhaa_ee_add_question_type_as_options'), 10, 1 );
+        //    $this,'bhaa_ee_add_question_type_as_options'), 10, 1 );
         //add_filter('FHEE__EE_SPCO_Reg_Step_Attendee_Information___generate_question_input__default',
-        //    array($this,'bhaa_ee_generate_question'), 10, 4 );
+        //    $this,'bhaa_ee_generate_question'), 10, 4 );
 
-        $loader->add_filter('FHEE__EE_SPCO_Reg_Step_Attendee_Information___generate_question_input__input_constructor_args',
-            array($this, 'bhaa_ee_question_input'), 10, 4
-        );
+//        $loader->add_filter('FHEE__EE_SPCO_Reg_Step_Attendee_Information___generate_question_input__input_constructor_args',
+//            $this, 'bhaa_my_question_input', 11, 5
+//        );
+
+        $loader->add_filter('FHEE__EE_Single_Page_Checkout__process_attendee_information__valid_data_line_item',
+            $this,'bhaa_filter_request_params',11);
+
+//        add_filter(
+//            'FHEE__EE_Single_Page_Checkout__process_attendee_information__valid_data_line_item',
+//            array('EED_Add_New_State', 'unset_new_state_request_params'),
+//            10,
+//            1
+//        );
+
+//        $loader->add_action(
+//            'AHEE__EE_Single_Page_Checkout__process_attendee_information__end',
+//            $this, 'bhaa_process_wpuser_for_attendee', 11, 5
+//        );
+        //error_log('BHAA\core\eventexpresso');
 
         //return apply_filters('FHEE__EEM_Answer__get_attendee_question_answer_value__answer_value', $value, $registration, $question_id, $question_system_id);
 
-        //add_action('pre_get_posts',
-        //    array($this,'bhaa_ee_add_espresso_events_to_posts'), 10, 1 );
+        $loader->add_action('pre_get_posts',
+            $this,'bhaa_ee_add_espresso_events_to_posts', 10 );
         //add_action('AHEE__EED_WP_Users_SPCO__process_wpuser_for_attendee__user_user_created',
-        //    array($this,'bhaa_ee_user_created'), 10, 4);
+        //    $this,'bhaa_ee_user_created'), 10, 4);
         //add_action('AHEE__EED_WP_Users_SPCO__process_wpuser_for_attendee__user_user_updated',
-        //    array($this,'bhaa_ee_user_updated'), 10, 3);
+        //    $this,'bhaa_ee_user_updated'), 10, 3);
+    }
+
+    function bhaa_filter_request_params($request_params) {
+        error_log('--> bhaa_filter_request_params');
+        error_log(print_r($request_params,true));
+
+        $answers = $request_params['personal-information-1519640046'];
+        if(isset($answers['13']['0']))
+            error_log('Gender:'.$answers['13']['0']);
+        if(isset($answers['11']))
+            error_log('DOB   :'.$answers['11']);
+        if(isset($answers['12']))
+            error_log('Comp  :'.$answers['12']);
+
+        $primary_reg = $request_params['primary_registrant'];
+        error_log($primary_reg);
+        error_log('<-- bhaa_filter_request_params');
+
+        //var_dump($request_params,true);
     }
 
     function bhaa_ee_add_question_type_as_options($question_types) {
@@ -52,35 +86,19 @@ class EventExpresso implements Loadable {
         return $input;
     }
 
-    function bhaa_ee_question_input($input_args, EE_Registration $registration = null, EE_Question $question = null, EE_Answer $answer = null) {
-        return $input_args;
-    }
-
-    function bhaa_ee_user_created($user, $attendee, $registration, $password) {
-        //        if( $registration instanceof EE_Registration ) {
-        //            $debug_info['Registration_ID'] = $registration->ID();
-        //        }
-        //        if( $user instanceof WP_User ) {
-        //            $debug_info['WP_User'] = array(
-        //                'User_id' => $user->ID,
-        //                'roles' => $user->roles
-        //            );
-        //        }
-        //        error_log(print_r($debug_info, true));
-        error_log($user);
-    }
-
-    function bhaa_ee_user_updated($user, $attendee, $registration) {
-        error_log($user);
-    }
-
+    // https://stackoverflow.com/questions/15491367/jquery-datepicker-set-default-date-to-current-month-current-day-current-year
     function bhaa_jf_change_ee_reg_form_datepicker_format() {
         echo "<script>
             jQuery(document).ready(function($) {
-            $('.datepicker').datepicker({
+                var d = new Date();
+                var year18 = d.getFullYear() - 18;
+                var year30 = d.getFullYear() - 30;
+                d.setFullYear(year30);
+                $('.datepicker').datepicker({
                 changeYear: true,
-                yearRange: '1920:2000',
-                dateFormat: 'yy-mm-dd'
+                yearRange: '1920:' + year18 + '',
+                dateFormat: 'yy-mm-dd',
+                defaultDate: d
             });
         });
         </script>";
@@ -103,8 +121,7 @@ class EventExpresso implements Loadable {
     }
 
     // Add events to the post feed. via https://eventespresso.com/wiki/useful-php-code-snippets/
-    function bhaa_ee_add_espresso_events_to_posts($WP_Query)
-    {
+    function bhaa_ee_add_espresso_events_to_posts($WP_Query) {
         if ($WP_Query instanceof WP_Query && ($WP_Query->is_feed || $WP_Query->is_posts_page
                 || ($WP_Query->is_home && !$WP_Query->is_page) || (isset($WP_Query->query_vars['post_type'])
                     && ($WP_Query->query_vars['post_type'] == 'post' || is_array($WP_Query->query_vars['post_type'])
