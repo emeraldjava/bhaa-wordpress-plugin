@@ -66,6 +66,7 @@ class EventExpresso implements Loadable {
 
         $primary_reg = $request_params['primary_registrant'];
         error_log($primary_reg);
+
         error_log('<-- bhaa_filter_request_params');
 
         //var_dump($request_params,true);
