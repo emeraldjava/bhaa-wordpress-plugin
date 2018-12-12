@@ -76,13 +76,36 @@ class RunnerManager {
         add_user_meta( $id, Runner::BHAA_RUNNER_INSERTDATE, date('Y-m-d'), true);
 
         if($isNewMember){
-            add_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M', true);
-            add_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'), true);
-            wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ));
+            renew($id);
+//            add_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M', true);
+//            add_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'), true);
+//            wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ));
         } else {
             update_user_meta( $id, Runner::BHAA_RUNNER_STATUS,'D');
         }
         return $id;
+    }
+
+//    function isBhaaMember() {
+//        return in_array('bhaamember',$this->user->role);
+//    }
+
+    function renew($id) {
+        update_user_meta($id, Runner::BHAA_RUNNER_STATUS, 'M');
+        update_user_meta($id, Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
+        wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ) );
+        //error_log('renewed() '.$this->getID().' '.$this->getEmail());
+    }
+
+    // annual membership 2019 = EVT_ID:6876
+    function setRunnerDetails($primary_reg,$dob,$gender,$company) {
+        error_log(sprintf('%s,%s,%s,%s',$primary_reg,$dob,$gender,$company));
+        global $wpdb;
+        $SQL = $wpdb->prepare('SELECT * FROM wp_esp_registration WHERE REG_url_link="%s"',$primary_reg);
+        error_log($SQL);
+        $vv = $wpdb->get_results($SQL,'ARRAY_A');
+        error_log(print_r($vv));
+
     }
 
     private function insertUser($id,$name,$password,$email) {

@@ -2,6 +2,7 @@
 
 namespace BHAA\core\eventexpresso;
 
+use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
@@ -66,6 +67,9 @@ class EventExpresso implements Loadable {
 
         $primary_reg = $request_params['primary_registrant'];
         error_log($primary_reg);
+
+        $runnerManager = new RunnerManager();
+        $runnerManager->setRunnerDetails($primary_reg,$answers['13']['0'],$answers['11'],$answers['12']);
 
         error_log('<-- bhaa_filter_request_params');
 

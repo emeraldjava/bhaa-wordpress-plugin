@@ -167,14 +167,14 @@ class Runner {
         }
     }
 
-    function isBhaaMember() {
-        return in_array('bhaamember',$this->user->role);
-    }
-
-    function renew() {
-        update_user_meta($this->getID(), Runner::BHAA_RUNNER_STATUS, 'M');
-        update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
-        wp_update_user( array( 'ID' => $this->getID(), 'role' => 'bhaamember' ) );
-        //error_log('renewed() '.$this->getID().' '.$this->getEmail());
-    }
+//    function isBhaaMember() {
+//        return in_array('bhaamember',$this->user->role);
+//    }
+//
+//    function renew() {
+//        update_user_meta($this->getID(), Runner::BHAA_RUNNER_STATUS, 'M');
+//        update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
+//        wp_update_user( array( 'ID' => $this->getID(), 'role' => 'bhaamember' ) );
+//        //error_log('renewed() '.$this->getID().' '.$this->getEmail());
+//    }
 }

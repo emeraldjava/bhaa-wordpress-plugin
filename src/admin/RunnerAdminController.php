@@ -80,11 +80,11 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
     }
 
     function bhaa_runner_renew_action() {
-        //current_user_can('edit_users') &&
-        error_log('bhaa_runner_renew_action');
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
         if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_runner_renew_action')) {
-            $runner = new Runner($_POST['id']);
-            $runner->renew();
+            $this->runnerManager->renew($_POST['id']);
         }
         wp_redirect(wp_get_referer());
         exit();
