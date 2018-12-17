@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.12.17 Updates for BHAA 2019 membership.
 - 2018.11.19 Add BHAA help guide with links to the markup pages.
 - 2018.11.18 Update team league summary stored procedures to calculate the leaguesummary correctly.
 - 2018.11.18 Update the House page to display the list of team runners.

@@ -32,7 +32,7 @@ class Main {
      */
     public function __construct() {
         $this->plugin_name = 'bhaa_wordpress_plugin';
-        $this->version = '1.0.0';
+        $this->version = '2018.12.17';
         $this->loader = new utils\Loader();
         $this->set_locale();
     }
