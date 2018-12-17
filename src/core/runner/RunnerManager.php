@@ -12,6 +12,8 @@ use WP_User_Query;
 
 class RunnerManager {
 
+    const BHAA_MEMBERSHIP_ROLE = 'BHAAMember2019';
+
     function runnerExists($runnerId) {
         global $wpdb;
         return $wpdb->get_var($wpdb->prepare('select count(id) as isrunner from wp_users where id=%d',$runnerId));
@@ -79,7 +81,7 @@ class RunnerManager {
             renew($id);
 //            add_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M', true);
 //            add_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'), true);
-//            wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ));
+//            wp_update_user( array( 'ID' => $id, 'role' => RunnerManager::BHAA_MEMBERSHIP_ROLE ));
         } else {
             update_user_meta( $id, Runner::BHAA_RUNNER_STATUS,'D');
         }
@@ -87,13 +89,13 @@ class RunnerManager {
     }
 
 //    function isBhaaMember() {
-//        return in_array('bhaamember',$this->user->role);
+//        return in_array(RunnerManager::BHAA_MEMBERSHIP_ROLE,$this->user->role);
 //    }
 
     function renew($id) {
         update_user_meta($id, Runner::BHAA_RUNNER_STATUS, 'M');
         update_user_meta($id, Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
-        wp_update_user( array( 'ID' => $id, 'role' => 'bhaamember' ) );
+        wp_update_user( array( 'ID' => $id, 'role' => self::BHAA_MEMBERSHIP_ROLE ) );
         //error_log('renewed() '.$this->getID().' '.$this->getEmail());
     }
 
@@ -310,10 +312,10 @@ class RunnerManager {
                     // true if user can edit posts
                 }
 
-                if(strpos($runner->capability,'bhaamember') !== false ) {
+                if(strpos($runner->capability,self::BHAA_MEMBERSHIP_ROLE) !== false ) {
                     update_user_meta($runner->id, Runner::BHAA_RUNNER_STATUS, 'M');
                     //update_user_meta($this->getID(), Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
-                    wp_update_user( array( 'ID' => $runner->id, 'role' => 'bhaamember' ) );
+                    wp_update_user( array( 'ID' => $runner->id, 'role' => self::BHAA_MEMBERSHIP_ROLE ) );
                     //$runnerObj->renew();
                     error_log("set role and status ".$runner->id);
                 }
@@ -335,7 +337,7 @@ class RunnerManager {
     private function set_user_role( $user_id ) {
         // Define a user role based on its index in the array.
         $roles = array(
-            'bhaamember',
+            self::BHAA_MEMBERSHIP_ROLE,
             'subscriber'
         );
         $role = $roles[1];
