@@ -210,7 +210,7 @@ class RunnerManager {
                 LIMIT 1');
     }
     
-    public function getNewOnlineBHAAMembers(){
+    public function getNewOnlineBHAAMembers() {
         global $wpdb;
         $SQL = 'SELECT wp_users.id as id,
             TRIM(LOWER(REPLACE(wp_users.display_name," ","."))) as label,
@@ -237,7 +237,7 @@ class RunnerManager {
             LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
             left join wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
             left join wp_usermeta standard on (standard.user_id=wp_users.id and standard.meta_key="bhaa_runner_standard")
-            WHERE reg.EVT_ID=5651
+            WHERE reg.EVT_ID=6907
             AND reg.REG_paid!=0
             ORDER BY lastname ASC, firstname ASC';
         return $wpdb->get_results($SQL,ARRAY_A);
@@ -273,10 +273,10 @@ class RunnerManager {
             LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = "house_to_runner")
             left join wp_posts house on (house.id=r2c.p2p_from and house.post_type="house")
             left join wp_posts eehouse on (eehouse.post_title=ee_company.ANS_value and eehouse.post_type="house")
-            WHERE reg.EVT_ID IN (5651,6742)
+            WHERE reg.EVT_ID IN (6907,6913)
             AND reg.REG_paid!=0
             ORDER BY reg.EVT_ID,wp_users.display_name,reg.EVT_ID';
-        return $wpdb->get_results($SQL,OBJECT);// 6090 GS-2018
+        return $wpdb->get_results($SQL,OBJECT);// 2018:: 5651,6742
     }
 
     public function processEventExpressoRunners() {
