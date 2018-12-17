@@ -12,7 +12,7 @@ use WP_User_Query;
 
 class RunnerManager {
 
-    const BHAA_MEMBERSHIP_ROLE = 'BHAAMember2019';
+    const BHAA_MEMBERSHIP_ROLE = 'bhaamember2019';
 
     function runnerExists($runnerId) {
         global $wpdb;
@@ -95,7 +95,11 @@ class RunnerManager {
     function renew($id) {
         update_user_meta($id, Runner::BHAA_RUNNER_STATUS, 'M');
         update_user_meta($id, Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
-        wp_update_user( array( 'ID' => $id, 'role' => self::BHAA_MEMBERSHIP_ROLE ) );
+        // https://stackoverflow.com/questions/33537603/how-to-assign-multiple-roles-to-a-single-user-in-wordpress
+        $wp_user = new \WP_User($id);
+        $wp_user->add_role(self::BHAA_MEMBERSHIP_ROLE);
+        $wp_user->add_role('subscriber');
+        //wp_update_user( array( 'ID' => $id, 'role' => self::BHAA_MEMBERSHIP_ROLE ) );
         //error_log('renewed() '.$this->getID().' '.$this->getEmail());
     }
 
