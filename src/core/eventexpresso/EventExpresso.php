@@ -72,8 +72,7 @@ class EventExpresso implements Loadable {
         $runnerManager->setRunnerDetails($primary_reg,$answers['13']['0'],$answers['11'],$answers['12']);
 
         error_log('<-- bhaa_filter_request_params');
-
-        //var_dump($request_params,true);
+        return $request_params;
     }
 
     function bhaa_ee_add_question_type_as_options($question_types) {
