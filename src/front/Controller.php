@@ -44,7 +44,6 @@ class Controller implements Loadable {
     }
 
     function bhaa_login_head() {
-        error_log(plugin_dir_url(__FILE__));
         echo '<style>
             body.login #login h1 a {
             background: url('.plugin_dir_url(__FILE__).'/img/bhaa_logo_transparent.png) no-repeat center top transparent;
