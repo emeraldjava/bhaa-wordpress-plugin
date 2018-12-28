@@ -6,6 +6,11 @@ use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
+/**
+ * Handles the event expresso hook and filter functions for the BHAA wordpress plugin.
+ * Class EventExpresso
+ * @package BHAA\core\eventexpresso
+ */
 class EventExpresso implements Loadable {
 
     public function registerHooks(Loader $loader) {
@@ -68,11 +73,16 @@ class EventExpresso implements Loadable {
         $primary_reg = $request_params['primary_registrant'];
         error_log($primary_reg);
 
-        // SELECT * FROM `wp_usermeta` WHERE `user_id` = 7713 AND `meta_key` = 'wp_EE_Attendee_ID'
-
-        $runnerManager = new RunnerManager();
-        $runnerManager->setRunnerDetails($primary_reg,$answers['13']['0'],$answers['11'],$answers['12']);
-
+        $runnerRegistration = new RunnerRegistration();
+        $bhaaId = $runnerRegistration->getBhaaIdForRegistration($primary_reg);
+        if(isset($bhaaId)) {
+            $runnerManager = new RunnerManager();
+            // use the values from the array and get the BHAA meta-data
+            $runnerManager->setEventExpressoRunnerDetails($bhaaId,$answers['13']['0'],$answers['11'],$answers['12']);
+        }
+        else {
+            error_log("can't determine BHAA ID.");
+        }
         error_log('<-- bhaa_filter_request_params');
         return $request_params;
     }
