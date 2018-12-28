@@ -68,6 +68,8 @@ class EventExpresso implements Loadable {
         $primary_reg = $request_params['primary_registrant'];
         error_log($primary_reg);
 
+        // SELECT * FROM `wp_usermeta` WHERE `user_id` = 7713 AND `meta_key` = 'wp_EE_Attendee_ID'
+
         $runnerManager = new RunnerManager();
         $runnerManager->setRunnerDetails($primary_reg,$answers['13']['0'],$answers['11'],$answers['12']);
 

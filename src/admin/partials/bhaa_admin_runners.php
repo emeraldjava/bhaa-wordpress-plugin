@@ -27,6 +27,7 @@
             <th>Event</th>
             <th>REG</th>
             <th>PAID</th>
+            <th>EE_BHAA_ID</th>
             <th>Status</th>
             <th>EE_S</th>
             <th>Gen</th>
@@ -43,14 +44,14 @@
                 $ee_company = sprintf('<a href="%s">%s %d</a>',get_edit_post_link($row->ee_company_id),$row->ee_company,$row->ee_company_id);
 
             echo sprintf('<tr><td><a href="./admin.php?page=bhaa_admin_runner&id=%d">%d %s</a></td><td>%d</td>
-                <td>%d</td><td>%d</td>
-                <td>%s</td><td>%s</td>
-                <td>%s</td><td>%s</td>
-                <td>%s</td><td>%s</td>
-                <td>%s</td><td>%s</td>
+                <td id="reg">%s</td><td>PAID %d</td><td>%d</td>
+                <td id="status">%s</td><td>%s</td>
+                <td id="gender">%s</td><td>%s</td>
+                <td id="company">%s</td><td>%s</td>
+                <td id="dob">%s</td><td>%s</td>
                 </tr>',
                 $row->id,$row->id,$row->label,$row->EVT_ID,
-                $row->reg_id,$row->paid,
+                $row->REG_ID,$row->REG_PAID,$row->EE_BHAA_ID,
                 $row->m_status,$row->capability,
                 $row->m_gender,$row->ee_gender,
                 $row->m_company,$ee_company,
