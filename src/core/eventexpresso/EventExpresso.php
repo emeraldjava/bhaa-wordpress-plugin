@@ -2,6 +2,7 @@
 
 namespace BHAA\core\eventexpresso;
 
+use BHAA\core\runner\RunnerExpresso;
 use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
@@ -73,12 +74,12 @@ class EventExpresso implements Loadable {
         $primary_reg = $request_params['primary_registrant'];
         error_log($primary_reg);
 
-        $runnerRegistration = new RunnerRegistration();
+        $runnerRegistration = new RunnerExpresso();
         $bhaaId = $runnerRegistration->getBhaaIdForRegistration($primary_reg);
         if(isset($bhaaId)) {
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
-            $runnerManager->setEventExpressoRunnerDetails($bhaaId,$answers['13']['0'],$answers['11'],$answers['12']);
+            $runnerManager->setEventExpressoRunnerAnswers($bhaaId,$answers['13']['0'],$answers['11'],$answers['12']);
         }
         else {
             error_log("can't determine BHAA ID.");
