@@ -104,9 +104,10 @@ class RunnerManager {
     }
 
     // annual membership 2019 = EVT_ID:6876
-    function setEventExpressoRunnerAnswers($id,$dob,$gender,$company) {
-        error_log(sprintf('%s,%s,%s,%s',$id,$dob,$gender,$company));
+    function setEventExpressoRunnerAnswers($id,$gender,$company,$dob) {
+        error_log(sprintf('%s,%s,%s,%s',$id,$gender,$company,$dob));
         $runner = new Runner($id);
+        //error_log(var_dump($runner));
         // date of birth
         if($runner->getDateOfBirth()!=null) {
             update_user_meta($id,Runner::BHAA_RUNNER_DATEOFBIRTH, $dob);

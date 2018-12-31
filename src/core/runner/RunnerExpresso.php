@@ -18,13 +18,12 @@ class RunnerExpresso {
      */
     function getBhaaIdForRegistration($reg_url_link) {
         global $wpdb;
-        $SQL = $wpdb->prepare('SELECT bhaa_id.user_id FROM wp_esp_registration reg
-            JOIN wp_usermeta bhaa_id ON (bhaa_id.meta_value=reg.ATT_ID AND bhaa_id.meta_key="wp_EE_Attendee_ID")
-            WHERE REG_url_link=%s',$reg_url_link);
-        error_log('getBhaaIdForRegistration() SQL:'.$SQL);
+        $SQL = $wpdb->prepare("SELECT bhaa_id.user_id AS runner_id FROM wp_esp_registration reg
+            JOIN wp_usermeta bhaa_id ON (bhaa_id.meta_value=reg.ATT_ID AND bhaa_id.meta_key='wp_EE_Attendee_ID')
+            WHERE REG_url_link=%s",$reg_url_link);
         $bhaa_runner_id = $wpdb->get_var($SQL);
-        error_log('getBhaaIdForRegistration() '.print_r($bhaa_runner_id));
-        return print_r($bhaa_runner_id);
+        error_log('getBhaaIdForRegistration() SQL:'.$SQL.'->'.$bhaa_runner_id);
+        return $bhaa_runner_id;
     }
 
     /**

@@ -12,7 +12,7 @@ use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 use BHAA\core\runner\Runner;
-use BHAA\core\Connections;
+use BHAA\core\runner\RunnerExpresso;
 
 class RunnerAdminController extends AbstractAdminController implements Loadable {
 
@@ -37,6 +37,7 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
         //add_action('admin_action_bhaa_runner_move_action',array($this,'bhaa_runner_move_action'));
 
         $loader->add_action('admin_action_bhaa_process_expresso_runners',$this,'bhaa_process_expresso_runners');
+        $loader->add_action('admin_action_bhaa_process_expresso_runner',$this,'bhaa_process_expresso_runner');
 
         $loader->add_filter('user_row_actions',$this,'bhaa_user_row_actions_runner_link',10,2);
         $loader->add_filter('manage_users_columns',$this,'bhaa_manage_users_columns',10,3);
@@ -49,6 +50,8 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
             'manage_options', 'bhaa_admin_runners', array($this, 'bhaa_admin_expresso_runners'));
         add_submenu_page(null, 'BHAA Runner Admin', 'Runner',
             'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
+        add_submenu_page(null, 'BHAA Runner Admin', 'Espresso',
+            'manage_options', 'bhaa_process_expresso_runner', array($this, 'bhaa_process_expresso_runner'));
     }
 
     public function bhaa_admin_expresso_runners() {
@@ -67,6 +70,24 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
         }
         wp_redirect(wp_get_referer());
         exit();
+    }
+
+    function bhaa_process_expresso_runner() {
+        //current_user_can('edit_users') &&
+        error_log('bhaa_process_expresso_runner');
+        //if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_process_expresso_runner')) {
+
+            $runnerRegistration = new RunnerExpresso();
+            $bhaaId = $runnerRegistration->getBhaaIdForRegistration(trim($_GET['url_link']));
+
+//            if(isset($bhaaId)) { //&&$bhaaId!=1) {
+//                $runnerManager = new RunnerManager();
+//                // use the values from the array and get the BHAA meta-data
+//                $runnerManager->setEventExpressoRunnerAnswers($bhaaId,"M","company","1990-01-01");
+//            }
+        //}
+//        wp_redirect(wp_get_referer());
+//        exit();
     }
 
     public function bhaa_admin_runner() {

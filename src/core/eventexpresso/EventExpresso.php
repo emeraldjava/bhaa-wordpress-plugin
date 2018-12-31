@@ -76,10 +76,10 @@ class EventExpresso implements Loadable {
 
         $runnerRegistration = new RunnerExpresso();
         $bhaaId = $runnerRegistration->getBhaaIdForRegistration($primary_reg);
-        if(isset($bhaaId)) {
+        if(isset($bhaaId)) { //&&$bhaaId!=1) {
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
-            $runnerManager->setEventExpressoRunnerAnswers($bhaaId,$answers['13']['0'],$answers['11'],$answers['12']);
+            $runnerManager->setEventExpressoRunnerAnswers($bhaaId,$answers['11'],$answers['12'],$answers['13']['0']);
         }
         else {
             error_log("can't determine BHAA ID.");
