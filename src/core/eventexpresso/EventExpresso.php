@@ -7,6 +7,8 @@ use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
+use EE_SPCO_Reg_Step_Attendee_Information;
+
 /**
  * Handles the event expresso hook and filter functions for the BHAA wordpress plugin.
  * Class EventExpresso
@@ -63,23 +65,30 @@ class EventExpresso implements Loadable {
         error_log('--> bhaa_filter_request_params');
         error_log(print_r($request_params,true));
 
+        $primary_reg = $request_params['primary_registrant'];
+        error_log($primary_reg);
+
+        $runnerExpresso = new RunnerExpresso();
+        $bhaaId = $runnerExpresso->getBhaaIdForRegistration($primary_reg);
+        if(!isset($bhaaId)) {
+            $bhaaId = get_current_user_id();
+            error_log("get bhaa ID from "+get_current_user_id());
+        }
+
+        // answers from request params
         $answers = $request_params['personal-information-1519640046'];
-        if(isset($answers['13']['0']))
-            error_log('Gender:'.$answers['13']['0']);
         if(isset($answers['11']))
             error_log('DOB   :'.$answers['11']);
         if(isset($answers['12']))
             error_log('Comp  :'.$answers['12']);
+        if(isset($answers['13']['0']))
+            error_log('Gender:'.$answers['13']['0']);
 
-        $primary_reg = $request_params['primary_registrant'];
-        error_log($primary_reg);
-
-        $runnerRegistration = new RunnerExpresso();
-        $bhaaId = $runnerRegistration->getBhaaIdForRegistration($primary_reg);
-        if(isset($bhaaId)) { //&&$bhaaId!=1) {
+        // call the runner manager
+        if(isset($bhaaId)) {
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
-            $runnerManager->setEventExpressoRunnerAnswers($bhaaId,$answers['11'],$answers['12'],$answers['13']['0']);
+            $runnerManager->setCustomBhaaMetaDataAndRenew($bhaaId,$answers['11'],$answers['12'],$answers['13']['0']);
         }
         else {
             error_log("can't determine BHAA ID.");

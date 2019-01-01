@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2018.01.01 Process runner registration from recorded answers.
 - 2018.12.31 Map the expresso fields to the runner.
 - 2018.12.29 Capture custom question answers as runner meta-data.
 - 2018.12.17 Updates for BHAA 2019 membership.

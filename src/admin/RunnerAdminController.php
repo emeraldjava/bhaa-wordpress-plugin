@@ -77,17 +77,24 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
         error_log('bhaa_process_expresso_runner');
         //if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_process_expresso_runner')) {
 
-            $runnerRegistration = new RunnerExpresso();
-            $bhaaId = $runnerRegistration->getBhaaIdForRegistration(trim($_GET['url_link']));
+        $runnerExpressso = new RunnerExpresso();
+        $bhaaId = $runnerExpressso->getBhaaIdForRegistration(trim($_GET['url_link']));
+        error_log('bhaa id '.$bhaaId);
 
-//            if(isset($bhaaId)) { //&&$bhaaId!=1) {
-//                $runnerManager = new RunnerManager();
-//                // use the values from the array and get the BHAA meta-data
-//                $runnerManager->setEventExpressoRunnerAnswers($bhaaId,"M","company","1990-01-01");
-//            }
-        //}
-//        wp_redirect(wp_get_referer());
-//        exit();
+        $answers = $runnerExpressso->getBhaaAnswersForRegistration($_GET['re_id']);
+        if(sizeof($answers)==3) {
+            error_log('dob '.$answers[0]['ANS_value']);
+            error_log('company '.$answers[1]['ANS_value']);
+            error_log('gender '.$answers[2]['ANS_value']);
+
+            $runnerManager = new RunnerManager();
+            // use the values from the array and get the BHAA meta-data
+            $runnerManager->setCustomBhaaMetaDataAndRenew($bhaaId,$answers[0]['ANS_value'],$answers[1]['ANS_value'],$answers[2]['ANS_value']);
+        } else {
+            error_log("No answers");
+        }
+        error_log('bhaa_process_expresso_runner');
+        $this->bhaa_admin_expresso_runners();
     }
 
     public function bhaa_admin_runner() {

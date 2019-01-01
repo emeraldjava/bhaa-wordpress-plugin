@@ -27,10 +27,15 @@ class RunnerExpresso {
     }
 
     /**
-     * Load the details from the saved answers and update the runner.
+     * Get the recorded answers for the registered runner.
+     * -> SELECT QST_ID,ANS_value FROM wp_esp_answer WHERE REG_ID=2366 ORDER BY QST_ID ASC
      */
-    function getBhaaAnswersForRegistration() {
-
+    function getBhaaAnswersForRegistration($reg_id) {
+        global $wpdb;
+        $SQL = $wpdb->prepare("SELECT QST_ID,ANS_value FROM wp_esp_answer WHERE REG_ID=%d ORDER BY QST_ID ASC",$reg_id);
+        $answers = $wpdb->get_results($SQL,ARRAY_A);
+        //error_log('getBhaaIdForRegistration() SQL:'.$SQL.'; ->'.print_r($answers,true));
+        return $answers;
     }
 
     // annual membership 2019 = EVT_ID:6876
