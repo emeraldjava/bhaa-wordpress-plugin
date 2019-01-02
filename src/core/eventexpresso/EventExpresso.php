@@ -7,8 +7,6 @@ use BHAA\core\runner\RunnerManager;
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
 
-use EE_SPCO_Reg_Step_Attendee_Information;
-
 /**
  * Handles the event expresso hook and filter functions for the BHAA wordpress plugin.
  * Class EventExpresso

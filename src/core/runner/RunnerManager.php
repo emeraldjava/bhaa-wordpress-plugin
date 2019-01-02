@@ -121,22 +121,22 @@ class RunnerManager {
             add_user_meta($id,Runner::BHAA_RUNNER_DATEOFBIRTH, $dob,true);
         }
         // gender
-        $gender = "M";
-        if(!strpos($ans_gender,"M")) {
-            $gender="W";
-        }
+        $gender = getGender($ans_gender);
         if($runner->getGender()!=null) {
             update_user_meta($id,Runner::BHAA_RUNNER_GENDER, $gender);
         } else {
             add_user_meta($id,Runner::BHAA_RUNNER_GENDER, $gender,true);
         }
-
         $this->renew($id);
-//        global $wpdb;
-//        $SQL = $wpdb->prepare('SELECT * FROM wp_esp_registration WHERE REG_url_link="%s"',$primary_reg);
-//        error_log($SQL);
-//        $vv = $wpdb->get_results($SQL,'ARRAY_A');
-//        error_log(print_r($vv));
+    }
+
+
+    function getGender($ans_gender) {
+        if(strpos($ans_gender,'M') === false) {
+            return "W";
+        } else {
+            return "M";
+        }
     }
 
     private function insertUser($id,$name,$password,$email) {
