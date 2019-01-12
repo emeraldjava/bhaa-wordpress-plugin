@@ -78,7 +78,7 @@ class RunnerManager {
         add_user_meta( $id, Runner::BHAA_RUNNER_INSERTDATE, date('Y-m-d'), true);
 
         if($isNewMember){
-            renew($id);
+            $this->renew($id);
 //            add_user_meta( $id,Runner::BHAA_RUNNER_STATUS,'M', true);
 //            add_user_meta( $id,Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'), true);
 //            wp_update_user( array( 'ID' => $id, 'role' => RunnerManager::BHAA_MEMBERSHIP_ROLE ));
@@ -121,7 +121,7 @@ class RunnerManager {
             add_user_meta($id,Runner::BHAA_RUNNER_DATEOFBIRTH, $dob,true);
         }
         // gender
-        $gender = getGender($ans_gender);
+        $gender = $this->getGender($ans_gender);
         if($runner->getGender()!=null) {
             update_user_meta($id,Runner::BHAA_RUNNER_GENDER, $gender);
         } else {
