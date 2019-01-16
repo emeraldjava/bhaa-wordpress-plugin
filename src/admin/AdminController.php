@@ -174,10 +174,9 @@ class AdminController extends AbstractAdminController implements Loadable {
     }
 
     public function bhaa_admin_help() {
-
-        $base = dirname(__FILE__);
-        $my_text = file_get_contents( $base.'/./../../docs/index.md',false);
-        $my_html = Markdown::defaultTransform($my_text);
-        echo $my_html;
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        include_once( 'partials/bhaa_help.php' );
     }
 }
