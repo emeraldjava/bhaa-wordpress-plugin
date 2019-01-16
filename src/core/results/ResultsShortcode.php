@@ -27,11 +27,10 @@ class ResultsShortcode implements Loadable {
     }
 
     function bhaa_results_by_year_shortcode($atts) {
-        //error_log("bhaa_results_by_year_shortcode()");
         if(isset($_GET["y"])) {
             $year = $_GET["y"];
         }else {
-            $year = "2018";
+            $year = date("Y");
         }
 
         $racesByYearQuery = new WP_Query(
