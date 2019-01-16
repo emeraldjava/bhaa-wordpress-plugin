@@ -2,13 +2,39 @@
 
 Represents a specific BHAA race
 
-## Race details
+<!--ts-->
+   * [Races](#races)
+      * [Setup Race details](#setup-race-details)
+      * [Upload Race Results](#upload-race-results)
+      * [Race Actions](#race-actions)
+      * [List Races](#list-races)
+      * [Add Race](#add-race)
+      * [Edit Race](#edit-race)
+<!--te-->
+
+## Setup Race Details
 
 The race meta data fields
 
 1. Distance - The race distance
 2. Unit - Miles or KM
 3. Type - Combined, Male or Women
+
+## Upload Race Results
+
+There is a section ‘BHAA Races’ which allow you create and edit race details. In all cases the ‘Race’ should already be created. There are two large textareas, the first for the individual results and the second for the team results. It’s just a matter of copy/pasting the csv results to these textareas. Hit the ‘Update’ button to save the results.
+
+With the results saved into the race, we now select the options to
+
+    Load Results – this action takes the text details and inserts raceresult details against the specific runners.
+    Positions – updated the position value.
+    Pace – calculates the runners pace for the race distance.
+    Pos Cat – determines the runners position within there age category.
+    Poc Std – calculates the position within the runners standard.
+    Post Race Standard – updated the runners standard by +/-1 depending on the race time.
+    League – every bodies favorite does the league points calculation.
+
+Once the 7 buttons have been hit the race results are ready.
 
 ## Race Actions
 

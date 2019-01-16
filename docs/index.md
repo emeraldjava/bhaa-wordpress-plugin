@@ -1,10 +1,12 @@
 ![bhaa logo](https://github.com/emeraldjava/bhaa_wordpress_plugin/raw/master/src/front/img/bhaa_logo_transparent.png)
 
-# BHAA Help
+# BHAA Plugin User Guide
 
-This help guide documents the main featues of the bhaa website and how the bhaawp plugin implement the custom BHAA rules and concepts.
+This space documents the main featues of the bhaa website and how the bhaa_wordpress_plugin implements the custom BHAA 
+rules and concepts.
 
-The website is based on a standard wordpress database schema. We use a 'events-manager' plugin to manage our events. We use the 'wp_user' table to represent the BHAA runner. We have a number of wordpress custom post types which allow us to create and edit BHAA races, teams and leagues.
+The website is based on a standard wordpress database schema. We use the 'wp_user' table to represent the BHAA runner. We
+have a number of wordpress custom post types which allow us to create and edit BHAA races, teams and leagues.
 
 # Custom Post Types
 
