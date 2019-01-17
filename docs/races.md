@@ -12,6 +12,18 @@ Represents a specific BHAA race
       * [Edit Race](#edit-race)
 <!--te-->
 
+## List Races
+
+View all races by distance and type
+
+![Races](images/races/races.PNG)
+
+## Add Race
+
+![Add Race](images/races/add-race.PNG)
+
+List the race to an event. Add race organiser details, this assigns league points to the organising team and its runners.
+
 ## Setup Race Details
 
 The race meta data fields
@@ -51,18 +63,6 @@ Custom actions for a specific race
 9. Delete Teams - Delete the team data.
 10. Load Teams - Load the team data.
 11. Edit Results - Edit the race result details.
-
-## List Races
-
-View all races by distance and type
-
-![Races](https://github.com/emeraldjava/bhaa_wordpress_plugin/raw/master/docs/images/races/races.PNG)
-
-## Add Race
-
-![Add Race](https://github.com/emeraldjava/bhaa_wordpress_plugin/raw/master/docs/images/races/add-race.PNG)
-
-List the race to an event. Add race organiser details, this assigns league points to the organising team and its runners.
 
 ![Race Connections](https://github.com/emeraldjava/bhaa_wordpress_plugin/raw/master/docs/images/races/add-race-connections.PNG)
 
