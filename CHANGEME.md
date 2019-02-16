@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2019.02.16 Add Registrar Admin page to mark non-renewed runners as inactive.
 - 2018.01.02 Add unit tests around the gender validation.
 - 2018.01.01 Process runner registration from recorded answers.
 - 2018.12.31 Map the expresso fields to the runner.

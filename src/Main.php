@@ -30,9 +30,9 @@ class Main {
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      */
-    public function __construct() {
+    public function __construct($version) {
         $this->plugin_name = 'bhaa_wordpress_plugin';
-        $this->version = '2018.12.17';
+        $this->version = $version;
         $this->loader = new utils\Loader();
         $this->set_locale();
     }
@@ -51,6 +51,8 @@ class Main {
         $raceAdminController->registerHooks($this->loader);
         $leagueAdminController = new admin\LeagueAdminController();
         $leagueAdminController->registerHooks($this->loader);
+        $registrarAdminController = new admin\RegistrarAdminController();
+        $registrarAdminController->registerHooks($this->loader);
 
         // register the core objects
         $raceCpt = new core\cpt\RaceCPT();
