@@ -77,11 +77,12 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
         error_log('bhaa_process_expresso_runner');
         //if(wp_verify_nonce($_REQUEST['_wpnonce'], 'bhaa_process_expresso_runner')) {
 
-        $runnerExpressso = new RunnerExpresso();
-        $bhaaId = $runnerExpressso->getBhaaIdForRegistration(trim($_GET['url_link']));
-        error_log('bhaa id '.$bhaaId);
+        $runnerExpresso = new RunnerExpresso();
+        $runnerAndEvent = $runnerExpresso->getRunnerAndEventForRegistration(trim($_GET['url_link']));
+        error_log('runner_id '.$runnerAndEvent['runner_id']);
+        error_log('event_id  '.$runnerAndEvent['event_id']);
 
-        $answers = $runnerExpressso->getBhaaAnswersForRegistration($_GET['re_id']);
+        $answers = $runnerExpresso->getBhaaAnswersForRegistration($_GET['re_id']);
         if(sizeof($answers)==3) {
             error_log('dob '.$answers[0]['ANS_value']);
             error_log('company '.$answers[1]['ANS_value']);
@@ -89,7 +90,11 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
 
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
-            $runnerManager->setCustomBhaaMetaDataAndRenew($bhaaId,$answers[0]['ANS_value'],$answers[1]['ANS_value'],$answers[2]['ANS_value']);
+            $runnerManager->setCustomBhaaMetaData($runnerAndEvent['runner_id'],$answers[0]['ANS_value'],$answers[1]['ANS_value'],$answers[2]['ANS_value']);
+            if($runnerAndEvent['event_id']=6907) {
+                $runnerManager->renew($runnerAndEvent['runner_id']);
+            }
+
         } else {
             error_log("No answers");
         }

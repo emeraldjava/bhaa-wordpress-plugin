@@ -67,7 +67,12 @@ class EventExpresso implements Loadable {
         error_log($primary_reg);
 
         $runnerExpresso = new RunnerExpresso();
-        $bhaaId = $runnerExpresso->getBhaaIdForRegistration($primary_reg);
+
+        //$bhaaId = $runnerExpresso->getBhaaIdForRegistration($primary_reg);
+        $runnerAndEvent = $runnerExpresso->getRunnerAndEventForRegistration($primary_reg);
+        error_log('runner_id '.$runnerAndEvent['runner_id']);
+        error_log('event_id  '.$runnerAndEvent['event_id']);
+
         if(!isset($bhaaId)) {
             $bhaaId = get_current_user_id();
             error_log("get bhaa ID from "+get_current_user_id());
@@ -86,7 +91,11 @@ class EventExpresso implements Loadable {
         if(isset($bhaaId)) {
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
-            $runnerManager->setCustomBhaaMetaDataAndRenew($bhaaId,$answers['11'],$answers['12'],$answers['13']['0']);
+            $runnerManager->setCustomBhaaMetaData($bhaaId,$answers['11'],$answers['12'],$answers['13']['0']);
+            if($runnerAndEvent['event_id']=6907) {
+                $runnerManager->renew($runnerAndEvent['runner_id']);
+            }
+
         }
         else {
             error_log("can't determine BHAA ID.");

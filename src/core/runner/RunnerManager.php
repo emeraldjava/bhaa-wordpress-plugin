@@ -96,21 +96,21 @@ class RunnerManager {
         // https://stackoverflow.com/questions/33537603/how-to-assign-multiple-roles-to-a-single-user-in-wordpress
         $wp_user = new \WP_User($id);
         // check if the role does not exist.
-        if(!current_user_can(self::BHAA_MEMBERSHIP_ROLE)){
+//        if(!current_user_can(self::BHAA_MEMBERSHIP_ROLE)){
             update_user_meta($id, Runner::BHAA_RUNNER_STATUS, 'M');
             update_user_meta($id, Runner::BHAA_RUNNER_DATEOFRENEWAL,date('Y-m-d'));
             $wp_user->add_role(self::BHAA_MEMBERSHIP_ROLE);
             $wp_user->add_role('subscriber');
             error_log('renewed user '.$id);
-        } else {
-            error_log('user '.$id.' was already renewed.');
-        }
+  //      } else {
+    //        error_log('user '.$id.' was already renewed.');
+      //  }
         //wp_update_user( array( 'ID' => $id, 'role' => self::BHAA_MEMBERSHIP_ROLE ) );
         //error_log('renewed() '.$this->getID().' '.$this->getEmail());
     }
 
     // annual membership 2019 = EVT_ID:6876
-    function setCustomBhaaMetaDataAndRenew($id,$dob,$company,$ans_gender) {
+    function setCustomBhaaMetaData($id,$dob,$company,$ans_gender) {
         error_log(sprintf('setCustomBhaaMetaDataAndRenew(%s,%s,%s,%s)',$id,$dob,$company,$ans_gender));
         $runner = new Runner($id);
         //error_log(var_dump($runner));
@@ -127,7 +127,7 @@ class RunnerManager {
         } else {
             add_user_meta($id,Runner::BHAA_RUNNER_GENDER, $gender,true);
         }
-        $this->renew($id);
+        //$this->renew($id);
     }
 
 

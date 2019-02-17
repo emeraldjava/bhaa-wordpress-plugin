@@ -11,19 +11,25 @@ namespace BHAA\core\runner;
 
 class RunnerExpresso {
 
+    function getAnnualMembershipEventId() {
+        return 6907;
+    }
+
     /**
      * Return the BHAA Runner ID for the given registration, if it exists.
      * @param $reg_url_link
      * @return arrayR
+     *
+     *
      */
-    function getBhaaIdForRegistration($reg_url_link) {
+    function getRunnerAndEventForRegistration($reg_url_link) {
         global $wpdb;
-        $SQL = $wpdb->prepare("SELECT bhaa_id.user_id AS runner_id FROM wp_esp_registration reg
+        $SQL = $wpdb->prepare("SELECT bhaa_id.user_id AS runner_id, reg.EVT_ID as event_id FROM wp_esp_registration reg
             JOIN wp_usermeta bhaa_id ON (bhaa_id.meta_value=reg.ATT_ID AND bhaa_id.meta_key='wp_EE_Attendee_ID')
             WHERE REG_url_link=%s",$reg_url_link);
-        $bhaa_runner_id = $wpdb->get_var($SQL);
-        error_log('getBhaaIdForRegistration() SQL:'.$SQL.'->'.$bhaa_runner_id);
-        return $bhaa_runner_id;
+        $runner_event = $wpdb->get_row($SQL,ARRAY_A);
+        error_log('getRunnerAndEventForRegistration() SQL:'.$SQL.'->'.printf($runner_event));
+        return $runner_event;
     }
 
     /**
