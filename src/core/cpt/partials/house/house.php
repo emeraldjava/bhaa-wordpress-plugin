@@ -49,7 +49,7 @@ $usersByCompanyArgs = new WP_User_Query(
 echo '<p>'.get_the_term_list(get_the_ID(), 'sector', 'Sector : ', ', ', '').'</p>';
 echo '<p>Team Name: '.$post->post_title.'</p>';
     //'<p>Team Type: '.$teamtype[0]->name.'</p>'.
-echo '<p>Website:<a target="new" href="'.get_post_meta(get_the_ID(),'bhaa_company_website',true).'">'.get_the_title().'</a></p>';
+//echo '<p>Website:<a target="new" href="'.get_post_meta(get_the_ID(),'bhaa_company_website',true).'">'.get_the_title().'</a></p>';
 echo get_the_post_thumbnail(get_the_ID(), 'thumbnail');
 
 if(current_user_can('edit_users')) {
