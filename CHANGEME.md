@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2019.02.28 Add race sub-pages with rewrite rules and custom templates.
 - 2019.02.16 Only renew runners who use the annual membership form.
 - 2019.02.16 Add Registrar Admin page to mark non-renewed runners as inactive.
 - 2018.01.02 Add unit tests around the gender validation.

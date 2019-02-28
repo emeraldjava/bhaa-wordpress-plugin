@@ -26,15 +26,43 @@ class RaceCPT implements Loadable {
         $loader->add_action('init',$this,'bhaa_register_race_cpt');
         $loader->add_action('add_meta_boxes',$this,'bhaa_race_meta_data');
         $loader->add_action('add_meta_boxes',$this,'bhaa_team_meta_data');
+        //$loader->add_action('add_meta_boxes',$this,'bhaa_race_results_box');
+
         $loader->add_action('save_post',$this,'bhaa_save_race_meta');
         $loader->add_action('admin_menu',$this,'bhaa_race_sub_menu');
         $loader->add_filter('single_template',$this,'bhaa_cpt_race_single_template');
         $loader->add_filter('post_row_actions',$this,'bhaa_race_post_row_actions',10,2);
+
+        $loader->add_filter('query_vars', $this, 'bhaa_race_query_vars');
     }
 
+    function bhaa_race_query_vars($vars) {
+        // add movies_view to the valid list of variables
+        $new_vars = array('race-view');
+        $vars = $new_vars + $vars;
+        return $vars;
+    }
+
+    /**
+     * https://wordpress.stackexchange.com/questions/8608/how-to-quickly-switch-custom-post-type-singular-template/8610#8610
+     * https://stackoverflow.com/questions/4647604/wp-use-file-in-plugin-directory-as-custom-page-template?noredirect=1
+     * @param $template
+     * @return string
+     */
     function bhaa_cpt_race_single_template($template) {
+
+        global $wp;
+        //global $wp_query;
+        //error_log('bhaa_cpt_race_single_template()');
+        //if(isset($wp-query_vars!==null))
+          //  error_log($wp->query_vars);
+
+        //$object = get_queried_object();
+
         if ('race' == get_post_type(get_queried_object_id())) {
-            global $post_id;
+
+            error_log('bhaa_cpt_race_single_template() '.get_queried_object_id().' race-view:'.$wp->query_vars['race-view']);
+            //global $post_id;
             // load results
             $raceResult = new RaceResult();
             $res = $raceResult->getRaceResults(get_the_ID());
@@ -56,8 +84,32 @@ class RaceCPT implements Loadable {
             $teamResultTable = $teamResult->getRaceTeamResultTable();
             set_query_var( 'teamResultTable', $teamResultTable );
 
-            $template = plugin_dir_path(__FILE__) . '/partials/race/race.php';
+            set_query_var( 'link', get_permalink() );
+            // results|teams|standard|overall
+            if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'results'){
+                $template = plugin_dir_path(__FILE__) . 'partials/race/race-results.php';
+            }
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'teams'){
+                $template = plugin_dir_path(__FILE__) . 'partials/race/race-teams.php';
+            }
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'standards'){
+                $template = plugin_dir_path(__FILE__) . 'partials/race/race-standards.php';
+            }
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'awards'){
+                $template = plugin_dir_path(__FILE__) . 'partials/race/race-awards.php';
+            }
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'overview'){
+                $template = plugin_dir_path(__FILE__) . 'partials/race/race-overview.php';
+            }
+            else { //if (array_key_exists('race-view', $wp->query_vars) && !isset($wp->query_vars['race-view'])) {
+                $template = plugin_dir_path(__FILE__) . 'partials/race/race.php';
+            }
+//            else {
+//                $template = plugin_dir_path(__FILE__) . 'partials/race/race.php';
+//            }
         }
+        //error_log(get_permalink());
+        //error_log('bhaa_cpt_race_single_template() '.$template);
         return $template;
     }
 
@@ -157,13 +209,32 @@ class RaceCPT implements Loadable {
             'show_in_nav_menus' => true,
             'exclude_from_search' => false,
             'has_archive' => true,
-            'query_var' => false,
-            'can_export' => true,
+            'query_var' => true,
+            'can_export' => false,
             'publicly_queryable' => true,
-            'rewrite' => true,//array('slug' => 'race'),//,'with_front' => false),
+            //'rewrite' => false,
+            'rewrite' => array('slug' => 'race','with_front' => true),
             'capability_type' => 'post'
         );
         register_post_type( 'race', $raceArgs );
+
+        // https://wordpress.stackexchange.com/questions/858/custom-post-type-data-in-sidebar-widgets
+//        global $wp,$wp_rewrite;
+//        $wp->add_query_var('race-view');
+//        $wp_rewrite->add_rule('race/([^/]+)/(results|teams|standards|overall)','index.php?race=$matches[1]&race-view=$matches[2]', 'top');
+//        $wp_rewrite->flush_rules(true);
+
+        // https://wordpress.stackexchange.com/questions/43824/customising-rewrite-rules-for-cpt-single-post-url-to-work-as-paged-url?rq=1
+        // 'index.php?race=$matches[1]&race-view=$matches[2]',
+        add_rewrite_rule(
+            'race/([^/]+)/(results|teams|standards|overview|awards)/?$',
+            'index.php?race=$matches[1]&race-view=$matches[2]',
+            'top'
+        );
+        //flush_rewrite_rules(true);
+        //global $wp_rewrite;
+        //$wp_rewrite->flush_rules(true);
+
     }
 
     function bhaa_manage_race_posts_columns( $column ) {
@@ -280,17 +351,17 @@ class RaceCPT implements Loadable {
 
     function get_admin_url_links($post) {
         return array(
-            'bhaa_race_delete_results' => $this->generate_race_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
             'bhaa_race_load_results' => $this->generate_race_admin_url_link('bhaa_race_load_results',$post->ID,'Load Results'),
+            'bhaa_race_delete_results' => $this->generate_race_admin_url_link('bhaa_race_delete_results',$post->ID,'Delete Results'),
+            'bhaa_race_load_team_results' => $this->generate_race_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
+            'bhaa_race_delete_team_results' => $this->generate_race_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams'),
             'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
             'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
             'bhaa_race_pace' => $this->generate_race_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
             'bhaa_race_pos_in_cat' => $this->generate_race_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
             'bhaa_race_pos_in_std' => $this->generate_race_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
             'bhaa_race_update_standards' => $this->generate_race_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
-            'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points'),
-            'bhaa_race_load_team_results' => $this->generate_race_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
-            'bhaa_race_delete_team_results' => $this->generate_race_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams')
+            'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points')
         );
     }
 

@@ -8,3 +8,7 @@ A wordpress plugin for the BHAA website.
 ## Composer
 
     composer install --no-dev
+    
+## Codeception    
+    
+    https://codeception.com/for/wordpress

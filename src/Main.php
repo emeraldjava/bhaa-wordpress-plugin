@@ -43,16 +43,18 @@ class Main {
         $controller->registerHooks($this->loader);
 
         // register the BHAA objects with support actions and filters.
-        $adminController = new admin\AdminController( $this->get_plugin_name(), $this->get_version());
-        $adminController->registerHooks($this->loader);
-        $runnerAdminController = new admin\RunnerAdminController();
-        $runnerAdminController->registerHooks($this->loader);
-        $raceAdminController = new admin\RaceAdminController();
-        $raceAdminController->registerHooks($this->loader);
-        $leagueAdminController = new admin\LeagueAdminController();
-        $leagueAdminController->registerHooks($this->loader);
-        $registrarAdminController = new admin\RegistrarAdminController();
-        $registrarAdminController->registerHooks($this->loader);
+        if(is_admin()) {
+            $adminController = new admin\AdminController($this->get_plugin_name(), $this->get_version());
+            $adminController->registerHooks($this->loader);
+            $runnerAdminController = new admin\RunnerAdminController();
+            $runnerAdminController->registerHooks($this->loader);
+            $raceAdminController = new admin\RaceAdminController();
+            $raceAdminController->registerHooks($this->loader);
+            $leagueAdminController = new admin\LeagueAdminController();
+            $leagueAdminController->registerHooks($this->loader);
+            $registrarAdminController = new admin\RegistrarAdminController();
+            $registrarAdminController->registerHooks($this->loader);
+        }
 
         // register the core objects
         $raceCpt = new core\cpt\RaceCPT();
