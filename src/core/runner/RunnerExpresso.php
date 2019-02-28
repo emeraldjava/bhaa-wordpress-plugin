@@ -15,12 +15,19 @@ class RunnerExpresso {
         return 6907;
     }
 
+    function getEventForRegistration($reg_url_link) {
+        global $wpdb;
+        $SQL = $wpdb->prepare("SELECT reg.EVT_ID as event_id FROM wp_esp_registration reg
+            WHERE REG_url_link=%s",$reg_url_link);
+        $event = $wpdb->get_row($SQL,ARRAY_A);
+        error_log('getEventForRegistration() SQL:'.$SQL.'->'.printf($event));
+        return $event;
+    }
+
     /**
      * Return the BHAA Runner ID for the given registration, if it exists.
      * @param $reg_url_link
      * @return arrayR
-     *
-     *
      */
     function getRunnerAndEventForRegistration($reg_url_link) {
         global $wpdb;

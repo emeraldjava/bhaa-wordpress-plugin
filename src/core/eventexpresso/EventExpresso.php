@@ -66,17 +66,8 @@ class EventExpresso implements Loadable {
         $primary_reg = $request_params['primary_registrant'];
         error_log($primary_reg);
 
-        $runnerExpresso = new RunnerExpresso();
-
-        //$bhaaId = $runnerExpresso->getBhaaIdForRegistration($primary_reg);
-        $runnerAndEvent = $runnerExpresso->getRunnerAndEventForRegistration($primary_reg);
-        error_log('runner_id '.$runnerAndEvent['runner_id']);
-        error_log('event_id  '.$runnerAndEvent['event_id']);
-
-        if(!isset($bhaaId)) {
-            $bhaaId = get_current_user_id();
-            error_log("get bhaa ID from "+get_current_user_id());
-        }
+        $bhaaId = get_current_user_id();
+        error_log("use get_current_user_id() for bhaaId "+$bhaaId);
 
         // answers from request params
         $answers = $request_params['personal-information-1519640046'];
@@ -92,10 +83,16 @@ class EventExpresso implements Loadable {
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
             $runnerManager->setCustomBhaaMetaData($bhaaId,$answers['11'],$answers['12'],$answers['13']['0']);
-            if($runnerAndEvent['event_id']=6907) {
-                $runnerManager->renew($runnerAndEvent['runner_id']);
-            }
 
+            $runnerExpresso = new RunnerExpresso();
+            $event = $runnerExpresso->getEventForRegistration($primary_reg);
+            // get the event
+            if($event['event_id']==6907) {
+                error_log('annual membership event');
+                $runnerManager->renew($bhaaId);
+            } else {
+                error_log('event '.$event['event_id']);
+            }
         }
         else {
             error_log("can't determine BHAA ID.");
