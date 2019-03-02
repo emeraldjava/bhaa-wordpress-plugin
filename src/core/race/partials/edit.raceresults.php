@@ -14,8 +14,11 @@ echo '<div id="icon-my-id" class="icon32"><br/></div>';
 //    esc_html__('Add New','plugin_domain')
 //);
 // TODO - have admin menu in the area
-echo '<h3>Edit Race Results : <a href="'.$edit.'">'.$race.'</a></h3>';
-echo '<h3>View Race Results : <a href="'.get_permalink($_GET['id']).'">'.$race.'</a></h3>';
+echo '<hr/>';
+echo $race.' <div><a href="'.$edit.'">Back to Wordpress Post</a> / <a target="_new" href="'.get_permalink($_GET['id']).'">View</a> / <a href="something">These are tabs</a></div>';
+echo '<hr/>';
+echo '<div>Have a row of actions to the update the BHAA columns below</div>';
+echo '<hr/>'
 //
 ?>
     <div id="poststuff">
