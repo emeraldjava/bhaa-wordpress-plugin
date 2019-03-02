@@ -20,14 +20,14 @@ echo '<h3>View Race Results : <a href="'.get_permalink($_GET['id']).'">'.$race.'
 ?>
     <div id="poststuff">
 
-        <div id="post-body" class="metabox-holder columns-1">
+        <div id="post-body" class="metabox-holder columns-2">
              <div id="post-body-content">
                 <?php echo get_query_var('raceResultTable'); ?>
             </div>
 
-<!--            <div id="postbox-container-1" class="postbox-container">-->
-<!--                <php do_meta_boxes('','side','bhaa-race-meta'); ?>-->
-<!--            </div>-->
+            <div id="postbox-container-1" class="postbox-container">
+                <?php echo get_query_var('bhaa_race_admin_url_links'); ?>
+            </div>
 <!---->
 <!--            <div id="postbox-container-2" class="postbox-container">-->
 <!--                <php do_meta_boxes('','normal',null); ?>-->

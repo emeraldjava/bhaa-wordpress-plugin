@@ -53,37 +53,36 @@ class RaceCPT implements Loadable {
         global $wp;
         if ('race' == get_post_type(get_queried_object_id())) {
 
-            error_log('bhaa_cpt_race_single_template() '.get_queried_object_id().' race-view:'.$wp->query_vars['race-view']);
-            // load results
-            $raceResult = new RaceResult();
-            $res = $raceResult->getRaceResults(get_the_ID());
-            // call the template
-            $mustache = new Mustache();
-            $raceResultTable = $mustache->renderTemplate(
-                'race.results.individual',
-                array(
-                    'runners'=>$res,
-                    'isAdmin'=>false,
-                    'formUrl'=>home_url(),
-                    'racename'=>'racename',
-                    'dist'=>'dist',
-                    'unit'=>'unit',
-                    'type'=>'type'));
-            set_query_var( 'raceResultTable', $raceResultTable );
-
-            $teamResult = new TeamResult(get_the_ID());
-            $teamResultTable = $teamResult->getRaceTeamResultTable();
-            set_query_var( 'teamResultTable', $teamResultTable );
-
+            //error_log('bhaa_cpt_race_single_template() '.get_queried_object_id().' race-view:'.$wp->query_vars['race-view']);
             set_query_var( 'link', get_permalink() );
             // results|teams|standard|overall
             if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'results'){
+                // load results
+                $raceResult = new RaceResult();
+                $res = $raceResult->getRaceResults(get_the_ID());
+                // call the template
+                $mustache = new Mustache();
+                $raceResultTable = $mustache->renderTemplate(
+                    'race.results.individual',
+                    array(
+                        'runners'=>$res,
+                        'isAdmin'=>false,
+                        'formUrl'=>home_url(),
+                        'racename'=>'racename',
+                        'dist'=>'dist',
+                        'unit'=>'unit',
+                        'type'=>'type'));
+                set_query_var( 'raceResultTable', $raceResultTable );
                 $template = plugin_dir_path(__FILE__) . 'partials/race-results.php';
             }
-            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'teams'){
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'teams') {
+                $teamResult = new TeamResult(get_the_ID());
+                $teamResultTable = $teamResult->getRaceTeamResultTable();
+                set_query_var( 'teamResultTable', $teamResultTable );
                 $template = plugin_dir_path(__FILE__) . 'partials/race-teams.php';
             }
-            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'standards'){
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'standards') {
+                // do standard specific stuff
                 $template = plugin_dir_path(__FILE__) . 'partials/race-standards.php';
             }
             else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'awards'){
@@ -134,6 +133,11 @@ class RaceCPT implements Loadable {
                             'unit'=>'unit',
                             'type'=>'type'));
         set_query_var( 'raceResultTable', $raceResultTable );
+
+        // dirty
+        $bhaa_race_admin_url_links =  implode('<br/>', $this->get_bhaa_race_admin_url_links($_GET['id']));
+        set_query_var( 'bhaa_race_admin_url_links', $bhaa_race_admin_url_links );
+        //error_log($bhaa_race_admin_url_links);
         include plugin_dir_path( __FILE__ ) . 'partials/edit.raceresults.php';
 //        include plugin_dir_path( __FILE__ ) . 'partials/race/race-admin.php';
     }
@@ -339,6 +343,17 @@ class RaceCPT implements Loadable {
             //'bhaa_race_pos_in_std' => $this->generate_race_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
             //'bhaa_race_update_standards' => $this->generate_race_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
             //'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points')
+        );
+    }
+
+    function get_bhaa_race_admin_url_links($post) {
+        return array(
+            'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
+            'bhaa_race_pace' => $this->generate_race_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
+            'bhaa_race_pos_in_cat' => $this->generate_race_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
+            'bhaa_race_pos_in_std' => $this->generate_race_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
+            'bhaa_race_update_standards' => $this->generate_race_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
+            'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points')
         );
     }
 
