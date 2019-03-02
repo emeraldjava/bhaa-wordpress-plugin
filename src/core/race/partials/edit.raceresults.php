@@ -13,7 +13,10 @@ echo '<div id="icon-my-id" class="icon32"><br/></div>';
 //    esc_url(admin_url('admin.php?page=my-link-to-add-new')),
 //    esc_html__('Add New','plugin_domain')
 //);
+// TODO - have admin menu in the area
 echo '<h3>Edit Race Results : <a href="'.$edit.'">'.$race.'</a></h3>';
+echo '<h3>View Race Results : <a href="'.get_permalink($_GET['id']).'">'.$race.'</a></h3>';
+//
 ?>
     <div id="poststuff">
 

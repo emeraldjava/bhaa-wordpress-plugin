@@ -43,10 +43,6 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
         $loader->add_action('admin_action_bhaa_race_league',$this,'bhaa_race_league');
     }
 
-    function generate_edit_raceresult_link($post_id) {
-        return '<a href='.admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$post_id).'>Edit Results</a>';
-    }
-
     public function bhaa_race_result_save() {
         error_log("bhaa_race_result_save() ".$_POST['bhaa_race']);
         $this->raceResult->updateRaceResult(

@@ -57,7 +57,7 @@ class Main {
         }
 
         // register the core objects
-        $raceCpt = new core\cpt\RaceCPT();
+        $raceCpt = new core\race\RaceCPT();
         $raceCpt->registerHooks($this->loader);
         $houseCpt = new core\cpt\HouseCPT();
         $houseCpt->registerHooks($this->loader);

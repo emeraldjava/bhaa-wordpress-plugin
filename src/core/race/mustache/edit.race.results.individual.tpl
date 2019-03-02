@@ -12,7 +12,7 @@
     <div class="row row-striped" id="{{id}}">
         <div class="col-sm-1">
             {{#isAdmin}}
-            <a target="_self" class="bhaa-url-link" href="./admin.php?page=bhaa_admin_raceresult&raceresult={{id}}">{{position}}</a>{{/isAdmin}}{{^isAdmin}}{{position}}
+            <a target="_self" class="bhaa-url-link" href="./admin.php?page=bhaa_edit_raceresult&raceresult={{id}}">{{position}}</a>{{/isAdmin}}{{^isAdmin}}{{position}}
             {{/isAdmin}}
         </div>
         <div class="col-sm-2"><a class="bhaa-url-link" r="{{runner}}" href="./admin.php?page=bhaa_admin_runner&id={{runner}}">{{firstname}} {{surname}}</a> {{racenumber}}/{{isMember}}</div>
