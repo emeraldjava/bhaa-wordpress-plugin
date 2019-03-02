@@ -24,16 +24,17 @@ class RaceCPT implements Loadable {
 
     public function registerHooks(Loader $loader) {
         $loader->add_action('init',$this,'bhaa_register_race_cpt');
-        $loader->add_action('add_meta_boxes',$this,'bhaa_race_meta_data');
-        $loader->add_action('add_meta_boxes',$this,'bhaa_team_meta_data');
-        //$loader->add_action('add_meta_boxes',$this,'bhaa_race_results_box');
-
-        $loader->add_action('save_post',$this,'bhaa_save_race_meta');
-        $loader->add_action('admin_menu',$this,'bhaa_race_sub_menu');
-        $loader->add_filter('single_template',$this,'bhaa_cpt_race_single_template');
-        $loader->add_filter('post_row_actions',$this,'bhaa_race_post_row_actions',10,2);
-
         $loader->add_filter('query_vars', $this, 'bhaa_race_query_vars');
+        $loader->add_filter('single_template', $this, 'bhaa_cpt_race_single_template');
+
+        if(is_admin()) {
+            $loader->add_action('add_meta_boxes', $this, 'bhaa_race_meta_data');
+            $loader->add_action('add_meta_boxes', $this, 'bhaa_team_meta_data');
+            //$loader->add_action('add_meta_boxes',$this,'bhaa_race_results_box');
+            $loader->add_action('save_post', $this, 'bhaa_save_race_meta');
+            $loader->add_action('admin_menu', $this, 'bhaa_race_sub_menu');
+            $loader->add_filter('post_row_actions', $this, 'bhaa_race_post_row_actions', 10, 2);
+        }
     }
 
     function bhaa_race_query_vars($vars) {
@@ -52,17 +53,9 @@ class RaceCPT implements Loadable {
     function bhaa_cpt_race_single_template($template) {
 
         global $wp;
-        //global $wp_query;
-        //error_log('bhaa_cpt_race_single_template()');
-        //if(isset($wp-query_vars!==null))
-          //  error_log($wp->query_vars);
-
-        //$object = get_queried_object();
-
         if ('race' == get_post_type(get_queried_object_id())) {
 
             error_log('bhaa_cpt_race_single_template() '.get_queried_object_id().' race-view:'.$wp->query_vars['race-view']);
-            //global $post_id;
             // load results
             $raceResult = new RaceResult();
             $res = $raceResult->getRaceResults(get_the_ID());
@@ -101,15 +94,10 @@ class RaceCPT implements Loadable {
             else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'overview'){
                 $template = plugin_dir_path(__FILE__) . 'partials/race/race-overview.php';
             }
-            else { //if (array_key_exists('race-view', $wp->query_vars) && !isset($wp->query_vars['race-view'])) {
+            else {
                 $template = plugin_dir_path(__FILE__) . 'partials/race/race.php';
             }
-//            else {
-//                $template = plugin_dir_path(__FILE__) . 'partials/race/race.php';
-//            }
         }
-        //error_log(get_permalink());
-        //error_log('bhaa_cpt_race_single_template() '.$template);
         return $template;
     }
 
@@ -119,7 +107,7 @@ class RaceCPT implements Loadable {
      */
     function bhaa_race_sub_menu() {
         // see http://websitesthatdontsuck.com/2011/11/adding-a-sub-menu-to-a-custom-post-type/ - 'edit.php?post_type=race'
-        add_submenu_page( null, 'Edit Results', 'Edit Results',
+        add_submenu_page( null, 'BHAA Admin Results', 'BHAA Admin Results',
             'manage_options', 'bhaa_race_edit_results',
             array($this,'bhaa_race_edit_results'));
         // make first element null to hide - 'edit.php?post_type=race'
@@ -146,6 +134,7 @@ class RaceCPT implements Loadable {
                             'type'=>'type'));
         set_query_var( 'raceResultTable', $raceResultTable );
         include plugin_dir_path( __FILE__ ) . 'partials/race/edit_results.php';
+//        include plugin_dir_path( __FILE__ ) . 'partials/race/race-admin.php';
     }
 
 //    function bhaa_race_edit_result() {
@@ -356,12 +345,12 @@ class RaceCPT implements Loadable {
             'bhaa_race_load_team_results' => $this->generate_race_admin_url_link('bhaa_race_load_team_results',$post->ID,'Load Teams'),
             'bhaa_race_delete_team_results' => $this->generate_race_admin_url_link('bhaa_race_delete_team_results',$post->ID,'Delete Teams'),
             'bhaa_race_edit_results' => $this->generate_edit_raceresult_link($post->ID),
-            'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
-            'bhaa_race_pace' => $this->generate_race_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
-            'bhaa_race_pos_in_cat' => $this->generate_race_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
-            'bhaa_race_pos_in_std' => $this->generate_race_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
-            'bhaa_race_update_standards' => $this->generate_race_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
-            'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points')
+            //'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$post->ID,'Positions'),
+            //'bhaa_race_pace' => $this->generate_race_admin_url_link('bhaa_race_pace',$post->ID,'Pace'),
+            //'bhaa_race_pos_in_cat' => $this->generate_race_admin_url_link('bhaa_race_pos_in_cat',$post->ID,'Pos_in_cat'),
+            //'bhaa_race_pos_in_std' => $this->generate_race_admin_url_link('bhaa_race_pos_in_std',$post->ID,'Pos_in_std'),
+            //'bhaa_race_update_standards' => $this->generate_race_admin_url_link('bhaa_race_update_standards',$post->ID,'Update Stds'),
+            //'bhaa_race_league' => $this->generate_race_admin_url_link('bhaa_race_league',$post->ID,'League Points')
         );
     }
 
@@ -383,6 +372,6 @@ class RaceCPT implements Loadable {
                 'post_type'=>'race',
                 'id'=>$post_id
             ),admin_url('edit.php'));
-        return '<a href='.$editURL.'>Edit Results</a>';
+        return '<a href='.$editURL.'>BHAA Admin Results</a>';
     }
 }
