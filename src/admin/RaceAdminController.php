@@ -24,39 +24,23 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
     }
 
     public function registerHooks(Loader $loader) {
-        $loader->add_action('admin_menu',$this,'bhaa_admin_race_sub_menu');
+        // save / delete specific rows or race result data
         $loader->add_action('admin_action_bhaa_race_result_save',$this,'bhaa_race_result_save');
         $loader->add_action('admin_action_bhaa_race_result_delete',$this,'bhaa_race_result_delete');
 
+        // csv data actions
         $loader->add_action('admin_action_bhaa_race_load_results',$this,'bhaa_race_load_results');
         $loader->add_action('admin_action_bhaa_race_delete_results',$this,'bhaa_race_delete_results');
+        $loader->add_action('admin_action_bhaa_race_load_team_results',$this,'bhaa_race_load_team_results');
+        $loader->add_action('admin_action_bhaa_race_delete_team_results',$this,'bhaa_race_delete_team_results');
 
-        $loader->add_action('admin_action_bhaa_race_add_result',$this,'bhaa_race_add_result');
+        // TODO $loader->add_action('admin_action_bhaa_race_add_result',$this,'bhaa_race_add_result');
         $loader->add_action('admin_action_bhaa_race_positions',$this,'bhaa_race_positions');
         $loader->add_action('admin_action_bhaa_race_pace',$this,'bhaa_race_pace');
         $loader->add_action('admin_action_bhaa_race_pos_in_cat',$this,'bhaa_race_pos_in_cat');
         $loader->add_action('admin_action_bhaa_race_pos_in_std',$this,'bhaa_race_pos_in_std');
         $loader->add_action('admin_action_bhaa_race_update_standards',$this,'bhaa_race_update_standards');
         $loader->add_action('admin_action_bhaa_race_league',$this,'bhaa_race_league');
-
-        $loader->add_action('admin_action_bhaa_race_load_team_results',$this,'bhaa_race_load_team_results');
-        $loader->add_action('admin_action_bhaa_race_delete_team_results',$this,'bhaa_race_delete_team_results');
-    }
-
-    public function bhaa_admin_race_sub_menu() {
-        add_submenu_page(null, 'BHAA Race Admin', 'Race',
-            'manage_options', 'bhaa_admin_raceresult', array($this, 'bhaa_admin_edit_raceresult'));
-    }
-
-    function bhaa_admin_edit_raceresult() {
-        if ( !current_user_can( 'manage_options' ) )  {
-            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-        }
-
-        $raceResult = $this->raceResult->getRaceResult($_GET['raceresult']);
-        $link = admin_url('admin.php');
-        $raceLink = $this->generate_edit_raceresult_link($raceResult->race);
-        include_once( 'partials/bhaa_admin_raceresult.php' );
     }
 
     function generate_edit_raceresult_link($post_id) {
