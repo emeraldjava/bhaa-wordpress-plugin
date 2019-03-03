@@ -6,11 +6,7 @@ echo '<div class="container_wrap">
 include_once('menu.php');
 echo '<h1>Standards</h1>';
 
-//echo '<h2>Individual Results</h2>';
-//echo get_query_var('raceResultTable');
-
-//echo '<h2>Team Results</h2>';
-//echo get_query_var('teamResultTable');
+echo do_shortcode('[bhaa_standard_table]');
 
 echo '</div></div></div>';
 get_footer();
