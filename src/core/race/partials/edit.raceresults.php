@@ -15,7 +15,13 @@ echo '<div id="icon-my-id" class="icon32"><br/></div>';
 //);
 // TODO - have admin menu in the area
 echo '<hr/>';
-echo $race.' <div><a href="'.$edit.'">Back to Wordpress Post</a> / <a target="_new" href="'.get_permalink($_GET['id']).'">View</a> / <a href="something">These are tabs</a></div>';
+echo '<div>'.$race.' ::  
+<a href="'.$edit.'">Edit Post</a> / 
+<a target="_new" href="'.get_permalink($_GET['id']).'">Public View</a> /
+<a href="'.get_permalink($_GET['id']).'">Fix Dodgy Data</a> /
+<a href="something">These are tabs</a> /
+<a href="'.get_permalink($_GET['id']).'">Add Result</a>
+</div>';
 echo '<hr/>';
 echo '<div>Have a row of actions to the update the BHAA columns below</div>';
 echo '<hr/>'
