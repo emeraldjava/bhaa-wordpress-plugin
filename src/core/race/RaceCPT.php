@@ -135,7 +135,7 @@ class RaceCPT implements Loadable {
         set_query_var( 'raceResultTable', $raceResultTable );
 
         // dirty
-        $bhaa_race_admin_url_links =  implode('<br/>', $this->get_bhaa_race_admin_url_links($_GET['id']));
+        $bhaa_race_admin_url_links =  implode(' / ', $this->get_bhaa_race_admin_url_links($_GET['id']));
         set_query_var( 'bhaa_race_admin_url_links', $bhaa_race_admin_url_links );
         //error_log($bhaa_race_admin_url_links);
         include plugin_dir_path( __FILE__ ) . 'partials/edit.raceresults.php';

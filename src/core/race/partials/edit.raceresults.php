@@ -23,20 +23,20 @@ echo '<div>'.$race.' ::
 <a href="'.get_permalink($_GET['id']).'">Add Result</a>
 </div>';
 echo '<hr/>';
-echo '<div>Have a row of actions to the update the BHAA columns below</div>';
+echo get_query_var('bhaa_race_admin_url_links');
+//echo '<div>Have a row of actions to the update the BHAA columns below</div>';
 echo '<hr/>'
 //
 ?>
     <div id="poststuff">
 
-        <div id="post-body" class="metabox-holder columns-2">
+        <div id="post-body" class="metabox-holder columns-1">
              <div id="post-body-content">
                 <?php echo get_query_var('raceResultTable'); ?>
             </div>
 
-            <div id="postbox-container-1" class="postbox-container">
-                <?php echo get_query_var('bhaa_race_admin_url_links'); ?>
-            </div>
+<!--            <div id="postbox-container-1" class="postbox-container">-->
+<!--            </div>-->
 <!---->
 <!--            <div id="postbox-container-2" class="postbox-container">-->
 <!--                <php do_meta_boxes('','normal',null); ?>-->
