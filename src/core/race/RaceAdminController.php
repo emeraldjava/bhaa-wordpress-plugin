@@ -6,13 +6,10 @@
  * Time: 17:25
  */
 
-namespace BHAA\admin;
+namespace BHAA\core\race;
 
 use BHAA\utils\Loadable;
 use BHAA\utils\Loader;
-use BHAA\core\race\RaceResult;
-use BHAA\core\race\TeamResult;
-use BHAA\core\cpt\RaceCpt;
 
 class RaceAdminController extends AbstractAdminController implements Loadable {
 
@@ -41,6 +38,9 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
         $loader->add_action('admin_action_bhaa_race_pos_in_std',$this,'bhaa_race_pos_in_std');
         $loader->add_action('admin_action_bhaa_race_update_standards',$this,'bhaa_race_update_standards');
         $loader->add_action('admin_action_bhaa_race_league',$this,'bhaa_race_league');
+
+        $loader->add_action('admin_action_bhaa_race_age_and_cat',$this,'bhaa_race_age_and_cat');
+        $loader->add_action('admin_action_bhaa_race_award',$this,'bhaa_race_award');
     }
 
     public function bhaa_race_result_save() {
