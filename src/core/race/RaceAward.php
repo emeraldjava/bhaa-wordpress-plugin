@@ -22,4 +22,17 @@ class RaceAward {
         return 'wp_bhaa_raceaward';
     }
 
+    function populateAwards($raceId) {
+        $message = $this->delete($raceId);
+
+        return $message;
+    }
+
+    function delete($raceId){
+        $deleted = $this->wpdb->delete(
+            $this->getTableName(),
+            array('race' => $raceId)
+        );
+        return sprintf('deleted %d rows from %s for race %d',$deleted,$this->getTableName(),$raceId);
+    }
 }
