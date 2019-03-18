@@ -202,8 +202,8 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
-        $raceAward = new RaceAward();
-        parent::flashMessage($raceAward->populateAwards($_GET['post_id']));
+        $raceAwards = new RaceAwards();
+        parent::flashMessage($raceAwards->populateAwards($_GET['post_id']));
         wp_redirect(wp_get_referer());
         exit();
     }

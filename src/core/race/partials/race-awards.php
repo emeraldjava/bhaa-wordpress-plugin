@@ -6,6 +6,7 @@ echo '<div class="container_wrap">
 include_once('menu.php');
 echo '<h1>Awards</h1>';
 
+var_dump(get_query_var('awards'));
 //echo '<h2>Individual Results</h2>';
 //echo get_query_var('raceResultTable');
 

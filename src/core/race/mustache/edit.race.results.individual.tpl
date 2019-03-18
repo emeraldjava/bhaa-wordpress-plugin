@@ -13,7 +13,7 @@
         <div class="col-sm-1">
             <a target="_self" class="bhaa-url-link" href="./admin.php?page=bhaa_edit_raceresult&raceresult={{id}}">{{position}}</a>
         </div>
-        <div class="col-sm-2"><a class="bhaa-url-link" r="{{runner}}" href="./admin.php?page=bhaa_admin_runner&id={{runner}}">{{firstname}} {{surname}}</a> {{id}}/{{isMember}}</div>
+        <div class="col-sm-2"><a class="bhaa-url-link" r="{{runner}}" href="./admin.php?page=bhaa_admin_runner&id={{runner}}">{{firstname}} {{surname}}</a> {{runner}}/{{isMember}}</div>
         <div class="col-sm-1">{{gender}}:{{age}}->{{agecategory}}({{posincat}})</div>
         <div class="col-sm-2"><a class="bhaa-url-link" href="/?post_type=house&p={{cid}}">{{cname}}</a></div>
         <div class="col-sm-1">{{standard}}->[{{actualstandard}}]->{{poststandard}}({{posinstd}})</div>

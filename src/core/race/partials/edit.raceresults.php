@@ -13,20 +13,20 @@ echo '<div id="icon-my-id" class="icon32"><br/></div>';
 //    esc_url(admin_url('admin.php?page=my-link-to-add-new')),
 //    esc_html__('Add New','plugin_domain')
 //);
+
 // TODO - have admin menu in the area
+//<a href="'.get_permalink($_GET['id']).'">Fix Dodgy Data</a> /
+//<a href="something">These are tabs</a> /
+//<a href="'.get_permalink($_GET['id']).'">Add Result</a>
 echo '<hr/>';
 echo '<div>'.$race.' ::  
 <a href="'.$edit.'">Edit Post</a> / 
 <a target="_new" href="'.get_permalink($_GET['id']).'">Public View</a> /
-<a href="'.get_permalink($_GET['id']).'">Fix Dodgy Data</a> /
-<a href="something">These are tabs</a> /
-<a href="'.get_permalink($_GET['id']).'">Add Result</a>
 </div>';
 echo '<hr/>';
-echo get_query_var('bhaa_race_admin_url_links');
+echo 'ACTIONS :: '.get_query_var('bhaa_race_admin_url_links');
 //echo '<div>Have a row of actions to the update the BHAA columns below</div>';
 echo '<hr/>'
-//
 ?>
     <div id="poststuff">
 
