@@ -4,7 +4,7 @@ namespace BHAA\admin;
 
 class WPFlashMessages {
 
-    //Flash Messages
+    // Flash Messages
     public function queue_flash_message($message, $class = null) {
         $class = ($class === null) ? 'updated' : $class;
         $flash_messages = maybe_unserialize(get_option('wp_flash_messages', ''));

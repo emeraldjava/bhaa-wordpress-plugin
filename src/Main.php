@@ -48,7 +48,7 @@ class Main {
             $adminController->registerHooks($this->loader);
             $runnerAdminController = new admin\RunnerAdminController();
             $runnerAdminController->registerHooks($this->loader);
-            $raceAdminController = new admin\RaceAdminController();
+            $raceAdminController = new core\race\RaceAdminController();
             $raceAdminController->registerHooks($this->loader);
             $leagueAdminController = new admin\LeagueAdminController();
             $leagueAdminController->registerHooks($this->loader);

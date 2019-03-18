@@ -16,4 +16,8 @@ class AbstractAdminController {
     function __construct() {
         $this->wpFlashMessages = new WPFlashMessages();
     }
+
+    function flashMessage($message, $class = null) {
+        $this->wpFlashMessages->queue_flash_message($message,$class);
+    }
 }

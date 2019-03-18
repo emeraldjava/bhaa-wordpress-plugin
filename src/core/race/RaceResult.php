@@ -246,7 +246,7 @@ class RaceResult {
         return $this->wpdb->get_results($query,OBJECT);
     }
 
-    function listRacesByYear($year = 2018) {
+    function listRacesByYear($year = 2019) {
         $query = $this->wpdb->prepare("SELECT race.* FROM wp_posts race
             WHERE race.post_type='race'
             AND YEAR(race.post_date)=%d
@@ -352,7 +352,7 @@ class RaceResult {
             array('race' => $race,
                 'runner' => $runner,
                 'leaguepoints' => 10,
-                'category' => 'S',
+                'category' => 'RO',
                 'class' => RaceResult::RACE_ORG));
     }
 
