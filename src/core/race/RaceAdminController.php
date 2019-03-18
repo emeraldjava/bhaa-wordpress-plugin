@@ -190,11 +190,19 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
         exit();
     }
     function bhaa_race_age_and_cat() {
-        parent::flashMessage("bhaa_race_age_and_cat()");
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        $message = $this->raceResult->updateAgeAndCategory($_GET['post_id']);
+        parent::flashMessage($message);
         wp_redirect(wp_get_referer());
         exit();
     }
     function bhaa_race_awards() {
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        $this->raceResult->updateAwards($_GET['post_id']);
         parent::flashMessage("bhaa_race_awards");
         wp_redirect(wp_get_referer());
         exit();

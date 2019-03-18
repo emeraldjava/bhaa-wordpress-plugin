@@ -306,6 +306,39 @@ class RaceResult {
         $this->wpdb->query($this->wpdb->prepare('call updateRaceLeaguePoints(%d)',$race));
     }
 
+    /**
+     * Calculate the age and category of each runner in the race.
+     * TODO - handle the defaulting to 18 and M.
+     * @param $race
+     * @return string
+     */
+    function updateAgeAndCategory($race) {
+        $this->wpdb->query($this->wpdb->prepare('UPDATE wp_bhaa_raceresult rr SET age=NULL WHERE race=%d',$race));
+        $ageSQL = $this->wpdb->prepare('UPDATE wp_bhaa_raceresult rr
+            JOIN wp_posts race on race.id=rr.race
+            JOIN wp_users u on rr.runner=u.ID
+            LEFT JOIN wp_usermeta dob on (rr.runner=dob.user_id AND dob.meta_key="bhaa_runner_dateofbirth")
+            SET age=COALESCE((YEAR(race.post_date)-YEAR(dob.meta_value)) - (RIGHT(race.post_date,5)<RIGHT(dob.meta_value,5)),18)
+            WHERE race=%d AND class="RAN"',$race);
+        //error_log($ageSQL);
+        $ageUpdate = $this->wpdb->query($ageSQL);
+
+        $this->wpdb->query($this->wpdb->prepare('UPDATE wp_bhaa_raceresult rr SET agecategory=NULL WHERE race=%d',$race));
+        $ageCategorySQL = $this->wpdb->prepare('UPDATE wp_bhaa_raceresult rr
+            JOIN wp_posts race on race.id=rr.race
+            JOIN wp_users u on rr.runner=u.ID
+            LEFT JOIN wp_usermeta gender on (rr.runner=gender.user_id AND gender.meta_key="bhaa_runner_gender")
+            SET agecategory=(SELECT category FROM wp_bhaa_agecategory WHERE (rr.age between min and max) AND gender=COALESCE(gender.meta_value,"M"))
+            WHERE race=%d AND class="RAN"',$race);
+        //error_log($ageCategorySQL);
+        $ageCategoryUpdate = $this->wpdb->query($ageCategorySQL);
+        return sprintf('updatedAgeAndCategory(%d) - age=%d, category=%d',$race,$ageUpdate,$ageCategoryUpdate);
+    }
+
+    function updateAwards() {
+
+    }
+
     function updatePostRaceStd($race) {
         $SQL = $this->wpdb->prepare('select position, runner, standard, actualstandard from wp_bhaa_raceresult where race=%d order by position asc',$race);
         //error_log($SQL);
