@@ -85,7 +85,10 @@ class RaceCPT implements Loadable {
             else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'awards') {
                 $raceAwards = new RaceAwards();
                 $awards = $raceAwards->select(get_the_ID());
-                set_query_var( 'awards', $awards );
+                //var_dump($awards);
+
+                $raceAwardsView = new RaceAwardsView();
+                set_query_var( 'awards', $raceAwardsView->generateView($awards) );
                 $template = plugin_dir_path(__FILE__) . 'partials/race-awards.php';
             }
             else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'overview'){
