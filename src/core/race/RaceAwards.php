@@ -25,37 +25,43 @@ class RaceAwards {
     function populateAwards($raceId) {
         $message = $this->delete($raceId);
         $this->processAllAgeCategories($raceId);
-        var_dump($this->select($raceId));
+        //var_dump($this->select($raceId));
         return $message;
     }
 
     function processAllAgeCategories($raceId) {
         $ageCategories = $this->wpdb->get_results('SELECT * FROM wp_bhaa_agecategory',OBJECT);
+        error_log("processAllAgeCategories() ". count($ageCategories));
         foreach($ageCategories as $ageCategory) {
-            //var_dump($ageCategory,true);
             $this->processCategory($raceId, $ageCategory->category,$ageCategory->gender,$ageCategory->restricted);
         }
     }
 
     function processCategory($raceId, $category,$gender,$restricted) {
-        for($award=1;$award<4;$award++) {
+        for($award=1;$award<=3;$award++) {
             $this->processPositionWithinCatogory($raceId,$category,$gender,$award,$restricted);
         }
     }
 
     function processPositionWithinCatogory($raceId,$category,$gender,$award,$restricted) {
-        $AGE_CATEGORY_CLAUSE = '';
-        if($restricted) {
-            $AGE_CATEGORY_CLAUSE = sprintf('AND agecategory=%s',$category);
+        $AGE_CATEGORY_CLAUSE = null;
+        $AGE_CATEGORY_VALUE = null;
+        if(!$restricted) {
+            $AGE_CATEGORY_CLAUSE = "agecat.category";
+            $AGE_CATEGORY_VALUE = $category;
+        } else {
+            $AGE_CATEGORY_CLAUSE = "agecat.gender";
+            $AGE_CATEGORY_VALUE = $gender;
         }
         $SQL = $this->wpdb->prepare('INSERT INTO wp_bhaa_raceaward (race,category,award,runner)
             SELECT rr.race,%s,%d,rr.runner FROM wp_bhaa_raceresult rr
             JOIN wp_bhaa_agecategory agecat on rr.agecategory=agecat.category
             WHERE rr.race=%d
-            AND agecat.gender=%s
             AND rr.runner NOT IN (SELECT runner FROM wp_bhaa_raceaward a where a.race=%d)
-            AND rr.class="RAN" %s
-            ORDER BY rr.position',$category,$award,$raceId,$gender,$raceId,$category,$AGE_CATEGORY_CLAUSE);
+            AND rr.class="RAN"
+            AND %s=%s
+            ORDER BY rr.position
+            LIMIT 1',$category,$award,$raceId,$raceId,$AGE_CATEGORY_CLAUSE,$AGE_CATEGORY_VALUE);
         error_log($SQL);
         $res = $this->wpdb->query($SQL);
         error_log($res);
