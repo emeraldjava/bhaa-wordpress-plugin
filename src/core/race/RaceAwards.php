@@ -44,43 +44,32 @@ class RaceAwards {
     }
 
     function processPositionWithinCatogory($raceId,$category,$gender,$award,$restricted) {
-        $AGE_CATEGORY_CLAUSE = null;
-        $AGE_CATEGORY_VALUE = null;
+        $SQL = null;
         if(!$restricted) {
-            $AGE_CATEGORY_CLAUSE = "agecat.category";
-            $AGE_CATEGORY_VALUE = $category;
-        } else {
-            $AGE_CATEGORY_CLAUSE = "agecat.gender";
-            $AGE_CATEGORY_VALUE = $gender;
-        }
-        $SQL = $this->wpdb->prepare('INSERT INTO wp_bhaa_raceaward (race,category,award,runner)
+            $SQL = $this->wpdb->prepare('INSERT INTO wp_bhaa_raceaward (race,category,award,runner)
             SELECT rr.race,%s,%d,rr.runner FROM wp_bhaa_raceresult rr
             JOIN wp_bhaa_agecategory agecat on rr.agecategory=agecat.category
             WHERE rr.race=%d
             AND rr.runner NOT IN (SELECT runner FROM wp_bhaa_raceaward a where a.race=%d)
             AND rr.class="RAN"
-            AND %s=%s
+            AND agecat.category=%s
             ORDER BY rr.position
-            LIMIT 1',$category,$award,$raceId,$raceId,$AGE_CATEGORY_CLAUSE,$AGE_CATEGORY_VALUE);
+            LIMIT 1',$category,$award,$raceId,$raceId,$category);
+        } else {
+            $SQL = $this->wpdb->prepare('INSERT INTO wp_bhaa_raceaward (race,category,award,runner)
+            SELECT rr.race,%s,%d,rr.runner FROM wp_bhaa_raceresult rr
+            JOIN wp_bhaa_agecategory agecat on rr.agecategory=agecat.category
+            WHERE rr.race=%d
+            AND rr.runner NOT IN (SELECT runner FROM wp_bhaa_raceaward a where a.race=%d)
+            AND rr.class="RAN"
+            AND agecat.gender=%s
+            ORDER BY rr.position
+            LIMIT 1',$category,$award,$raceId,$raceId,$gender);
+        }
         error_log($SQL);
         $res = $this->wpdb->query($SQL);
         error_log($res);
     }
-
-//    function xx($raceId) {
-//        $SQL = $this->wpdb->prepare('INSERT INTO wp_bhaa_raceaward (race,category,award,runner)
-//            SELECT race,"M",1,runner FROM wp_bhaa_raceresult rr
-//            LEFT JOIN wp_bhaa_agecategory agecat on rr.agecategory=agecat.category
-//            WHERE rr.race=%d
-//            AND agecat.gender="M"
-//            AND rr.runner NOT IN (SELECT runner FROM wp_bhaa_raceaward a where a.race=%d)
-//            ORDER BY rr.position DESC
-//            LIMIT 1',$raceId,$raceId);
-//        error_log($SQL);
-//        $res = $this->wpdb->query($SQL);
-//        return sprintf("xx %d",$res);
-//
-//    }
 
     function select($raceId) {
         $selectSQL = $this->wpdb->prepare('SELECT * FROM wp_bhaa_raceaward WHERE race=%d',$raceId);
