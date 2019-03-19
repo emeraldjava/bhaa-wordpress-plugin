@@ -72,10 +72,16 @@ class RaceAwards {
     }
 
     function select($raceId) {
-        $selectSQL = $this->wpdb->prepare('SELECT * FROM wp_bhaa_raceaward WHERE race=%d',$raceId);
-        error_log($selectSQL);
+        $selectSQL = $this->wpdb->prepare('SELECT ra.*,r.display_name,rr.racetime,rr.position,rr.age 
+            FROM wp_bhaa_raceaward ra
+            JOIN wp_users r on (r.ID=ra.runner)
+            JOIN wp_bhaa_raceresult rr on (rr.race=ra.race AND rr.runner=ra.runner)
+            JOIN wp_bhaa_agecategory wba on ra.category = wba.category
+            WHERE ra.race=%d 
+            ORDER BY wba.agegroup,wba.category,ra.award',
+            $raceId);
+        //error_log($selectSQL);
         return $this->wpdb->get_results($selectSQL,OBJECT);
-        //return sprintf('Selected %d rows from %s for race %d.',$selected,$this->getTableName(),$raceId);
     }
 
     function delete($raceId) {
