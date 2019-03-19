@@ -52,6 +52,9 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
             'manage_options', 'bhaa_admin_runner', array($this, 'bhaa_admin_runner'));
         add_submenu_page(null, 'BHAA Runner Admin', 'Espresso',
             'manage_options', 'bhaa_process_expresso_runner', array($this, 'bhaa_process_expresso_runner'));
+
+        add_submenu_page('bhaa', 'Fix Runners Meta', 'Runners Meta',
+            'manage_options', 'bhaa_admin_runners_meta', array($this, 'bhaa_admin_runners_meta'));
     }
 
     public function bhaa_admin_expresso_runners() {
@@ -100,6 +103,14 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
         }
         error_log('bhaa_process_expresso_runner');
         $this->bhaa_admin_expresso_runners();
+    }
+
+    function bhaa_admin_runners_meta() {
+        if ( !current_user_can( 'manage_options' ) )  {
+            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+        }
+        $xx = new RunnerUserListTable();
+        echo $xx->table();
     }
 
     public function bhaa_admin_runner() {
