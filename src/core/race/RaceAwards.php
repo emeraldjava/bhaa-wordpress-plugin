@@ -72,7 +72,7 @@ class RaceAwards {
     }
 
     function select($raceId) {
-        $selectSQL = $this->wpdb->prepare('SELECT ra.*,wba.agegroup,r.display_name,rr.racetime,rr.position,rr.age 
+        $selectSQL = $this->wpdb->prepare('SELECT CONCAT(ra.category,"p",ra.award) as pcat,ra.*,wba.agegroup,r.display_name,rr.racetime,rr.position,rr.age 
             FROM wp_bhaa_raceaward ra
             JOIN wp_users r on (r.ID=ra.runner)
             JOIN wp_bhaa_raceresult rr on (rr.race=ra.race AND rr.runner=ra.runner)

@@ -13,23 +13,32 @@ class RaceAwardsView {
 
     function generateView($awards) {
         $awardsReport = '';
-        $awardsReport .= var_dump($awards);
+
         $currentAgeGroup = null;
         $awardsReport .= '<div id="container">';
 
         foreach($awards as $award) {
             if($currentAgeGroup!=$award['agegroup']) {
                 $currentAgeGroup = $award['agegroup'];
-                $awardsReport .= $this->generateAgeCategoryCard($award['agegroup']);
+//                error_log(print_r($award));
+                $awardsReport .= $this->generateAgeCategoryCard($award);
             }
         }
         $awardsReport .= '</div>';
         return $awardsReport;
     }
 
-    function generateAgeCategoryCard($ageCategory,$awards) {
+    function generateAgeCategoryCard($award) {
 
-        return sprintf(
+        $p1M = "";
+        $p2M = "";
+        $p3M = "";
+
+        $p1W = "";
+        $p2W = "";
+        $p3W = "";
+
+        $ageCategoryHeaderRow = sprintf(
             '<div class="row" id="%1$sBlock">
                 <div class="col-md-12 col-lg-12 col-xl-12 card-header" id="%1$sHeader">
                   <div class="card">
@@ -55,16 +64,12 @@ class RaceAwardsView {
                         </div>  
                     </div>
                 </div>
-            </div>
-             
+            </div>',$award['agegroup']);
+
+        $ageCategoryDetailsRow = sprintf('
             <div class="row">
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p1m">
-                    <div class="card">
-                        <div class="card-block">
-                          <h6 class="card-title">P1 M</h6>
-                          <p>$awards</p>
-                        </div>  
-                    </div>
+                    %2$s
                 </div>
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p2m">
                     <div class="card">
@@ -102,7 +107,23 @@ class RaceAwardsView {
                         </div>  
                     </div>
                 </div>
-            </div>',$ageCategory,$awards[]);
+            </div>',$award['agegroup'],
+                $this->generateAwardCard($award['agegroup'],$award,1));
+
+        return $ageCategoryHeaderRow.''.$ageCategoryDetailsRow;
     }
 
+    function generateAwardCard($ageCategory,$award,$position)
+    {
+        $pCat = sprintf('%sp%s',$ageCategory,$position);
+        error_log(printf($award['agegroup']));
+        return sprintf('
+            <div class="card">
+                <div class="card-block">
+                      <h6 class="card-title"><span>%1$s</span></h6>
+                      <p class="card-text"><span>P%2$s</span> %4$s</p>
+                      <a href="#" class="btn btn-primary">%3$s</a>
+                </div>
+            </div>',$award['agegroup'],$position,$award['pcat'],$award['display_name']);
+    }
 }
