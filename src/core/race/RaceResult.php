@@ -156,15 +156,17 @@ class RaceResult {
                 house.id as cid,
                 house.post_name as cname,
                 house.post_title as ctitle,
-                IF(status.meta_value='M',true,false) as isMember
+                COALESCE(status.meta_value,'D') as isMember,
+                dob.meta_value as dob
                 FROM wp_bhaa_raceresult
-                left join wp_users on wp_users.id=wp_bhaa_raceresult.runner
-                left join wp_usermeta first_name on (first_name.user_id=wp_users.id and first_name.meta_key='first_name')
-                left join wp_usermeta last_name on (last_name.user_id=wp_users.id and last_name.meta_key='last_name')
-                left join wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key='bhaa_runner_gender')
-                left join wp_usermeta status on (status.user_id=wp_users.id and status.meta_key='bhaa_runner_status')
+                LEFT JOIN wp_users on wp_users.id=wp_bhaa_raceresult.runner
+                LEFT JOIN wp_usermeta first_name on (first_name.user_id=wp_users.id and first_name.meta_key='first_name')
+                LEFT JOIN wp_usermeta last_name on (last_name.user_id=wp_users.id and last_name.meta_key='last_name')
+                LEFT JOIN wp_usermeta gender on (gender.user_id=wp_users.id and gender.meta_key='bhaa_runner_gender')
+                LEFT JOIN wp_usermeta status on (status.user_id=wp_users.id and status.meta_key='bhaa_runner_status')
+                LEFT JOIN wp_usermeta dob on (dob.user_id=wp_users.id and dob.meta_key='bhaa_runner_dateofbirth')
                 LEFT JOIN wp_p2p r2c ON (r2c.p2p_to=wp_users.id AND r2c.p2p_type = 'house_to_runner')
-                left join wp_posts house on (house.post_type='house' and house.id=r2c.p2p_from)
+                LEFT JOIN wp_posts house on (house.post_type='house' and house.id=r2c.p2p_from)
                 where race=%d and wp_bhaa_raceresult.class='RAN' ORDER BY position";
         $SQL = $this->wpdb->prepare($query,$race);
         //error_log($SQL);
