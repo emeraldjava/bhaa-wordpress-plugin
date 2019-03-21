@@ -6,9 +6,9 @@
         <div class="col-3">Time: {{racetime}}</div>
     </div>
     <div class="row row-striped row-minor">
-        <div class="col-5 ">Cat: {{gender}}{{category}} ({{posincat}})</div>
-        <div class="col-4">Std: {{standard}}</div>
-        <div class="col-3"><i>Bib</i>: {{racenumber}}</div>
+        <div class="col-5 "><i>Bib</i>: {{racenumber}}<span>Cat: {{gender}}{{category}}</span></div>
+        <div class="col-4"><i>Std</i>: {{standard}}</div>
+        <div class="col-3"><i>Pace</i>: {{pace}}</div>
     </div>
 {{/runners}}
 </div>

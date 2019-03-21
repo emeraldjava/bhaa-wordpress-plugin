@@ -80,8 +80,8 @@ class RaceAwards {
             WHERE ra.race=%d 
             ORDER BY wba.agegroup,wba.category,ra.award',
             $raceId);
-        //error_log($selectSQL);
-        return $this->wpdb->get_results($selectSQL,OBJECT);
+        error_log($selectSQL);
+        return $this->wpdb->get_results($selectSQL,ARRAY_A);
     }
 
     function delete($raceId) {

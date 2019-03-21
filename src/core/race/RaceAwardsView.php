@@ -13,23 +13,25 @@ class RaceAwardsView {
 
     function generateView($awards) {
         $awardsReport = '';
+        $awardsReport .= var_dump($awards);
         $currentAgeGroup = null;
         $awardsReport .= '<div id="container">';
 
         foreach($awards as $award) {
-            if($currentAgeGroup!=$award->agegroup) {
-                $currentAgeGroup = $award->agegroup;
-                $awardsReport .= $this->generateAgeCategoryCard($award->agegroup);
+            if($currentAgeGroup!=$award['agegroup']) {
+                $currentAgeGroup = $award['agegroup'];
+                $awardsReport .= $this->generateAgeCategoryCard($award['agegroup']);
             }
         }
         $awardsReport .= '</div>';
         return $awardsReport;
     }
 
-    function generateAgeCategoryCard($ageCategory) {
+    function generateAgeCategoryCard($ageCategory,$awards) {
+
         return sprintf(
-            '<div class="row">
-                <div class="col-md-12 col-lg-12 col-xl-12 card-header" id="%1$s">
+            '<div class="row" id="%1$sBlock">
+                <div class="col-md-12 col-lg-12 col-xl-12 card-header" id="%1$sHeader">
                   <div class="card">
                     <div class="card-block">
                       <h4 class="card-title"><span>AgeGroup</span> <span>%1$s</span></h4>
@@ -59,21 +61,22 @@ class RaceAwardsView {
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p1m">
                     <div class="card">
                         <div class="card-block">
-                          <h6 class="card-title">P1 Male</h6>
+                          <h6 class="card-title">P1 M</h6>
+                          <p>$awards</p>
                         </div>  
                     </div>
                 </div>
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p2m">
                     <div class="card">
                         <div class="card-block">
-                          <h6 class="card-title">P2 Male</h6>
+                          <h6 class="card-title">P2 M</h6>
                         </div>  
                     </div>
                 </div>
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p3m">
                     <div class="card">
                         <div class="card-block">
-                          <h6 class="card-title">P3 Male</h6>
+                          <h6 class="card-title">P3 M</h6>
                         </div>  
                     </div>
                 </div>
@@ -81,27 +84,25 @@ class RaceAwardsView {
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p1w">
                     <div class="card">
                         <div class="card-block">
-                          <h6 class="card-title">P1 Woman</h6>
+                          <h6 class="card-title">P1 W</h6>
                         </div>  
                     </div>
                 </div>
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p2w">
                     <div class="card">
                         <div class="card-block">
-                          <h6 class="card-title">P2 Woman</h6>
+                          <h6 class="card-title">P2 W</h6>
                         </div>  
                     </div>
                 </div>
                 <div class="col-md-2 col-lg-2 col-xl-2 card-header" id="%1$s_p3w">
                     <div class="card">
                         <div class="card-block">
-                          <h6 class="card-title">P3 Woman</h6>
+                          <h6 class="card-title">P3 W</h6>
                         </div>  
                     </div>
                 </div>
-            </div>
-            
-          </div>',$ageCategory);
+            </div>',$ageCategory,$awards[]);
     }
 
 }
