@@ -6,7 +6,7 @@
  * Plugin Name:       BHAA Wordpress Plugin
  * Plugin URI:        https://github.com/emeraldjava/bhaa_wordpress_plugin
  * Description:       Plugin for the Business House Athletic Association. Handles user registration, race results and leagues.
- * Version:           2019.02.16
+ * Version:           2019.03.22
  * Author:            emeraldjava
  * Author URI:        https://github.com/emeraldjava
  * License:           GPL-2.0+
@@ -27,7 +27,7 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 /**
  * Currently plugin version.
  */
-define( 'BHAA_WORDPRESS_PLUGIN_VERSION', '1.0.0' );
+define( 'BHAA_WORDPRESS_PLUGIN_VERSION', '2019.03.22' );
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-plugin-name-activator.php
@@ -51,7 +51,7 @@ register_deactivation_hook( __FILE__, '\BHAA\deactivate_plugin_name' );
  * https://wordpress.stackexchange.com/questions/70055/best-way-to-initiate-a-class-in-a-wp-plugin
  */
 function run_bhaa_wordpress_plugin() {
-    $plugin = new Main('2019.02.16');
+    $plugin = new Main(BHAA_WORDPRESS_PLUGIN_VERSION);
     $plugin->run();
 }
 run_bhaa_wordpress_plugin();
