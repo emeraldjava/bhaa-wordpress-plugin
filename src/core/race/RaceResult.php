@@ -9,6 +9,7 @@
 namespace BHAA\core\race;
 
 use BHAA\core\runner\RunnerManager;
+use DateTime;
 
 /**
  * Class RaceResult
@@ -45,6 +46,7 @@ class RaceResult {
 
     public function addRaceResult($race,$details) {
         // check if the runner exists
+        //error_log(print_r($details,true));
         $position = $details[0];
         $bib = $details[1];
         $runner_id = trim($details[2]);
@@ -54,6 +56,7 @@ class RaceResult {
         $email = '';
         $gender = $details[6];
         $dob = $details[8];
+        error_log($dob.' '.$gender);
         $memberType = trim($details[12]);
 
         $runnerManager = new RunnerManager();
@@ -67,7 +70,10 @@ class RaceResult {
                 $isNewMember = false;
                 error_log($position.' new DAY runner '.$runner_id);
             }
-            $dateofbirth = date("Y-m-d", strtotime(str_replace('/','-',$dob)));
+
+            $datetime = DateTime::createFromFormat('d/m/Y',$dob);
+            $dateofbirth = $datetime->format('Y-m-d');
+            //error_log('$dateofbirth '.$dateofbirth);
             $runnerManager->createNewUser($firstname,$surname,'',$gender,$dateofbirth,$runner_id,$isNewMember);
         } else {
             error_log('existing runner '.$runner_id. ' '.$runnerManager->runnerExists($runner_id));

@@ -68,13 +68,17 @@ class RunnerManager {
             'nickname' => $username,
             'display_name'=> $firstname.' '.$surname,
             'first_name' => $firstname,
-            'last_name'=> $surname
+            'last_name'=> $surname,
+            'role'=>'subscriber',
+            'show_admin_bar_front'=> false
         ));
-        if(is_wp_error($res))
-            //error_log('update user error '.$res->get_error_message());
 
-        add_user_meta( $id, Runner::BHAA_RUNNER_GENDER, $gender, true);
-        add_user_meta( $id, Runner::BHAA_RUNNER_DATEOFBIRTH, $dateofbirth, true);
+        if(is_wp_error($res))
+            error_log('update user error '.$res->get_error_message());
+
+        //
+        error_log('gen_meta('.$gender.')='.add_user_meta( $id, Runner::BHAA_RUNNER_GENDER, $gender, true));
+        error_log('dob_meta('.$dateofbirth.')='.add_user_meta( $id, Runner::BHAA_RUNNER_DATEOFBIRTH, $dateofbirth, true));
         add_user_meta( $id, Runner::BHAA_RUNNER_INSERTDATE, date('Y-m-d'), true);
 
         if($isNewMember){

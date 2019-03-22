@@ -118,6 +118,7 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
             $race = get_post($_GET['post_id']);
             $resultText = $race->post_content;
             $this->raceResult->processRaceResults($race->ID, $race->post_content);
+            parent::flashMessage('bhaa_race_load_results('.$_GET['post_id'].')');
             wp_redirect(wp_get_referer());
             exit();
         }
@@ -125,7 +126,7 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
     function bhaa_race_delete_results() {
         if(wp_verify_nonce($_GET['_wpnonce'],'bhaa_race_delete_results')) {
             $this->raceResult->deleteRaceResults($_GET['post_id']);
-            //queue_flash_message("bhaa_race_delete_results ".$_GET['post_id']);
+            parent::flashMessage("bhaa_race_delete_results ".$_GET['post_id']);
             wp_redirect(wp_get_referer());
             exit();
         }
@@ -140,7 +141,7 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
             error_log('team result '.print_r($details,true));
             $teamResult->addResult($details);
         }
-        //queue_flash_message("bhaa_race_load_team_results :: ".sizeof($teamResults));
+        parent::flashMessage("bhaa_race_load_team_results :: ".sizeof($teamResults));
         wp_redirect(wp_get_referer());
         exit();
     }
