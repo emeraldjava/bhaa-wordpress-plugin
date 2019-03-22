@@ -53,26 +53,7 @@ class RaceCPT implements Loadable {
             //error_log('bhaa_cpt_race_single_template() '.get_queried_object_id().' race-view:'.$wp->query_vars['race-view']);
             set_query_var( 'link', get_permalink() );
             // results|teams|standard|overall
-            if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'results'){
-                // load results
-                $raceResult = new RaceResult();
-                $res = $raceResult->getRaceResults(get_the_ID());
-                // call the template
-                $mustache = new Mustache();
-                $raceResultTable = $mustache->renderTemplate(
-                    'race.results.individual',
-                    array(
-                        'runners'=>$res,
-                        'isAdmin'=>false,
-                        'formUrl'=>home_url(),
-                        'racename'=>'racename',
-                        'dist'=>'dist',
-                        'unit'=>'unit',
-                        'type'=>'type'));
-                set_query_var( 'raceResultTable', $raceResultTable );
-                $template = plugin_dir_path(__FILE__) . 'partials/race-results.php';
-            }
-            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'teams') {
+            if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'teams') {
                 $teamResult = new TeamResult(get_the_ID());
                 $teamResultTable = $teamResult->getRaceTeamResultTable();
                 set_query_var( 'teamResultTable', $teamResultTable );
@@ -91,10 +72,45 @@ class RaceCPT implements Loadable {
                 set_query_var( 'awards', $raceAwardsView->generateView($awards) );
                 $template = plugin_dir_path(__FILE__) . 'partials/race-awards.php';
             }
-            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'overview'){
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'overview') {
                 $template = plugin_dir_path(__FILE__) . 'partials/race-overview.php';
             }
+            else if (array_key_exists('race-view', $wp->query_vars) && $wp->query_vars['race-view'] == 'results') {
+                // load results
+                $raceResult = new RaceResult();
+                $res = $raceResult->getRaceResults(get_the_ID());
+                // call the template
+                $mustache = new Mustache();
+                $raceResultTable = $mustache->renderTemplate(
+                    'race.results.individual',
+                    array(
+                        'runners'=>$res,
+                        'isAdmin'=>false,
+                        'formUrl'=>home_url(),
+                        'racename'=>'racename',
+                        'dist'=>'dist',
+                        'unit'=>'unit',
+                        'type'=>'type'));
+                set_query_var( 'raceResultTable', $raceResultTable );
+                $template = plugin_dir_path(__FILE__) . 'partials/race-results.php';
+            }
             else {
+                // load results
+                $raceResult = new RaceResult();
+                $res = $raceResult->getRaceResults(get_the_ID());
+                // call the template
+                $mustache = new Mustache();
+                $raceResultTable = $mustache->renderTemplate(
+                    'race.results.individual',
+                    array(
+                        'runners'=>$res,
+                        'isAdmin'=>false,
+                        'formUrl'=>home_url(),
+                        'racename'=>'racename',
+                        'dist'=>'dist',
+                        'unit'=>'unit',
+                        'type'=>'type'));
+                set_query_var( 'raceResultTable', $raceResultTable );
                 $template = plugin_dir_path(__FILE__) . 'partials/race-results.php';
             }
         }
