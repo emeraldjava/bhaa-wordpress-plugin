@@ -8,6 +8,7 @@ A wordpress plugin for the BHAA website.
 ## Composer
 
     composer install --no-dev
+    composer dump-autoload --classmap-authoritative
     
 ## Codeception    
     
