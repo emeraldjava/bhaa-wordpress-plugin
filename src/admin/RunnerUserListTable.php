@@ -43,7 +43,9 @@ class RunnerUserListTable extends WP_Users_List_Table
         $this->_column_headers = array($columns, $hidden, $sortable);
 
         global $wpdb;
-        $query = "SELECT * FROM wp_users WHERE ID=7713";
+        $query = "select r.* from wp_users r
+          left join wp_usermeta gender on (gender.meta_key='bhaa_runner_gender' and gender.user_id=r.id)
+          where NOT EXISTS (select meta_value from wp_usermeta where meta_key='bhaa_runner_gender' and user_id=r.id)";
         $totalitems = $wpdb->query($query);
         $this->items = $wpdb->get_results($query,ARRAY_A);
     }
