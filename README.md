@@ -13,3 +13,5 @@ A wordpress plugin for the BHAA website.
 ## Codeception    
     
     https://codeception.com/for/wordpress
+
+    https://extendthemes.com/knowledge-base/mesmerize-theme/knowledgebase/inner-pages-hero/

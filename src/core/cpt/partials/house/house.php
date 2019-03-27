@@ -1,15 +1,11 @@
 <?php
-
 use BHAA\core\Connections;
-use BHAA\core\house\House;
 
 get_header();
-echo '<div class="container_wrap">
-    <div class="container">
-    <div class="content">';
+
+echo '<div class="container"><div class="content">';
 
 $house = get_query_var('house');
-
 $teamtype = wp_get_post_terms($post->ID,'teamtype');
 $connected_type = Connections::HOUSE_TO_RUNNER;
 if(isset($teamtype[0]) && $teamtype[0]->name=='sector') {
@@ -46,11 +42,15 @@ $usersByCompanyArgs = new WP_User_Query(
 //$house = $post;
 //$users = $house->getRunners();
 
-echo '<p>'.get_the_term_list(get_the_ID(), 'sector', 'Sector : ', ', ', '').'</p>';
-echo '<p>Team Name: '.$post->post_title.'</p>';
+echo '<div>';
+echo '<div>'.get_the_term_list(get_the_ID(), 'sector', 'Sector : ', ', ', '').'</div>';
+echo '<div>Team Name: '.$post->post_title.'</div>';
     //'<p>Team Type: '.$teamtype[0]->name.'</p>'.
-//echo '<p>Website:<a target="new" href="'.get_post_meta(get_the_ID(),'bhaa_company_website',true).'">'.get_the_title().'</a></p>';
-echo get_the_post_thumbnail(get_the_ID(), 'thumbnail');
+$website = get_post_meta(get_the_ID(),'bhaa_company_website',true);
+if(!empty($website))
+echo sprintf('<div><span>Website:</span> <a href="%1$s">%1$s</a></div>',$website);
+//echo get_the_post_thumbnail(get_the_ID(), 'thumbnail');
+echo '</div>';
 
 if(current_user_can('edit_users')) {
     //echo sprintf('<h4><a href="%s">Edit Runners Linked to %s</a></h4>',get_edit_post_link(get_the_ID()),get_the_title());
@@ -88,7 +88,6 @@ else {
 //echo BHAA::get_instance()->getTeamResultsForHouse(get_the_ID());
 //echo $post->post_name;
 //echo '[house_title][house_sector][house_website_url][house_image][house_runner_table]';
-
-echo '</div></div></div>';
+echo '</div></div>';
 get_footer();
 ?>

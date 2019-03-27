@@ -15,6 +15,7 @@ use BHAA\core\house\House;
 
 class HouseCPT implements Loadable {
 
+    const BHAA_COMPANY_WEBSITE = 'bhaa_company_website';
     const TEAM_TYPE = 'teamtype';
     const COMPANY_TEAM = 'company';
     const SECTOR_TEAM = 'sector';
@@ -28,6 +29,37 @@ class HouseCPT implements Loadable {
         $loader->add_action('init',$this,'bhaa_register_taxonomy_sector');
         $loader->add_action('init',$this,'bhaa_register_taxonomy_teamtype');
         $loader->add_filter('single_template',$this,'bhaa_cpt_house_single_template');
+
+        $loader->add_action('add_meta_boxes',$this,'bhaa_house_meta_data');
+        $loader->add_action('save_post',$this,'bhaa_house_save_meta_data');
+    }
+
+    public function bhaa_house_meta_data() {
+        add_meta_box(
+            'bhaa_house_meta',
+            __( 'House Details', 'bhaa_house_meta' ),
+            array(&$this,'bhaa_house_meta_data_fields'),
+            'house',
+            'side',
+            'high'
+        );
+    }
+
+    function bhaa_house_meta_data_fields( $post ) {
+        $website = get_post_custom_values(HouseCpt::BHAA_COMPANY_WEBSITE, $post->ID);
+        echo '<p>Website <input type="text" name='.HouseCpt::BHAA_COMPANY_WEBSITE.' value="'.$website[0].'" /></p>';
+    }
+
+    public function bhaa_house_save_meta_data($post) {
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+            return;
+
+        if ( empty( $_POST ) )
+            return;
+
+        if ( !empty($_POST[HouseCpt::BHAA_COMPANY_WEBSITE])) {
+            update_post_meta( $post, HouseCpt::BHAA_COMPANY_WEBSITE, $_POST[HouseCpt::BHAA_COMPANY_WEBSITE] );
+        }
     }
 
     function bhaa_manage_house_posts_columns( $columns ) {
@@ -216,7 +248,8 @@ class HouseCPT implements Loadable {
             'show_tagcloud' => true,
             'hierarchical' => false,
             'rewrite' => true,
-            'query_var' => true
+            'query_var' => true,
+            'capability_type' => 'post'
         );
         register_taxonomy( HouseCPT::TEAM_STATUS, array(HouseCPT::HOUSE), $args );
 
@@ -270,7 +303,7 @@ class HouseCPT implements Loadable {
 //                Mustache::RACE_RESULTS_INDIVIDUAL, $res,
 //                false, './url', 'K-Club', '10', 'km', 'C');
             set_query_var( 'house', $house );
-            $template = plugin_dir_path(__FILE__) . '/partials/house/house.php';
+            return plugin_dir_path(__FILE__) . '/partials/house/house.php';
         }
         return $template;
     }
