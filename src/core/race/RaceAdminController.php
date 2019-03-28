@@ -36,7 +36,7 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
         // sub-menu
         $loader->add_action('admin_menu', $this, 'bhaa_race_sub_menu');
 
-        // TODO $loader->add_action('admin_action_bhaa_race_add_result',$this,'bhaa_race_add_result');
+        $loader->add_action('admin_action_bhaa_race_add_result',$this,'bhaa_race_add_result');
         $loader->add_action('admin_action_bhaa_race_positions',$this,'bhaa_race_positions');
         $loader->add_action('admin_action_bhaa_race_pace',$this,'bhaa_race_pace');
         $loader->add_action('admin_action_bhaa_race_pos_in_cat',$this,'bhaa_race_pos_in_cat');
@@ -50,6 +50,7 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
 
     function get_bhaa_race_admin_url_links($postId) {
         return array(
+            'bhaa_race_add_result' => $this->generate_race_admin_url_link('bhaa_race_add_result',$postId,'Add Result'),
             'bhaa_race_positions' => $this->generate_race_admin_url_link('bhaa_race_positions',$postId,'Positions'),
             'bhaa_race_pace' => $this->generate_race_admin_url_link('bhaa_race_pace',$postId,'Pace'),
             'bhaa_race_pos_in_cat' => $this->generate_race_admin_url_link('bhaa_race_pos_in_cat',$postId,'Pos_in_cat'),
@@ -155,11 +156,12 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
     }
     // BHAA Race specific actions
     function bhaa_race_positions() {
-        $this->raceResult->updatePositions($_GET['post_id']);
-        //queue_flash_message("bhaa_race_positions");
+        $message = $this->raceResult->updatePositions($_GET['post_id']);
+        parent::flashMessage(sprintf('bhaa_race_positions(%s) : %s',$_GET['post_id'],$message));
         wp_redirect( $_SERVER['HTTP_REFERER'] );
         exit();
     }
+
     function bhaa_race_pace() {
         $this->raceResult->updateRacePace($_GET['post_id']);
         //queue_flash_message("bhaa_race_pace ".$_GET['post_id']);
@@ -229,20 +231,23 @@ class RaceAdminController extends AbstractAdminController implements Loadable {
             $_POST['bhaa_post_standard'],
             $_POST['bhaa_number']
         );
-        $this->raceResult->updatePositions($_POST['bhaa_race']);
-        wp_redirect(admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$_POST['bhaa_race']));
-    }
-    function bhaa_race_add_result() {
-        //$newRaceResult = RaceResult::get_instance()->addDefaultResult($_POST['post_id']);
-        //queue_flash_message("bhaa_race_add_result");
-        //$url = admin_url('edit.php?post_type=race&page=bhaa_race_edit_result&raceresult='.$newRaceResult);
-        //wp_redirect($url);
-    }
-    function bhaa_race_result_delete() {
-        error_log("bhaa_race_result_delete() ".$_POST['bhaa_race']);
-        $this->raceResult->deleteRaceResult($_POST['bhaa_raceresult_id']);
-        $this->raceResult->updatePositions($_POST['bhaa_race']);
-        wp_redirect(admin_url('edit.php?post_type=race&page=bhaa_race_edit_results&id='.$_POST['bhaa_race']));
+        //$this->raceResult->updatePositions($_POST['bhaa_race']);
+        //edit.php?page=bhaa_edit_raceresults&post_type=race&id=7182
+        wp_redirect(admin_url('edit.php?page=bhaa_edit_raceresults&post_type=race&id='.$_POST['bhaa_race']));
     }
 
+    function bhaa_race_add_result() {
+        $newRaceResult = $this->raceResult->addDefaultResult($_GET['post_id']);
+        parent::flashMessage(sprintf('bhaa_race_add_result(%s)',$newRaceResult));
+        wp_redirect( $_SERVER['HTTP_REFERER'] );
+        exit();
+    }
+
+    function bhaa_race_result_delete() {
+        error_log("bhaa_race_result_delete() ".$_POST['bhaa_race']);
+        parent::flashMessage(sprintf('bhaa_race_result_delete(%s)',$_POST['bhaa_race']));
+        $this->raceResult->deleteRaceResult($_POST['bhaa_raceresult_id']);
+        $this->raceResult->updatePositions($_POST['bhaa_race']);
+        wp_redirect(admin_url('edit.php?page=bhaa_edit_raceresults&post_type=race&id='.$_POST['bhaa_race']));
+    }
 }

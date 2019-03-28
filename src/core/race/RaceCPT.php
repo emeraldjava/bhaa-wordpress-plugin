@@ -163,23 +163,12 @@ class RaceCPT implements Loadable {
         );
         register_post_type( 'race', $raceArgs );
 
-        // https://wordpress.stackexchange.com/questions/858/custom-post-type-data-in-sidebar-widgets
-//        global $wp,$wp_rewrite;
-//        $wp->add_query_var('race-view');
-//        $wp_rewrite->add_rule('race/([^/]+)/(results|teams|standards|overall)','index.php?race=$matches[1]&race-view=$matches[2]', 'top');
-//        $wp_rewrite->flush_rules(true);
-
         // https://wordpress.stackexchange.com/questions/43824/customising-rewrite-rules-for-cpt-single-post-url-to-work-as-paged-url?rq=1
-        // 'index.php?race=$matches[1]&race-view=$matches[2]',
         add_rewrite_rule(
             'race/([^/]+)/(results|teams|standards|overview|awards)/?$',
             'index.php?race=$matches[1]&race-view=$matches[2]',
             'top'
         );
-        //flush_rewrite_rules(true);
-        //global $wp_rewrite;
-        //$wp_rewrite->flush_rules(true);
-
     }
 
     function bhaa_manage_race_posts_columns( $column ) {

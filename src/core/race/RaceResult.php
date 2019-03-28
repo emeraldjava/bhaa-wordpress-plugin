@@ -8,6 +8,7 @@
 
 namespace BHAA\core\race;
 
+use BHAA\core\runner\Runner;
 use BHAA\core\runner\RunnerManager;
 use DateTime;
 
@@ -42,6 +43,13 @@ class RaceResult {
             $singleResult = explode(',', $result);
             $this->addRaceResult($raceId, $singleResult);
         }
+    }
+
+    /**
+     * Insert a new result with default position and time, admin user will then edit
+     */
+    function addDefaultResult($race) {
+        return $this->addRaceResult($race,array('-1','1','1','00:00:01','','','','','','','','','','','',''));
     }
 
     public function addRaceResult($race,$details) {
@@ -228,12 +236,28 @@ class RaceResult {
                     'position'=>1,
                     'category'=>$ageCategory
                 ));
-            $this->updatePositions($race);
         }
     }
 
     function updatePositions($race) {
-        $this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
+        //$this->wpdb->query($this->wpdb->prepare('call updatePositions(%d)',$race));
+        $positions = $this->wpdb->get_results($this->wpdb->prepare(
+            'SELECT race, runner, position, racetime, @row:=@row+1 as new_position
+            FROM wp_bhaa_raceresult, (select @row:= 0) rn
+            WHERE race=%d AND class="RAN" order by racetime',$race));
+        $positions_updated = 0;
+        foreach ($positions as $position)
+        {
+            if($position->new_position!=$position->position) {
+                error_log(sprintf('updatePositions %s %s',$position->new_position,$position->position));
+                $this->wpdb->update('wp_bhaa_raceresult',
+                    array('position'=>$position->new_position),
+                    array('race'=>$position->race,'runner'=>$position->runner)
+                );
+                $positions_updated++;
+            }
+        }
+        return sprintf('updated %s positions',$positions_updated);
     }
 
     function listEventsAndRaces() {
