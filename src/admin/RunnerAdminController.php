@@ -53,8 +53,8 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
         add_submenu_page(null, 'BHAA Runner Admin', 'Espresso',
             'manage_options', 'bhaa_process_expresso_runner', array($this, 'bhaa_process_expresso_runner'));
 
-        add_submenu_page('bhaa', 'Fix Runners Meta', 'Runners Meta',
-            'manage_options', 'bhaa_admin_runners_meta', array($this, 'bhaa_admin_runners_meta'));
+        //add_submenu_page('bhaa', 'Fix Runners Meta', 'Runners Meta',
+          //  'manage_options', 'bhaa_admin_runners_meta', array($this, 'bhaa_admin_runners_meta'));
     }
 
     public function bhaa_admin_expresso_runners() {
