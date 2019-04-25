@@ -1,7 +1,6 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Brain\Monkey;
 
 final class MainTest extends TestCase {
 
@@ -9,12 +8,10 @@ final class MainTest extends TestCase {
 
     protected function setUp() {
         parent::setUp();
-        Monkey\setUp();
         $this->obj = new BHAA\Main("phpunit-version");
     }
 
     protected function tearDown() {
-        Monkey\tearDown();
         parent::tearDown();
     }
 
