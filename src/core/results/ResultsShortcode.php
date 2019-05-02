@@ -85,7 +85,7 @@ class ResultsShortcode implements Loadable {
 
     function bhaa_get_archives_link($link_html, $url, $text, $format, $before, $after) {
         if ('bhaaresults' == $format) {
-            $link_html = sprintf("<a href='%s/results?y=%s'>%s</a><br/>",get_site_url(),$text,$text);
+            $link_html = sprintf("<a href='%s/race-results?y=%s'>%s</a><br/>",get_site_url(),$text,$text);
         }
         return $link_html;
     }
