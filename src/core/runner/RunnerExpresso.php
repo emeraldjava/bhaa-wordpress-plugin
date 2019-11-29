@@ -12,7 +12,7 @@ namespace BHAA\core\runner;
 class RunnerExpresso {
 
     function getAnnualMembershipEventId() {
-        return 6907;
+        return 7941;
     }
 
     function getEventForRegistration($reg_url_link) {

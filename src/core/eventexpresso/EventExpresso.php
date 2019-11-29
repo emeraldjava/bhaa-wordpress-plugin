@@ -87,7 +87,7 @@ class EventExpresso implements Loadable {
             $runnerExpresso = new RunnerExpresso();
             $event = $runnerExpresso->getEventForRegistration($primary_reg);
             // get the event
-            if($event['event_id']==6907) {
+            if($event['event_id']==7941) {
                 error_log('annual membership event');
                 $runnerManager->renew($bhaaId);
             } else {
