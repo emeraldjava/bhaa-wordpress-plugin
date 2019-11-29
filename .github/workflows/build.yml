@@ -14,9 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Composer install
-        uses: MilesChou/composer-action/7.3/install@master
+        uses: MilesChou/composer-action/7.3@master
         with:
-          args: install --no-interaction --no-dev
+          - install --no-dev
       - name: Deploy with github-pages
         uses: JamesIves/github-pages-deploy-action@master
         env:
