@@ -18,6 +18,7 @@ jobs:
         with:
           args: install --no-dev
       - uses: docker://php:7.3-alpine
+      - user: docker://alpine/git:latest
       - name: Deploy with github-pages
         uses: JamesIves/github-pages-deploy-action@master
         env:
