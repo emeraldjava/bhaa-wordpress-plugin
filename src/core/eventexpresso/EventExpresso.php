@@ -33,8 +33,8 @@ class EventExpresso implements Loadable {
 //            $this, 'bhaa_my_question_input', 11, 5
 //        );
 
-        $loader->add_filter('FHEE__EE_Single_Page_Checkout__process_attendee_information__valid_data_line_item',
-            $this,'bhaa_filter_request_params',11);
+        //$loader->add_filter('FHEE__EE_Single_Page_Checkout__process_attendee_information__valid_data_line_item',
+        //    $this,'bhaa_filter_request_params',11);
 
 //        add_filter(
 //            'FHEE__EE_Single_Page_Checkout__process_attendee_information__valid_data_line_item',
