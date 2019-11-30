@@ -94,7 +94,7 @@ class RunnerAdminController extends AbstractAdminController implements Loadable 
             $runnerManager = new RunnerManager();
             // use the values from the array and get the BHAA meta-data
             $runnerManager->setCustomBhaaMetaData($runnerAndEvent['runner_id'],$answers[0]['ANS_value'],$answers[1]['ANS_value'],$answers[2]['ANS_value']);
-            if($runnerAndEvent['event_id']=6907) {
+            if($runnerAndEvent['event_id']=7941) {
                 $runnerManager->renew($runnerAndEvent['runner_id']);
             }
 
