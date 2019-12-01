@@ -16,7 +16,7 @@ jobs:
       - name: Composer install
         uses: MilesChou/composer-action/7.3@master
         with:
-          args: install --no-dev
+          args: install --no-dev --prefer-dist
       - uses: docker://php:7.3-alpine
       - uses: docker://alpine/git:latest
       - name: Deploy with github-pages
