@@ -18,8 +18,11 @@ jobs:
         uses: MilesChou/composer-action/7.3@master
         with:
           args: install --no-dev --prefer-dist
-      - uses: docker://php:7.3-alpine
-      - name: Create Release
+      - name: Create release zip
+        uses: MilesChou/composer-action/7.3@master
+        with:
+          args: run-script post-install-cmd
+      - name: Create github Release
         id: create_release
         uses: actions/create-release@v1.0.0
         env:
