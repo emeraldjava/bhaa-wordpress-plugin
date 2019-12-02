@@ -18,11 +18,3 @@ jobs:
         with:
           args: install --no-dev --prefer-dist
       - uses: docker://php:7.3-alpine
-      - uses: docker://alpine/git:latest
-      - name: Deploy with github-pages
-        uses: JamesIves/github-pages-deploy-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BASE_BRANCH: master # The branch the action should deploy from.
-          BRANCH: build # The branch the action should deploy to.
-          FOLDER: . # The folder the action should deploy.
