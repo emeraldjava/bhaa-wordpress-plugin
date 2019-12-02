@@ -19,3 +19,5 @@ wp-content/plugins/hello.php
 /composer.lock
 /bhaa_wordpress_plugin.code-workspace
 /notes.md
+/bhaa_wordpress_plugin.zip
+/vendor/

@@ -26,5 +26,13 @@
   "require-dev": {
     "brain/monkey": "2.*",
     "phpunit/phpunit": "7.1.3"
+  },
+  "scripts": {
+    "pre-install-cmd": [
+      "rm -rf bhaa_wordpress_plugin.zip"
+    ],
+    "post-install-cmd": [
+      "BHAA\\utils\\ReleaseBuilder::createZip"
+    ]
   }
 }
