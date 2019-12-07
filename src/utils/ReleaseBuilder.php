@@ -10,11 +10,12 @@ use ZipArchive;
 class ReleaseBuilder {
 
     public static function createZip() {
-        //printf("ReleaseBuilder ".dirname(__FILE__).PHP_EOL);
+        $todaysDate = date('Ymd');
+        $zipFileName = 'bhaa_wordpress_plugin-'.$todaysDate.'.zip';
+        printf("ReleaseBuilder: ".$zipFileName.' '.PHP_EOL);
         //printf("basename ".basename(__DIR__).PHP_EOL);
         $zip = new ZipArchive;
-        $zip->open('bhaa_wordpress_plugin.zip', ZipArchive::CREATE);
-
+        $zip->open($zipFileName, ZipArchive::CREATE);
         $rootPath = realpath(__DIR__ . '/../..');
         //printf("rootPath ".$rootPath.PHP_EOL);
 
