@@ -10,7 +10,7 @@ use ZipArchive;
 class ReleaseBuilder {
 
     public static function createZip() {
-        $todaysDate = date('Ymd');
+        $todaysDate = date('Y.m.d');
         $zipFileName = 'bhaa_wordpress_plugin-v'.$todaysDate.'.zip';
         printf("ReleaseBuilder: ".$zipFileName.' '.PHP_EOL);
         //printf("basename ".basename(__DIR__).PHP_EOL);
