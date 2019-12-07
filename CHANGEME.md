@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2019.12.07 Add Release Asset support for github-updater plugin and github action releases.
 - 2019.11.29 Update for 2020 annual membership form. Add github actions build.
 - 2019.03.22 Add age category report and race sub-pages.
 - 2019.02.28 Add race sub-pages with rewrite rules and custom templates.
