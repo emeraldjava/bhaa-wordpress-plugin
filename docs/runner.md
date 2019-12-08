@@ -22,6 +22,6 @@ The custom bhaa meta fields are
 
 An admin user can edit all the meta-fields for a runner.
 
-![Edit Runner](https://github.com/emeraldjava/bhaa_wordpress_plugin/raw/master/docs/images/runner/edit-runner.PNG)
+![Edit Runner](https://github.com/emeraldjava/bhaa-wordpress-plugin/raw/master/docs/images/runner/edit-runner.PNG)
 
 The main scenario is to update the membership status, standard and correct a spelling mistake in the name.

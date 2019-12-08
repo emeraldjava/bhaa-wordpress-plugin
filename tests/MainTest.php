@@ -16,7 +16,7 @@ final class MainTest extends TestCase {
     }
 
     public function testVerifyPluginName() {
-        $this->assertEquals($this->obj->get_plugin_name(),'bhaa_wordpress_plugin');
+        $this->assertEquals($this->obj->get_plugin_name(),'bhaa-wordpress-plugin');
     }
 
     public function testVerifyVersion() {

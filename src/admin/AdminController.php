@@ -151,9 +151,9 @@ class AdminController extends AbstractAdminController implements Loadable {
      * Register the stylesheets for the admin area.
      */
     public function bhaa_admin_enqueue_styles() {
-        //error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css');
+        //error_log(plugin_dir_url( __FILE__ ) . 'css/bhaa-wordpress-plugin-admin.css');
         wp_enqueue_style( $this->plugin_name.'_admin_css',
-            plugin_dir_url( __FILE__ ) . 'css/bhaa_wordpress_plugin-admin.css',
+            plugin_dir_url( __FILE__ ) . 'css/bhaa-wordpress-plugin-admin.css',
             array(), $this->version, 'all' );
         // CSS
         wp_register_style('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
@@ -164,9 +164,9 @@ class AdminController extends AbstractAdminController implements Loadable {
      * Register the JavaScript for the admin area.
      */
     public function bhaa_admin_enqueue_scripts() {
-        //error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js');
+        //error_log(plugin_dir_url( __FILE__ ) . 'js/bhaa-wordpress-plugin-admin.js');
         wp_enqueue_script( $this->plugin_name.'_admin_js',
-            plugin_dir_url( __FILE__ ) . 'js/bhaa_wordpress_plugin-admin.js',
+            plugin_dir_url( __FILE__ ) . 'js/bhaa-wordpress-plugin-admin.js',
             array( 'jquery' ), $this->version, false );
         // JS
         //wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
