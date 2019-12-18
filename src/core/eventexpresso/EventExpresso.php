@@ -70,7 +70,7 @@ class EventExpresso implements Loadable {
         error_log("use get_current_user_id() for bhaaId "+$bhaaId);
 
         // answers from request params
-        $answers = $request_params['personal-information-1519640046'];
+        $answers = $request_params['BHAA-Questions'];
         if(isset($answers['11']))
             error_log('DOB   :'.$answers['11']);
         if(isset($answers['12']))
