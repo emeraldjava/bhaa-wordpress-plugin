@@ -48,7 +48,6 @@ class ResultsShortcode implements Loadable {
 
         $racesByYearList = '';
         if ( $racesByYearQuery->have_posts() ) {
-            //echo '<ul>';
             while ( $racesByYearQuery->have_posts() ) {
                 $racesByYearQuery->the_post();
                 $racesByYearList .= sprintf('<a href="%s">%s</a><br/>',get_post_permalink(),get_the_title());
@@ -85,7 +84,7 @@ class ResultsShortcode implements Loadable {
 
     function bhaa_get_archives_link($link_html, $url, $text, $format, $before, $after) {
         if ('bhaaresults' == $format) {
-            $link_html = sprintf("<a href='%s/%s?y=%s'>%s</a><br/>",get_site_url(),'race-results',$text,$text);
+            $link_html = sprintf("<a href='%s/%s?y=%s'>%s</a><br/>",get_site_url(),'results',$text,$text);
         }
         return $link_html;
     }
