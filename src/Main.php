@@ -31,7 +31,7 @@ class Main {
      * the public-facing side of the site.
      */
     public function __construct($version) {
-        $this->plugin_name = 'bhaa_wordpress_plugin';
+        $this->plugin_name = 'bhaa-wordpress-plugin';
         $this->version = $version;
         $this->loader = new utils\Loader();
         $this->set_locale();
