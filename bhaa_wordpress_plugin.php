@@ -1,12 +1,12 @@
 <?php
 /**
- * @package           bhaa-wordpress-plugin
+ * @package           bhaa_wordpress_plugin
  *
  * @wordpress-plugin
  * Plugin Name:       BHAA Wordpress Plugin
  * Plugin URI:        https://github.com/emeraldjava/bhaa-wordpress-plugin
  * Description:       Plugin for the Business House Athletic Association. Handles user registration, race results and leagues.
- * Version:           2019.12.08
+ * Version:           2020.03.07
  * Author:            emeraldjava
  * Author URI:        https://github.com/emeraldjava
  * License:           GPL-2.0+
@@ -14,7 +14,7 @@
  * Text Domain:       BHAA Wordpress Plugin
  * Domain Path:       /languages
  * GitHub Plugin URI: https://github.com/emeraldjava/bhaa-wordpress-plugin
- * Release Asset:     true
+ * Release Asset:     false
  */
 
 namespace BHAA;
@@ -29,7 +29,7 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 /**
  * Currently plugin version.
  */
-define( 'BHAA-WORDPRESS-PLUGIN-VERSION', '2019.12.08' );
+define( 'BHAA_WORDPRESS_PLUGIN_VERSION', '2020.03.07' );
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-plugin-name-activator.php
@@ -53,7 +53,7 @@ register_deactivation_hook( __FILE__, '\BHAA\deactivate_plugin_name' );
  * https://wordpress.stackexchange.com/questions/70055/best-way-to-initiate-a-class-in-a-wp-plugin
  */
 function runBhaaWordpressPlugin() {
-    $plugin = new Main(BHAA-WORDPRESS-PLUGIN-VERSION);
+    $plugin = new Main(BHAA_WORDPRESS_PLUGIN_VERSION);
     $plugin->run();
 }
 runBhaaWordpressPlugin();

@@ -1,6 +1,7 @@
 Change Log
 ==========
-- 2019.12.08 Rename plugin to bhaa-wordpress-plugin.
+- 2020.03.07 Enable afragen/github-updater.
+- 2019.12.08 Rename plugin to bhaa_wordpress_plugin.
 - 2019.12.07 Add Release Asset support for github-updater plugin and github action releases.
 - 2019.11.29 Update for 2020 annual membership form. Add github actions build.
 - 2019.03.22 Add age category report and race sub-pages.
