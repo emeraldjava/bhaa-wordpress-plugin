@@ -11,7 +11,8 @@ class ReleaseBuilder {
 
     public static function createZip() {
         $todaysDate = date('Y.m.d');
-        $zipFileName = 'bhaa-wordpress-plugin-'.$todaysDate.'.zip';
+        //$zipFileName = 'bhaa-wordpress-plugin-'.$todaysDate.'.zip';
+        $zipFileName = 'bhaa-wordpress-plugin.zip';
         printf("ReleaseBuilder: ".$zipFileName.' '.PHP_EOL);
         //printf("basename ".basename(__DIR__).PHP_EOL);
         $zip = new ZipArchive;

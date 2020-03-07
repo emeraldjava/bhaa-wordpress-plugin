@@ -29,7 +29,7 @@
   },
   "scripts": {
     "pre-install-cmd": [
-      "rm -rf bhaa-wordpress-plugin-*.zip"
+      "rm -rf bhaa-wordpress-plugin.zip"
     ],
     "post-install-cmd": [
       "BHAA\\utils\\ReleaseBuilder::createZip"
