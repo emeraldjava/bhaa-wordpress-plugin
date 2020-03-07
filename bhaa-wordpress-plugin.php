@@ -1,6 +1,6 @@
 <?php
 /**
- * @package           bhaa_wordpress_plugin
+ * @package           bhaa-wordpress-plugin
  *
  * @wordpress-plugin
  * Plugin Name:       BHAA Wordpress Plugin
@@ -13,10 +13,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       BHAA Wordpress Plugin
  * Domain Path:       /languages
- * GitHub Plugin URI: https://github.com/emeraldjava/bhaa-wordpress-plugin
- * Release Asset:     false
  */
-
 namespace BHAA;
 
 // If this file is called directly, abort.
