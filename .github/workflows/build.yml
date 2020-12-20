@@ -22,4 +22,4 @@ jobs:
       - name: Create release zip
         uses: MilesChou/composer-action/7.2@master
         with:
-          args: run-script post-install-ccmd
+          args: run-script post-install-cmd
