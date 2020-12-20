@@ -1,5 +1,5 @@
-update wp_options set option_value="http://localhost" where option_name="siteurl";
-update wp_options set option_value="http://localhost" where option_name="home";
+update wp_options set option_value="http://bhaaie" where option_name="siteurl";
+update wp_options set option_value="http://bhaaie" where option_name="home";
 
 OPTIMIZE TABLE wp_bhaa_raceresult;
 ANALYZE TABLE wp_bhaa_raceresult;

@@ -26,7 +26,7 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 /**
  * Currently plugin version.
  */
-define( 'BHAA_WORDPRESS_PLUGIN_VERSION', '2020.03.07' );
+define( 'BHAA_WORDPRESS_PLUGIN_VERSION', '2020.12.20' );
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-plugin-name-activator.php
@@ -46,8 +46,6 @@ register_deactivation_hook( __FILE__, '\BHAA\deactivate_plugin_name' );
 
 /**
  * Begins execution of the plugin.
- * https://wppb.me/
- * https://wordpress.stackexchange.com/questions/70055/best-way-to-initiate-a-class-in-a-wp-plugin
  */
 function runBhaaWordpressPlugin() {
     $plugin = new Main(BHAA_WORDPRESS_PLUGIN_VERSION);

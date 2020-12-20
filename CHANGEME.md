@@ -1,5 +1,6 @@
 Change Log
 ==========
+- 2020.12.20 Small fixes.
 - 2020.03.07 Correct the generated plugin zip file name. 
 - 2019.12.08 Rename plugin to bhaa_wordpress_plugin.
 - 2019.12.07 Add Release Asset support for github-updater plugin and github action releases.
