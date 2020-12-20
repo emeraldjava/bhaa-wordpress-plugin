@@ -10,14 +10,16 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Composer install
-        uses: MilesChou/composer-action/7.2/install@master
+        uses: MilesChou/composer-action/7.2@master
+        with:
+          args: install --no-dev --prefer-dist
       - name: Create release zip
         uses: MilesChou/composer-action/7.2@master
         with:
-          args: run-script post-install-cmd
+          args: run-script post-install-ccmd
