@@ -1,0 +1,2 @@
+
+UPDATE table SET field=CONCAT(UCASE(SUBSTRING(field, 1, 1)),LCASE(SUBSTRING(field, 2)));
