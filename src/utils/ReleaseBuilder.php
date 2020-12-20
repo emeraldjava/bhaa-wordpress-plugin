@@ -4,7 +4,6 @@ namespace BHAA\utils;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use RecursiveCallbackFilterIterator;
-use ZipArchive;
 
 // https://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php
 class ReleaseBuilder {
@@ -15,8 +14,8 @@ class ReleaseBuilder {
         $zipFileName = 'bhaa-wordpress-plugin.zip';
         printf("ReleaseBuilder: ".$zipFileName.' '.PHP_EOL);
         //printf("basename ".basename(__DIR__).PHP_EOL);
-        $zip = new ZipArchive;
-        $zip->open($zipFileName, ZipArchive::CREATE);
+        $zip = new \ZipArchive;
+        $zip->open($zipFileName, \ZipArchive::CREATE);
         $rootPath = realpath(__DIR__ . '/../..');
         //printf("rootPath ".$rootPath.PHP_EOL);
 

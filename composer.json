@@ -8,13 +8,11 @@
     }
   },
   "require": {
-    "php": "7.2.*",
     "scribu/scb-framework": "dev-master",
     "scribu/lib-posts-to-posts": "dev-master",
     "mustache/mustache": "2.12.0",
     "league/csv": "9.5.0",
-    "michelf/php-markdown": "^1.8",
-    "phpzip/phpzip": "2.0.8"
+    "michelf/php-markdown": "^1.8"
   },
   "autoload" : {
     "psr-4" : {
