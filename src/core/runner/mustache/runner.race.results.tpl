@@ -7,7 +7,7 @@
         <div class="col-1">Pos</div>
         <div class="col-2">Time</div>
         <div class="col-1">Std</div>
-        <div class="col-1">LeaguePoints</div>
+        <div class="col-1">Points</div>
     </div>
     {{# races}}
     <div class="row" id="{{id}}">
