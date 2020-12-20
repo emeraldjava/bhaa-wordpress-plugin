@@ -15,12 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Install zip
-        run: sudo apt-get install zip php7.2-zip
       - name: Composer install
-        uses: MilesChou/composer-action/7.2@master
-        with:
-          args: install --no-dev --prefer-dist
+        uses: MilesChou/composer-action/7.2/install@master
       - name: Create release zip
         uses: MilesChou/composer-action/7.2@master
         with:
