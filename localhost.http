@@ -1,0 +1,27 @@
+GET http://localhost/wp-json/wp/v2/posts/8030
+
+###
+
+GET http://localhost/wp-json/wp/v2/users/7713
+
+###
+
+GET http://localhost/wp-json/wp/v2/race/8338
+
+###
+
+GET http://localhost/wp-json/wp/v2/plugins
+
+###
+
+GET http://localhost/wp-json/wp-site-health/v1/directory-sizes
+
+###
+GET http://bhaaie/wp-json/bhaa/v2/raceresult/8338
+
+### 8338
+GET http://bhaaie/wp-json/bhaa/v2/raceresult/8284
+
+###
+
+GET http://bhaaie/wp-json/bhaa/v2/raceresult/schema
