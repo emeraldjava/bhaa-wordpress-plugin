@@ -61,7 +61,7 @@ class AdminController extends AbstractAdminController implements Loadable {
 
     function bhaa_admin_menu() {
         add_menu_page('BHAA Admin Page', 'BHAA',
-            'manage_options', 'bhaa', array($this, 'bhaa_admin_main'));
+            'manage_options', 'bhaa', array($this, 'bhaa_admin_main'),'dashicons-forms');
         add_submenu_page('bhaa', 'BHAA Help', 'Help',
             'manage_options', 'bhaa_admin_help', array($this, 'bhaa_admin_help'));
     }
