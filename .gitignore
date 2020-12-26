@@ -17,7 +17,7 @@ wp-content/plugins/hello.php
 /sitemap.xml.gz
 
 /composer.lock
-/bhaa-wordpress-plugin.code-workspace
+bhaa-wordpress-plugin.code-workspace
 /notes.md
 /bhaa-wordpress-plugin.zip
 /vendor/
