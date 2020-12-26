@@ -21,3 +21,5 @@ wp-content/plugins/hello.php
 /notes.md
 /bhaa-wordpress-plugin.zip
 /vendor/
+
+.idea/*
