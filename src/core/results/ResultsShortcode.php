@@ -15,6 +15,7 @@ use BHAA\utils\Loader;
 // https://wordpress.stackexchange.com/questions/201650/how-to-add-and-submit-input-fields-using-a-shortcode
 // https://stackoverflow.com/questions/28927298/submit-a-form-to-api-and-save-in-db-via-shortcode
 // https://wordpress.stackexchange.com/questions/170116/custom-link-text-wp-get-archive-link
+// https://jacobmartella.com/2017/12/22/simple-guide-adding-wp-rest-api-controller/
 
 class ResultsShortcode implements Loadable {
 

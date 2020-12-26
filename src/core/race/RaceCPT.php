@@ -160,6 +160,7 @@ class RaceCPT implements Loadable {
             //'rewrite' => false,
             'rewrite' => array('slug' => 'race','with_front' => true),
             'capability_type' => 'post',
+            'show_in_rest' => false,
             'menu_icon'   => 'dashicons-groups'
         );
         register_post_type( 'race', $raceArgs );

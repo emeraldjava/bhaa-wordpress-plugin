@@ -67,6 +67,8 @@ class Main {
         $connections->registerHooks($this->loader);
         $eventExpresso = new core\eventexpresso\EventExpresso();
         $eventExpresso->registerHooks($this->loader);
+        $apiController = new core\api\ApiController();
+        $apiController->registerHooks($this->loader);
 
         new core\standard\StandardShortcode();
         new core\race\RaceShortcode();
