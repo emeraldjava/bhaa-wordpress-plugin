@@ -30,10 +30,10 @@ class Controller implements Loadable {
         $loader->add_action('login_head', $this,'bhaa_login_head');
 
         $loader->add_filter('login_headerurl',$this,'bhaa_login_headerurl');
-        $loader->add_filter('login_headertitle',$this,'bhaa_login_headertitle');
+        $loader->add_filter('login_headertext',$this,'bhaa_login_headertext');
         $loader->add_filter('login_redirect', $this,'bhaa_login_redirect', 10, 3 );
     }
-
+    
     /**
      * Redirect non-admins to the homepage after logging into the site
      * See https://tommcfarlin.com/redirect-non-admin/
@@ -56,7 +56,7 @@ class Controller implements Loadable {
         return get_bloginfo( 'url' );
     }
 
-    function bhaa_login_headertitle() {
+    function bhaa_login_headertext() {
         return 'BHAA - For runners, by runners!';
     }
 
