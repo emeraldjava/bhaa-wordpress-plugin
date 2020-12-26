@@ -159,7 +159,8 @@ class RaceCPT implements Loadable {
             'publicly_queryable' => true,
             //'rewrite' => false,
             'rewrite' => array('slug' => 'race','with_front' => true),
-            'capability_type' => 'post'
+            'capability_type' => 'post',
+            'menu_icon'   => 'dashicons-groups'
         );
         register_post_type( 'race', $raceArgs );
 

@@ -131,8 +131,8 @@ class HouseCPT implements Loadable {
             'can_export' => true,
             'rewrite' => true,
             'capability_type' => 'post',
-            'show_in_rest' => false
-            //'rest_controller_class' => 'WP_REST_Posts_Controller'
+            'show_in_rest' => true,
+            'menu_icon'   => 'dashicons-building'
         );
         register_post_type( 'house', $houseArgs );
     }

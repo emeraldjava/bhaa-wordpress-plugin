@@ -186,7 +186,8 @@ class LeagueCPT implements Loadable {
             'can_export' => true,
             'rewrite' => true,
             'has_archive' => true,
-            'capability_type' => 'post'
+            'capability_type' => 'post',
+            'menu_icon'   => 'dashicons-awards'
         );
         register_post_type('league', $leagueArgs );
     }
