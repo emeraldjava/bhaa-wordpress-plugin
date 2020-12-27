@@ -308,3 +308,4 @@ class HouseCPT implements Loadable {
         return $template;
     }
 }
+?>

@@ -33,7 +33,6 @@ class ApiController extends WP_REST_Controller implements Loadable {
     }
 
     public function bhaa_rest_api_init() {
-
         $namespace = $this->my_namespace . $this->my_version;
         // return a list of races (by year)
         register_rest_route( $namespace, '/race', array(
@@ -55,7 +54,8 @@ class ApiController extends WP_REST_Controller implements Loadable {
 
     /**
      * 
-     * - https://wordpress.stackexchange.com/questions/271877/how-to-do-a-meta-query-using-rest-api-in-wordpress-4-7
+     * https://fancysquares.blog/add-a-custom-endpoint-to-wordpress-rest-api
+     * https://wordpress.stackexchange.com/questions/271877/how-to-do-a-meta-query-using-rest-api-in-wordpress-4-7
      *
      * @param \WP_REST_Request $request
      * @return void
@@ -63,7 +63,7 @@ class ApiController extends WP_REST_Controller implements Loadable {
     function bhaa_api_races( \WP_REST_Request $request ) {   
         //var_dump($request);
         $year = 2019;
-        $racesByYearQuery = new \WP_Query(
+        $racesByYearQuery = new WP_Query(
             array(
                 'post_type' => 'race',
                 'order'		=> 'DESC',
@@ -73,12 +73,31 @@ class ApiController extends WP_REST_Controller implements Loadable {
                         array('year'=>$year)
                     ),
                 'nopaging' => true
-                )
-            );
+            )
+        );
 
-        $data[] = $this->prepare_response_for_collection( $racesByYearQuery );
+        // if no posts found return 
+        if( empty($racesByYearQuery->posts) ){
+            return new WP_Error( 'no_posts', __('No post found'), array( 'status' => 404 ) );
+        }
 
+        foreach ( $racesByYearQuery->posts as $post ) {
+            $response = $this->prepare_race_for_response( $post, $request );
+            $data[] = $this->prepare_response_for_collection( $response );  
+        }
         return new \WP_REST_Response($data,200);
+    }
+
+    private function prepare_race_for_response( $post, $request ) {
+        $data = array(
+            'name'    => $post->post_title,
+            'race'    => $post->ID,
+            'distance' => get_metadata('post',$post->ID,'bhaa_race_distance',true),
+            'unit' => get_metadata('post',$post->ID,'bhaa_race_unit',true),
+            'type' => get_metadata('post',$post->ID,'bhaa_race_type',true),    
+            'date' => date( "F j, Y", strtotime($post->post_date))
+        );
+        return $data;
     }
 
     /**
