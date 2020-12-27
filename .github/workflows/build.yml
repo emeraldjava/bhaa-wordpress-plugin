@@ -9,19 +9,17 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-20.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Setup PHP with composer v2.9.0
-        uses: shivammathur/setup-php@v2.9.0
+      - name: Setup PHP with composer v2
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
           extensions: zip
           tools: composer:v2
       - name: Composer Install
         run: composer install --no-dev --prefer-dist    
-      - name: Create Release
+      - name: Create Plugin Release
         run: composer run-script post-install-cmd
