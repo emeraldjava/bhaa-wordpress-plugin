@@ -23,6 +23,9 @@ GET http://bhaaie/wp-json/wp/v2/race/8338
 GET http://bhaaie/wp-json/bhaa/v2/race
 
 ###
+GET http://bhaaie/wp-json/bhaa/v2/raceresult/7313
+
+###
 GET http://bhaaie/wp-json/bhaa/v2/raceresult/8338
 
 ### 8338

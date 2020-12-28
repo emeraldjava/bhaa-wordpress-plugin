@@ -12,9 +12,9 @@ use \WP_REST_Controller;
 
 /**
  * ApiController to support the results.bhaa.ie UI app.
- * - race
- * - raceresults
- * - runner
+ * - race (by year)
+ * - raceresult
+ * - runnerresult
  * 
  * - https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/
  * - https://make.wordpress.org/core/2020/07/16/rest-api-parameter-json-schema-changes-in-wordpress-5-5/
@@ -42,7 +42,7 @@ class ApiController extends WP_REST_Controller implements Loadable {
                 'permission_callback'   => array( $this, 'bhaa_api_perm_true' )
             )
         ));
-        // raceresults (by raceId )
+        // race result (by raceId )
         register_rest_route( $namespace, '/raceresult/(?P<id>\d+)', array(
             array(
                 'methods'         => WP_REST_Server::READABLE,
@@ -50,6 +50,7 @@ class ApiController extends WP_REST_Controller implements Loadable {
                 'permission_callback'   => array( $this, 'bhaa_api_perm_true' )
             )
         ));
+        // runner result (by runner )
     }  
 
     /**
@@ -95,7 +96,7 @@ class ApiController extends WP_REST_Controller implements Loadable {
             'distance' => get_metadata('post',$post->ID,'bhaa_race_distance',true),
             'unit' => get_metadata('post',$post->ID,'bhaa_race_unit',true),
             'type' => get_metadata('post',$post->ID,'bhaa_race_type',true),    
-            'date' => date( "F j, Y", strtotime($post->post_date))
+            'date' => $post->post_date //date( "F j, Y", strtotime($post->post_date)),
         );
         return $data;
     }
@@ -117,22 +118,6 @@ class ApiController extends WP_REST_Controller implements Loadable {
     function bhaa_api_perm_true() {
         return true;
     }
-
-    // add_action( 'rest_api_init', function()
-    // {
-    //     header( "Access-Control-Allow-Origin: *" );
-    // } );
-    // https://gist.github.com/miya0001/d6508b9ba52df5aedc78fca186ff6088
-    // function bhaa_rest_pre_serve_request() {
-    //     remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
-    //     add_filter( 'rest_pre_serve_request', function( $value ) {
-    //         header( 'Access-Control-Allow-Origin: *' );
-    //         header( 'Access-Control-Allow-Methods: GET' );
-    //         header( 'Access-Control-Allow-Credentials: true' );
-    //         header( 'Access-Control-Expose-Headers: Link', false );
-    //         return $value;
-    //     } );
-    // }
 
     /**
      * https://developer.wordpress.org/reference/classes/wp_rest_controller/get_public_item_schema/

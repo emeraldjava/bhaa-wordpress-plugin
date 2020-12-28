@@ -170,8 +170,8 @@ class RaceResult {
                 house.id as cid,
                 house.post_name as cname,
                 house.post_title as ctitle,
-                COALESCE(status.meta_value,'D') as isMember,
-                dob.meta_value as dob
+                COALESCE(status.meta_value,'D') as isMember
+                -- dob.meta_value as dob
                 FROM wp_bhaa_raceresult
                 LEFT JOIN wp_users on wp_users.id=wp_bhaa_raceresult.runner
                 LEFT JOIN wp_usermeta first_name on (first_name.user_id=wp_users.id and first_name.meta_key='first_name')
