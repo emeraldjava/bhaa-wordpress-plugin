@@ -2,7 +2,7 @@
 
 ==========
 
-- 2020.12.24 Add ApiController.
+- 2020.12.28 Add ApiController with /bhaa/v2 endpoints.
 - 2020.12.20 Small fixes.
 - 2020.03.07 Correct the generated plugin zip file name.
 - 2019.12.08 Rename plugin to bhaa_wordpress_plugin.
