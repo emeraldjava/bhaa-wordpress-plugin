@@ -30,6 +30,9 @@ class ApiController extends WP_REST_Controller implements Loadable {
 
     public function registerHooks(Loader $loader) {
         $loader->add_action('rest_api_init',$this,'bhaa_rest_api_init');
+        // https://wordpress.org/plugins/wp-rest-cache
+        $loader->add_filter('wp_rest_cache/allowed_endpoints',$this,'bhaa_wp_rest_cache_endpoints', 10, 1);
+        $loader->add_filter('wp_rest_cache/cacheable_request_headers',$this,'bhaa_wp_rest_cache_cacheable_request_headers', 10, 1);
     }
 
     public function bhaa_rest_api_init() {
@@ -152,6 +155,23 @@ class ApiController extends WP_REST_Controller implements Loadable {
         );
  
         return $this->schema;
+    }
+
+    /**
+     * https://wordpress.org/plugins/wp-rest-cache
+     * Register the /wp-json/bhaa/v2 endpoint so it will be cached.
+     */
+    function bhaa_wp_rest_cache_endpoints( $allowed_endpoints ) {
+        //var_dump($allowed_endpoints);
+        if ( ! isset( $allowed_endpoints[ 'bhaa/v2' ] ) || ! in_array( 'race', $allowed_endpoints[ 'bhaa/v2' ] ) ) {
+            $allowed_endpoints[ 'bhaa/v2' ][] = 'race';
+        }
+        return $allowed_endpoints;
+    }
+
+    function bhaa_wp_rest_cache_cacheable_request_headers($cacheable_headers) {
+        $cacheable_headers['bhaa/v2'] = 'BHAA_WP_API';
+        return $cacheable_headers;
     }
 }
 ?>
