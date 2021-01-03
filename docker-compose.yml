@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+
+  db:
+    image: mariadb
+    ports:
+      - "3306"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordprezz
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8080:8080"
+    network_mode: "host"
+    restart: always
+    user: www-data
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpressdb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordprezz
+      WORDPRESS_TABLE_PREFIX: "wp_"
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wp_data:/var/www/html
+
+volumes:
+  db_data:
+  wp_data:
