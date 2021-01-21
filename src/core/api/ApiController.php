@@ -54,7 +54,20 @@ class ApiController extends WP_REST_Controller implements Loadable {
             )
         ));
         // runner result (by runner )
+        register_rest_route( $namespace, '/runner/(?P<id>\d+)', array(
+            array(
+                'methods'         => WP_REST_Server::READABLE,
+                'callback'        => array( $this, 'bhaa_api_runner' ),
+                'permission_callback'   => array( $this, 'bhaa_api_perm_true' )
+            )
+        ));
     }  
+
+    function bhaa_api_runner( \WP_REST_Request $request ) {   
+        $raceResult = new RaceResult();
+        $res = $raceResult->getRunnerResults($request['id']);
+        return $res;    
+    }
 
     /**
      * 

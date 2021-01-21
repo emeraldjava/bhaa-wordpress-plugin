@@ -35,3 +35,9 @@ GET http://bhaaie/wp-json/bhaa/v2/raceresult/8284
 
 GET http://bhaaie/wp-json/bhaa/v2/raceresult/schema
 
+###
+GET https://bhaa.ie/wp-json/bhaa/v2/race
+
+###
+GET http://bhaaie/wp-json/bhaa/v2/runner/7313
+
